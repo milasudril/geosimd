@@ -78,6 +78,14 @@ namespace GeoSIMD
 		a+=b;
 		return a[0] + a[1] + a[2] + a[3];
 		}
+
+	template<class T>
+	Vector<T> cross(Vector<T> a,Vector<T> b)
+		{
+		return Vector<T>(a.y()*b.z() - a.z()*b.y()
+			,a.z()*b.x() - a.x()*b.z()
+			,a.z()*b.y() - a.y()*b.x());
+		}
 	}
 
 #endif
