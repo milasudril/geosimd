@@ -1,7 +1,7 @@
 #ifndef GEOSIMD_VECTOR_HPP
 #define GEOSIMD_VECTOR_HPP
 
-#include <geosimd/storage.hpp>
+#include "storage.hpp"
 
 namespace GeoSIMD
 	{
@@ -66,6 +66,9 @@ namespace GeoSIMD
 				auto temp=m_data*v.m_data;
 				return temp[0] + temp[1] + temp[2];
 				}
+
+			constexpr vec4_t<T> data() const noexcept
+				{return m_data;}
 
 		private:
 			vec4_t<T> m_data;
