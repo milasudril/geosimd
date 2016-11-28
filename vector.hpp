@@ -1,16 +1,10 @@
 #ifndef GEOSIMD_VECTOR_HPP
 #define GEOSIMD_VECTOR_HPP
 
-#include "storage.hpp"
+#include <geosimd/storage.hpp>
 
 namespace GeoSIMD
 	{
-	template<class T>
-	class Vector;
-
-/*	template<class T>
-	constexpr T dot(Vector<T> a,Vector<T> b);*/
-
 	template<class T>
 	class Vector
 		{
@@ -60,17 +54,58 @@ namespace GeoSIMD
 				return *this;
 				}
 
-			constexpr bool operator==(Vector v) const neoxcept
-				{return m_data==v.m_data;}
+			constexpr bool operator==(Vector v) const noexcept
+				{
+                return m_data[0]==v.m_data[0]
+                  	&& m_data[1]==v.m_data[1]
+					&& m_data[2]==v.m_data[2];
+                }
 
-		//	friend constexpr T dot<>(Vector a,Vector b);
-
-			constexpr vec4_t<T> data() const noexcept
-				{return m_data;}
+			constexpr T dot(Vector v) const noexcept
+				{
+				auto temp=m_data*v.m_data;
+				return temp[0] + temp[1] + temp[2];
+				}
 
 		private:
 			vec4_t<T> m_data;
 		};
+      
+	constexpr Vector<float> operator""_Vf(long double val)
+		{return Vector<float>(val,val,val);}
+
+	constexpr Vector<float> operator""_xf(long double val)
+		{return Vector<float>(val,0,0);}
+      
+	constexpr Vector<float> operator""_yf(long double val)
+		{return Vector<float>(0,val,0);}
+
+	constexpr Vector<float> operator""_zf(long double val)
+		{return Vector<float>(0,0,val);}
+      
+	constexpr Vector<double> operator""_V(long double val)
+		{return Vector<double>(val,val,val);}
+      
+	constexpr Vector<double> operator""_x(long double val)
+		{return Vector<double>(val,0,0);}
+      
+	constexpr Vector<double> operator""_y(long double val)
+		{return Vector<double>(0,val,0);}
+
+	constexpr Vector<double> operator""_z(long double val)
+		{return Vector<double>(0,0,val);}
+      
+	constexpr Vector<int> operator""_V(unsigned long long int val)
+		{return Vector<int>(val,val,val);}
+      
+	constexpr Vector<int> operator""_x(unsigned long long int val)
+		{return Vector<int>(val,0,0);}
+      
+	constexpr Vector<int> operator""_y(unsigned long long int val)
+		{return Vector<int>(0,val,0);}
+
+	constexpr Vector<int> operator""_z(unsigned long long int val)
+		{return Vector<int>(0,0,val);}
 
 	template<class T>
 	constexpr Vector<T> operator*(T c,Vector<T> v) noexcept
@@ -89,25 +124,23 @@ namespace GeoSIMD
 		{return a-=b;}
 
 	template<class T>
-	constexpr T dot(Vector<T> a,Vector<T> b)
-		{
-		auto temp=a.data()*b.data();
-		return temp[0] + temp[1] + temp[2];
-		}
+	constexpr T dot(Vector<T> a,Vector<T> b) noexcept
+		{return a.dot(b);}  
+	static_assert(dot(1.0_xf,1.0_yf)==0.0f,"Dot product broken");
+	static_assert(dot(1.0_xf,1.0_xf)==1.0f,"Dot product broken");
 
+      
 	template<class T>
 	constexpr Vector<T> cross(Vector<T> a,Vector<T> b)
 		{
 		return Vector<T>(a.y()*b.z() - a.z()*b.y()
 			,a.z()*b.x() - a.x()*b.z()
 			,a.x()*b.y() - a.y()*b.x());
-		}
-
-	static_assert(dot(Vector<float>(1.0f,0.0f,0.0f),Vector<float>(0.0f,1.0f,0.0f))==0.0f,"Dot product is broken");
-	static_assert(dot(Vector<float>(1.0f,0.0f,0.0f),Vector<float>(1.0f,0.0f,0.0f))==1.0f,"Dot product is broken");
-
-	static_assert(cross(Vector<float>(1.0,0.0f,0.0f),Vector<float>(0.0f,1.0f,0.0f))==Vector<float>(0.0f,0.0f,1.0f)
-		,"Cross product is broken");
+		}  
+	static_assert(cross(1.0_xf,1.0_yf)==1.0_zf,"Cross product broken");
+	static_assert(cross(1.0_yf,1.0_zf)==1.0_xf,"Cross product broken");
+	static_assert(cross(1.0_zf,1.0_xf)==1.0_yf,"Cross product broken");
+	static_assert(cross(1.0_xf,1.0_xf)==0.0_Vf,"Cross product broken");
 	}
 
 #endif
