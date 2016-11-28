@@ -53,10 +53,25 @@ namespace GeoSIMD
 				m_data-=v;
 				return *this
 				}
-
 		private:
 			vec4_t<T> m_data;
 		};
+
+	template<class T>
+	inline Vector<T> operator*(T c,Vector<T> v) noexcept
+		{return v*=c;}
+
+	template<class T>
+	inline Vector<T> operator/(Vector<T>,T c) noexcept
+		{return v/=c;}
+
+	template<class T>
+	inline Vector<T> operator+(Vector<T> a,Vector<T> b) noexcept
+		{return a+=b;}
+
+	template<class T>
+	inline Vector<T> operator-(Vector<T> a,Vector<T> b) noexcept
+		{return a-=b;}
 	}
 
 #endif
