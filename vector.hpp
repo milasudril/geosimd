@@ -75,7 +75,7 @@ namespace GeoSIMD
 
 	T dot(Vector<T> a,Vector<T> b)
 		{
-		a+=b;
+		a.m_data*=b.m_data;
 		return a[0] + a[1] + a[2] + a[3];
 		}
 
