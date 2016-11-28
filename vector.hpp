@@ -72,6 +72,12 @@ namespace GeoSIMD
 	template<class T>
 	inline Vector<T> operator-(Vector<T> a,Vector<T> b) noexcept
 		{return a-=b;}
+
+	T dot(Vector<T> a,Vector<T> b)
+		{
+		a+=b;
+		return a[0] + a[1] + a[2] + a[3];
+		}
 	}
 
 #endif
