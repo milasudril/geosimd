@@ -6,86 +6,108 @@
 namespace GeoSIMD
 	{
 	template<class T>
+	class Vector;
+
+/*	template<class T>
+	constexpr T dot(Vector<T> a,Vector<T> b);*/
+
+	template<class T>
 	class Vector
 		{
 		public:
-			explicit Vector(T x,T y,T z):m_data{x,y,z,0}
+			constexpr explicit Vector(T x,T y,T z):m_data{x,y,z,0}
 				{}
 
-			T x() const noexcept
+			constexpr T x() const noexcept
 				{return m_data[0];}
 
-			T& x() noexcept
+			constexpr T& x() noexcept
 				{return m_data[0];}
 
-			T y() const noexcept
+			constexpr T y() const noexcept
 				{return m_data[1];}
 
-			T& y() noexcept
+			constexpr T& y() noexcept
 				{return m_data[1];}
 
-			T z() const noexcept
+			constexpr T z() const noexcept
 				{return m_data[2];}
 
-			T& z() noexcept
+			constexpr T& z() noexcept
 				{return m_data[2];}
 
-			Vector& operator*=(T c) noexcept
+			constexpr Vector& operator*=(T c) noexcept
 				{
 				m_data*=c;
 				return *this;
 				}
 
-			Vector& operator/=(T c) noexcept
+			constexpr Vector& operator/=(T c) noexcept
 				{
 				m_data/=c;
 				return *this;
 				}
 
-			Vector& operator+=(Vector v) noexcept
+			constexpr Vector& operator+=(Vector v) noexcept
 				{
 				m_data+=v;
 				return *this;
 				}
 
-			Vector& operator-=(Vector v) noexcept
+			constexpr Vector& operator-=(Vector v) noexcept
 				{
 				m_data-=v;
-				return *this
+				return *this;
 				}
+
+			constexpr bool operator==(Vector v) const neoxcept
+				{return m_data==v.m_data;}
+
+		//	friend constexpr T dot<>(Vector a,Vector b);
+
+			constexpr vec4_t<T> data() const noexcept
+				{return m_data;}
+
 		private:
 			vec4_t<T> m_data;
 		};
 
 	template<class T>
-	inline Vector<T> operator*(T c,Vector<T> v) noexcept
+	constexpr Vector<T> operator*(T c,Vector<T> v) noexcept
 		{return v*=c;}
 
 	template<class T>
-	inline Vector<T> operator/(Vector<T>,T c) noexcept
+	constexpr Vector<T> operator/(Vector<T> v,T c) noexcept
 		{return v/=c;}
 
 	template<class T>
-	inline Vector<T> operator+(Vector<T> a,Vector<T> b) noexcept
+	constexpr Vector<T> operator+(Vector<T> a,Vector<T> b) noexcept
 		{return a+=b;}
 
 	template<class T>
-	inline Vector<T> operator-(Vector<T> a,Vector<T> b) noexcept
+	constexpr Vector<T> operator-(Vector<T> a,Vector<T> b) noexcept
 		{return a-=b;}
 
-	T dot(Vector<T> a,Vector<T> b)
+	template<class T>
+	constexpr T dot(Vector<T> a,Vector<T> b)
 		{
-		a.m_data*=b.m_data;
-		return a[0] + a[1] + a[2] + a[3];
+		auto temp=a.data()*b.data();
+		return temp[0] + temp[1] + temp[2];
 		}
 
 	template<class T>
-	Vector<T> cross(Vector<T> a,Vector<T> b)
+	constexpr Vector<T> cross(Vector<T> a,Vector<T> b)
 		{
 		return Vector<T>(a.y()*b.z() - a.z()*b.y()
 			,a.z()*b.x() - a.x()*b.z()
-			,a.z()*b.y() - a.y()*b.x());
+			,a.x()*b.y() - a.y()*b.x());
 		}
+
+	static_assert(dot(Vector<float>(1.0f,0.0f,0.0f),Vector<float>(0.0f,1.0f,0.0f))==0.0f,"Dot product is broken");
+	static_assert(dot(Vector<float>(1.0f,0.0f,0.0f),Vector<float>(1.0f,0.0f,0.0f))==1.0f,"Dot product is broken");
+
+	static_assert(cross(Vector<float>(1.0,0.0f,0.0f),Vector<float>(0.0f,1.0f,0.0f))==Vector<float>(0.0f,0.0f,1.0f)
+		,"Cross product is broken");
 	}
 
 #endif
