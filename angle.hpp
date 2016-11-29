@@ -78,27 +78,39 @@ namespace GeoSIMD
 	constexpr Angle<double> operator""_r(long double val) noexcept
 		{return Angle<double>(2.0f*pi<double>()*val);}
 
+
 	template<class T>
 	constexpr Angle<T> make_angle(Direction<T> a,Direction<T> b) noexcept
 		{return Angle<T>(a,b);}
 
-
 	template<class T>
-	constexpr T operator/(Angle<T> u,Angle<T> v)
+	constexpr T operator/(Angle<T> u,Angle<T> v) noexcept
 		{return static_cast<T>(u)/static_cast<T>(v);}
 
 	template<class T>
-	Angle<T> operator+(Angle<T> u,Angle<T> v)
+	Angle<T> operator+(Angle<T> u,Angle<T> v) noexcept
 		{return u+=v;}
 
 	template<class T>
-	T operator-(Angle<T> u,Angle<T> v)
+	Angle<T> operator-(Angle<T> u,Angle<T> v) noexcept
 		{return u-=v;}
 
-	static_assert((30.0_degf).sin()==0.5f,"Sine is broken");
-	static_assert(std::abs((60.0_degf).cos() - 0.5f)<1.0e-7f,"Cosine is broken");
-	static_assert((45.0_degf).sin()==(45.0_degf).cos(),"hmm");
-	static_assert((45.0_degf).tan()==1.0f,"Tangent is broken");
+	template<class T>
+	constexpr T cos(Angle<T> u) noexcept
+		{return u.cos();}
+
+	template<class T>
+	constexpr T sin(Angle<T> u) noexcept
+		{return u.sin();}
+
+	template<class T>
+	constexpr T tan(Angle<T> u) noexcept
+		{return u.tan();}
+
+	static_assert(sin(30.0_degf)==0.5f,"Sine is broken");
+	static_assert(std::abs(cos(60.0_degf) - 0.5f)<1.0e-7f,"Cosine is broken");
+	static_assert(sin(45.0_degf)==cos(45.0_degf),"hmm");
+	static_assert(tan(45.0_degf)==1.0f,"Tangent is broken");
 	static_assert(make_angle(x<float>(),y<float>())==90.0_degf,"Angle between directions is broken");
 	}
 
