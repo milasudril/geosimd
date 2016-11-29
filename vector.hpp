@@ -3,8 +3,6 @@
 #ifndef GEOSIMD_VECTOR_HPP
 #define GEOSIMD_VECTOR_HPP
 
-#include "vectortype.hpp"
-#include "constants.hpp"
 #include "rotation.hpp"
 
 namespace GeoSIMD

@@ -3,7 +3,6 @@
 #ifndef GEOSIMD_TRANSLATION_HPP
 #define GEOSIMD_TRANSLATION_HPP
 
-#include "mat4.hpp"
 #include "vector.hpp"
 
 namespace GeoSIMD

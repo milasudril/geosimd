@@ -4,8 +4,6 @@
 #define GEOSIMD_DIRECTION_HPP
 
 #include "vector.hpp"
-#include "rotation.hpp"
-#include <cmath>
 
 namespace GeoSIMD
 	{
