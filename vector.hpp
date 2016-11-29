@@ -72,7 +72,7 @@ namespace GeoSIMD
 			constexpr vec4_t<T> data() const noexcept
 				{return m_data;}
 
-		private:
+		protected:
 			vec4_t<T> m_data;
 		};
 

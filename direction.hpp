@@ -8,40 +8,34 @@
 namespace GeoSIMD
 	{
 	template<class T>
-	class Direction
+	class Direction:private Vector<T>
 		{
 		public:
 			constexpr explicit Direction(Vector<T> v)
-				:m_data( (v/std::sqrt(GeoSIMD::dot(v,v))).data() )
+				:Vector<T>( v/std::sqrt(GeoSIMD::dot(v,v)) )
 				{}
 
 			constexpr T x() const noexcept
-				{return m_data[0];}
+				{return Vector<T>::x();}
 
 			constexpr T y() const noexcept
-				{return m_data[1];}
+				{return Vector<T>::y();}
 
 			constexpr T z() const noexcept
-				{return m_data[2];}
+				{return Vector<T>::z();}
 
 			constexpr bool operator==(Direction v) const noexcept
-				{
-                return m_data[0]==v.m_data[0]
-                  	&& m_data[1]==v.m_data[1]
-					&& m_data[2]==v.m_data[2];
-                }
+				{return Vector<T>::operator==(v);}
 
 			constexpr T dot(Direction v) const noexcept
-				{
-				auto temp=m_data*v.m_data;
-				return temp[0] + temp[1] + temp[2];
-				}
+				{return Vector<T>::dot(v);}
 
 			constexpr vec4_t<T> data() const noexcept
-				{return m_data;}
+				{return Vector<T>::data();}
 
-			explicit constexpr operator Vector<T>() const noexcept
-				{return Vector<T>(x(),y(),z());}
+			template<class U>
+			constexpr Vector<U> operator*(U c) const noexcept
+				{return c*(*this);}
 
 			Direction& transform(const Rotation<T>& R) noexcept
 				{
@@ -51,14 +45,11 @@ namespace GeoSIMD
 					{
 					auto row=vec4_t<T>
 						{R_data(k,0),R_data(k,1),R_data(k,2),R_data(k,3)};
-					temp[k]=GeoSIMD::dot<T>(m_data,row);
+					temp[k]=GeoSIMD::dot<T>(Vector<T>::m_data,row);
 					}
-				m_data=temp;
+				Vector<T>::m_data=temp;
 				return *this;
 				}
-
-		private:
-			vec4_t<T> m_data;
 		};
 
 	template<class T>
@@ -98,8 +89,6 @@ namespace GeoSIMD
 		{return Direction<double>(1.0_z);}
 #endif
 
-
-
 	template<class T>
 	constexpr T dot(Direction<T> a,Direction<T> b) noexcept
 		{return a.dot(b);}
@@ -107,11 +96,10 @@ namespace GeoSIMD
 	static_assert(dot(x<float>(),y<float>())==0.0f,"Dot product broken");
 	static_assert(dot(x<float>(),x<float>())==1.0f,"Dot product broken");
 
-	template<class U,class T>
+	template<class T,class U=T>
 	constexpr Angle<U> angle(Direction<T> a,Direction<T> b) noexcept
 		{return Angle<U>(std::acos(dot(a,b)));}
-
-	
+	static_assert(angle(x<float>(),y<float>())==90.0_degf,"Bad angle between vectors");
 	}
 
 #endif
