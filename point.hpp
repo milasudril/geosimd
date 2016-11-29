@@ -4,9 +4,16 @@
 #define GEOSIMD_POINT_HPP
 
 #include "vector.hpp"
+#include "translation.hpp"
 
 namespace GeoSIMD
 	{
+	template<class T>
+	class Point;
+
+	template<class T>
+	Point<T> transform(Point<T> p,const Translation<T>& R) noexcept;
+
 	template<class T>
 	class Point
 		{
@@ -56,6 +63,8 @@ namespace GeoSIMD
 
 		private:
 			vec4_t<T> m_data;
+			Point(){}
+			friend Point<T> transform<>(Point<T> p,const Translation<T>& R) noexcept;
 		};
 
 	template<class T>
@@ -79,6 +88,20 @@ namespace GeoSIMD
 		{
 		auto diff=a-b;
 		return dot(diff,diff);
+		}
+
+	template<class T>
+	Point<T> transform(Point<T> p,const Translation<T>& R) noexcept
+		{
+		const auto& R_data=R.data();
+		Point<T> ret;
+		for(int k=0;k<4;++k)
+			{
+			auto row=vec4_t<T>
+				{R_data(k,0),R_data(k,1),R_data(k,2),R_data(k,3)};
+			ret.m_data[k]=GeoSIMD::dot<T>(p.m_data,row);
+			}
+		return ret;
 		}
 	}
 

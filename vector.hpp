@@ -13,7 +13,7 @@ namespace GeoSIMD
 	class Vector;
 
 	template<class T>
-	Vector<T> transform(Vector<T> dir,const Rotation<T>& R) noexcept;
+	Vector<T> transform(Vector<T> v,const Rotation<T>& R) noexcept;
 
 	template<class T>
 	class Vector
@@ -85,7 +85,7 @@ namespace GeoSIMD
 			Vector(){}
 			vec4_t<T> m_data;
 
-			friend Vector<T> transform<>(Vector<T> dir,const Rotation<T>& R) noexcept;
+			friend Vector<T> transform<>(Vector<T> v,const Rotation<T>& R) noexcept;
 		};
 
 #ifdef __SSE__

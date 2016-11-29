@@ -3,6 +3,7 @@
 //@	}
 
 #include "direction.hpp"
+#include "point.hpp"
 #include <cstdio>
 #include <cassert>
 
@@ -43,5 +44,9 @@ int main()
 	auto e1=transform(x<float>(),rotateZ(rot_a,90.0_degf));
 	print(rot_a.data());
 	print(e1.data());
+
+	auto P=transform(origin<float>(),translate(Translation<float>(),Vector<float>(1.0f,0.0f,0.0f)));
+	print(P.data());
+
 	return 0;
 	}
