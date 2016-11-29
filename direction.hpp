@@ -2,7 +2,6 @@
 #define GEOSIMD_DIRECTION_HPP
 
 #include "vector.hpp"
-#include <type_traits>
 #include <cmath>
 
 namespace GeoSIMD
@@ -80,13 +79,11 @@ namespace GeoSIMD
 	constexpr Direction<double> z<double>() noexcept
 		{return Direction<double>(1.0_z);}
 
-
-
 	template<class T>
 	constexpr T dot(Direction<T> a,Direction<T> b) noexcept
 		{return a.dot(b);}
-/*	static_assert(dot(x<float>(),y<float>())==0.0f,"Dot product broken");
-	static_assert(dot(x<float>(),x<float>())==1.0f,"Dot product broken");*/
+	static_assert(dot(x<float>(),y<float>())==0.0f,"Dot product broken");
+	static_assert(dot(x<float>(),x<float>())==1.0f,"Dot product broken");
 	}
 
 #endif

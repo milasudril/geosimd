@@ -146,8 +146,6 @@ namespace GeoSIMD
 	static_assert(cross(1.0_yf,1.0_zf)==1.0_xf,"Cross product broken");
 	static_assert(cross(1.0_zf,1.0_xf)==1.0_yf,"Cross product broken");
 	static_assert(cross(1.0_xf,1.0_xf)==0.0_Vf,"Cross product broken");
-
-	constexpr auto test=1.0_xf + 1.0_yf;
 	}
 
 #endif

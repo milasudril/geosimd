@@ -1,15 +1,6 @@
 //@	{
-//@	"targets":[{"name":"test","type":"application","cxxoptions":{"cflags_extra":["march=native"],"cxxversion_min":201402}}]
+//@	"targets":[{"name":"test","type":"object","cxxoptions":{"cflags_extra":["march=native"],"cxxversion_min":201402}}]
 //@	}
 
-#include "direction.hpp"
+#include "angle.hpp"
 #include <cstdio>
-
-constexpr auto test=GeoSIMD::x<float>();
-
-int main()
-	{
-
-
-	return 0;
-	}
