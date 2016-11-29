@@ -22,6 +22,7 @@ namespace GeoSIMD
 				{
 				mat4_t<T> R(mat4_t<T>::identity());
 				R.column(3)=offset.data();
+				R.column(3)[3]=one<T>();
 				m_data*=R;
 				return *this;
 				}

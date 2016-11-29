@@ -3,7 +3,7 @@
 #ifndef GEOSIMD_POINT_HPP
 #define GEOSIMD_POINT_HPP
 
-#include "translation.hpp"
+#include "transformation.hpp"
 
 namespace GeoSIMD
 	{
@@ -11,7 +11,7 @@ namespace GeoSIMD
 	class Point;
 
 	template<class T>
-	Point<T> transform(Point<T> p,const Translation<T>& R) noexcept;
+	Point<T> transform(Point<T> p,const mat4_t<T>& R_data) noexcept;
 
 	template<class T>
 	class Point
@@ -63,7 +63,8 @@ namespace GeoSIMD
 		private:
 			vec4_t<T> m_data;
 			Point(){}
-			friend Point<T> transform<>(Point<T> p,const Translation<T>& R) noexcept;
+
+			friend Point<T> transform<>(Point<T> p,const mat4_t<T>& R_data) noexcept;
 		};
 
 	template<class T>
@@ -90,9 +91,8 @@ namespace GeoSIMD
 		}
 
 	template<class T>
-	Point<T> transform(Point<T> p,const Translation<T>& R) noexcept
+	Point<T> transform(Point<T> p,const mat4_t<T>& R_data) noexcept
 		{
-		const auto& R_data=R.data();
 		Point<T> ret;
 		for(int k=0;k<4;++k)
 			{
@@ -102,6 +102,10 @@ namespace GeoSIMD
 			}
 		return ret;
 		}
+
+	template<class T,class U>
+	Point<T> transform(Point<T> p,const U& u)
+		{return transform(p,u.data());}
 	}
 
 #endif

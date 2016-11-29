@@ -25,7 +25,7 @@ void print(const vec4_t<float>& m)
 	putchar('(');
 	for(int k=0;k<3;++k)
 		{printf("%.7g, ",m[k]);}
-	printf("%.7g)\n",m[3]);
+	printf("%.7g)\n\n",m[3]);
 	}
 
 int main()
@@ -47,6 +47,28 @@ int main()
 
 	auto P=transform(origin<float>(),translate(Translation<float>(),Vector<float>(1.0f,0.0f,0.0f)));
 	print(P.data());
+
+
+	P=transform(P,rotateZ(rot_a,90.0_degf));
+	print(P.data());
+
+	auto offset_x=translate(Translation<float>(),1.0_xf);
+	auto offset_y=translate(Translation<float>(),1.0_yf);
+	auto offset_z=translate(Translation<float>(),1.0_zf);
+	auto Tx=Transformation<float>(offset_x);
+	print(Tx.data());
+
+	auto Ty=Transformation<float>(offset_y);
+	print(Ty.data());
+
+	auto Tz=Transformation<float>(offset_z);
+	print(Tz.data());
+
+	auto T_tot=Transformation<float>(rotateZ(rot_a,90.0_degf)).append(offset_x);
+	print(T_tot.data());
+
+	auto P2=transform(origin<float>(),T_tot);
+	print(P2.data());
 
 	return 0;
 	}
