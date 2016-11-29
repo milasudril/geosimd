@@ -41,7 +41,7 @@ int main()
 
 
 	auto e1=x<float>();
-	e1.transform(rot_a.rotateZ(90.0_degf));
+	e1.transform(rotateZ(rot_a,90.0_degf));
 	print(rot_a.data());
 	print(e1.data());
 	return 0;

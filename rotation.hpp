@@ -64,6 +64,18 @@ namespace GeoSIMD
 		private:
 			mat4_t<T> m_data;
 		};
+
+	template<class T,class U>
+	Rotation<T> rotateX(Rotation<T> R,Angle<U> angle) noexcept
+		{return R.rotateX(angle);}
+
+	template<class T,class U>
+	Rotation<T> rotateY(Rotation<T> R,Angle<U> angle) noexcept
+		{return R.rotateY(angle);}
+
+	template<class T,class U>
+	Rotation<T> rotateZ(Rotation<T> R,Angle<U> angle) noexcept
+		{return R.rotateZ(angle);}
 	}
 
 #endif
