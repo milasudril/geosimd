@@ -72,12 +72,24 @@ namespace GeoSIMD
 		{return R.rotateX(angle);}
 
 	template<class T,class U>
+	Rotation<T> rotateX(Angle<U> angle) noexcept
+		{return Rotation<T>().rotateX(angle);}
+
+	template<class T,class U>
 	Rotation<T> rotateY(Rotation<T> R,Angle<U> angle) noexcept
 		{return R.rotateY(angle);}
 
 	template<class T,class U>
+	Rotation<T> rotateY(Angle<U> angle) noexcept
+		{return Rotation<T>().rotateY(angle);}
+
+	template<class T,class U>
 	Rotation<T> rotateZ(Rotation<T> R,Angle<U> angle) noexcept
 		{return R.rotateZ(angle);}
+
+	template<class T,class U>
+	Rotation<T> rotateZ(Angle<U> angle) noexcept
+		{return Rotation<T>().rotateZ(angle);}
 	}
 
 #endif

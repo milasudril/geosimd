@@ -37,6 +37,10 @@ namespace GeoSIMD
 	template<class T>
 	Translation<T> translate(Translation<T> R,Vector<T> offset) noexcept
 		{return R.translate(offset);}
+
+	template<class T>
+	Translation<T> translate(Vector<T> offset) noexcept
+		{return Translation<T>().translate(offset);}
 	}
 
 #endif

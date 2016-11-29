@@ -64,7 +64,8 @@ int main()
 	auto Tz=Transformation<float>(offset_z);
 	print(Tz.data());
 
-	auto T_tot=Transformation<float>(rotateZ(rot_a,90.0_degf)).append(offset_x);
+	auto T_tot=Transformation<float>(rotateZ<float>(90.0_degf))
+		.append(translate(1.0_xf));
 	print(T_tot.data());
 
 	auto P2=transform(origin<float>(),T_tot);
