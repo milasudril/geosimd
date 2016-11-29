@@ -55,6 +55,9 @@ namespace GeoSIMD
 
 			constexpr bool operator==(const Angle& b) const noexcept
 				{return m_value==b.m_value;}
+
+			constexpr Angle<T> operator-() const noexcept
+				{return Angle<T>(-m_value);}
 		
 		private:
         	T m_value;

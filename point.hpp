@@ -9,7 +9,7 @@ namespace GeoSIMD
 	class Point
 		{
 		public:
-			constexpr explicit Point(T x,T y,T z):m_data{x,y,z,1}
+			constexpr explicit Point(T x,T y,T z):m_data{x,y,z,one<T>()}
 				{}
 
 			constexpr T x() const noexcept
@@ -58,7 +58,7 @@ namespace GeoSIMD
 
 	template<class T>
 	constexpr Point<T> origin() noexcept
-		{return Point<T>(0,0,0);}
+		{return Point<T>(zero<T>(),zero<T>(),zero<T>());}
 
 	template<class T>
 	constexpr Point<T> operator+(Point<T> a,Vector<T> b) noexcept
