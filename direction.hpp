@@ -8,6 +8,12 @@
 namespace GeoSIMD
 	{
 	template<class T>
+	class Direction;
+
+	template<class T>
+	Direction<T> transform(Direction<T> dir,const Rotation<T>& R) noexcept;
+
+	template<class T>
 	class Direction:private Vector<T>
 		{
 		public:
@@ -37,19 +43,9 @@ namespace GeoSIMD
 			constexpr Vector<U> operator*(U c) const noexcept
 				{return c*(*this);}
 
-			Direction& transform(const Rotation<T>& R) noexcept
-				{
-				const auto& R_data=R.data();
-				vec4_t<T> temp;
-				for(int k=0;k<4;++k)
-					{
-					auto row=vec4_t<T>
-						{R_data(k,0),R_data(k,1),R_data(k,2),R_data(k,3)};
-					temp[k]=GeoSIMD::dot<T>(Vector<T>::m_data,row);
-					}
-				Vector<T>::m_data=temp;
-				return *this;
-				}
+		private:
+			Direction(){}
+			friend Direction<T> transform<>(Direction<T> dir,const Rotation<T>& R) noexcept;
 		};
 
 	template<class T>
@@ -100,6 +96,20 @@ namespace GeoSIMD
 	constexpr Angle<U> angle(Direction<T> a,Direction<T> b) noexcept
 		{return Angle<U>(std::acos(dot(a,b)));}
 	static_assert(angle(x<float>(),y<float>())==90.0_degf,"Bad angle between vectors");
+
+	template<class T>
+	Direction<T> transform(Direction<T> dir,const Rotation<T>& R) noexcept
+		{
+		const auto& R_data=R.data();
+		Direction<T> ret;
+		for(int k=0;k<4;++k)
+			{
+			auto row=vec4_t<T>
+				{R_data(k,0),R_data(k,1),R_data(k,2),R_data(k,3)};
+			ret.Vector<T>::m_data[k]=GeoSIMD::dot<T>(dir.Vector<T>::m_data,row);
+			}
+		return ret;
+		}
 	}
 
 #endif

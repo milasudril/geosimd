@@ -73,6 +73,7 @@ namespace GeoSIMD
 				{return m_data;}
 
 		protected:
+			Vector(){}
 			vec4_t<T> m_data;
 		};
 

@@ -40,8 +40,7 @@ int main()
 	assert(rot_a==rot_b);
 
 
-	auto e1=x<float>();
-	e1.transform(rotateZ(rot_a,90.0_degf));
+	auto e1=transform(x<float>(),rotateZ(rot_a,90.0_degf));
 	print(rot_a.data());
 	print(e1.data());
 	return 0;
