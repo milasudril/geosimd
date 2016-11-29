@@ -1,3 +1,5 @@
+//@	{"targets":[{"name":"direction.hpp","type":"include"}]}
+
 #ifndef GEOSIMD_DIRECTION_HPP
 #define GEOSIMD_DIRECTION_HPP
 

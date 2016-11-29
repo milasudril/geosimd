@@ -1,3 +1,5 @@
+//@	{"targets":[{"name":"constants.hpp","type":"include"}]}
+
 #ifndef GEOSIMD_CONSTANTS_HPP
 #define GEOSIMD_CONSTANTS_HPP
 

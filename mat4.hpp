@@ -1,7 +1,9 @@
+//@	{"targets":[{"name":"mat4.hpp","type":"include"}]}
+
 #ifndef GEOSIMD_MAT4_HPP
 #define GEOSIMD_MAT4_HPP
 
-#include "storage.hpp"
+#include "vectortype.hpp"
 #include "constants.hpp"
 
 namespace GeoSIMD

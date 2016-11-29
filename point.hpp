@@ -1,3 +1,5 @@
+//@	{"targets":[{"name":"point.hpp","type":"include"}]}
+
 #ifndef GEOSIMD_POINT_HPP
 #define GEOSIMD_POINT_HPP
 

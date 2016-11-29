@@ -1,3 +1,5 @@
+//@	{"targets":[{"name":"angle.hpp","type":"include"}]}
+
 #ifndef GEOSIMD_ANGLE_HPP
 #define GEOSIMD_ANGLE_HPP
 

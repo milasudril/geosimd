@@ -1,11 +1,20 @@
+//@	{"targets":[{"name":"vector.hpp","type":"include"}]}
+
 #ifndef GEOSIMD_VECTOR_HPP
 #define GEOSIMD_VECTOR_HPP
 
-#include "storage.hpp"
+#include "vectortype.hpp"
 #include "constants.hpp"
+#include "rotation.hpp"
 
 namespace GeoSIMD
 	{
+	template<class T>
+	class Vector;
+
+	template<class T>
+	Vector<T> transform(Vector<T> dir,const Rotation<T>& R) noexcept;
+
 	template<class T>
 	class Vector
 		{
@@ -75,6 +84,8 @@ namespace GeoSIMD
 		protected:
 			Vector(){}
 			vec4_t<T> m_data;
+
+			friend Vector<T> transform<>(Vector<T> dir,const Rotation<T>& R) noexcept;
 		};
 
 #ifdef __SSE__
@@ -142,6 +153,10 @@ namespace GeoSIMD
 		{return a-=b;}
 
 	template<class T>
+	constexpr Vector<T> operator-(Vector<T> a) noexcept
+		{return (-one<T>())*a;}
+
+	template<class T>
 	constexpr T dot(Vector<T> a,Vector<T> b) noexcept
 		{return a.dot(b);}  
 	static_assert(dot(1.0_xf,1.0_yf)==0.0f,"Dot product broken");
@@ -159,6 +174,21 @@ namespace GeoSIMD
 	static_assert(cross(1.0_yf,1.0_zf)==1.0_xf,"Cross product broken");
 	static_assert(cross(1.0_zf,1.0_xf)==1.0_yf,"Cross product broken");
 	static_assert(cross(1.0_xf,1.0_xf)==0.0_Vf,"Cross product broken");
+	static_assert(cross(1.0_xf,1.0_zf)==-1.0_yf,"Cross product broken");
+
+	template<class T>
+	Vector<T> transform(Vector<T> v,const Rotation<T>& R) noexcept
+		{
+		const auto& R_data=R.data();
+		Vector<T> ret;
+		for(int k=0;k<4;++k)
+			{
+			auto row=vec4_t<T>
+				{R_data(k,0),R_data(k,1),R_data(k,2),R_data(k,3)};
+			ret.m_data[k]=GeoSIMD::dot<T>(v.m_data,row);
+			}
+		return ret;
+		}
 	}
 
 #endif

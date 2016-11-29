@@ -1,3 +1,5 @@
+//@	{"targets":[{"name":"rotation.hpp","type":"include"}]}
+
 #ifndef GEOSIMD_ROTATION_HPP
 #define GEOSIMD_ROTATION_HPP
 

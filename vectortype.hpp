@@ -1,5 +1,7 @@
-#ifndef GEOSIMD_STORAGE_HPP
-#define GEOSIMD_STORAGE_HPP
+//@	{"targets":[{"name":"vectortype.hpp","type":"include"}]}
+
+#ifndef GEOSIMD_VECTORTYPE_HPP
+#define GEOSIMD_VECTORTYPE_HPP
 
 #include <cstdint>
 #include <type_traits>
