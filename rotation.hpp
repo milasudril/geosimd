@@ -1,5 +1,5 @@
-#ifndef GEOSIMD_TRANSFORMATION_HPP
-#define GEOSIMD_TRANSFORMATION_HPP
+#ifndef GEOSIMD_ROTATION_HPP
+#define GEOSIMD_ROTATION_HPP
 
 #include "angle.hpp"
 #include "mat4.hpp"

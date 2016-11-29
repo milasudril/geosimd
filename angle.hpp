@@ -1,8 +1,7 @@
 #ifndef GEOSIMD_ANGLE_HPP
 #define GEOSIMD_ANGLE_HPP
 
-#include "direction.hpp"
-#include <cmath>
+#include "constants.hpp"
 
 namespace GeoSIMD
 	{
@@ -11,10 +10,6 @@ namespace GeoSIMD
 		{
 		public:
         	explicit constexpr Angle(T value) noexcept:m_value(value)
-				{}
-			
-			explicit constexpr Angle(Direction<T> a,Direction<T> b) noexcept:
-          		m_value(std::acos(dot(a,b)))
 				{}
           
        		constexpr T cos() const noexcept
@@ -81,11 +76,6 @@ namespace GeoSIMD
 	constexpr Angle<double> operator""_r(long double val) noexcept
 		{return Angle<double>(2.0f*pi<double>()*val);}
 
-
-	template<class T>
-	constexpr Angle<T> make_angle(Direction<T> a,Direction<T> b) noexcept
-		{return Angle<T>(a,b);}
-
 	template<class T>
 	constexpr T operator/(Angle<T> u,Angle<T> v) noexcept
 		{return static_cast<T>(u)/static_cast<T>(v);}
@@ -114,7 +104,6 @@ namespace GeoSIMD
 	static_assert(std::abs(cos(60.0_degf) - 0.5f)<1.0e-7f,"Cosine is broken");
 	static_assert(sin(45.0_degf)==cos(45.0_degf),"hmm");
 	static_assert(tan(45.0_degf)==1.0f,"Tangent is broken");
-	static_assert(make_angle(x<float>(),y<float>())==90.0_degf,"Angle between directions is broken");
 	}
 
 #endif

@@ -75,6 +75,8 @@ namespace GeoSIMD
 		private:
 			vec4_t<T> m_data;
 		};
+
+#ifdef __SSE__
       
 	constexpr Vector<float> operator""_Vf(long double val)
 		{return Vector<float>(val,val,val);}
@@ -87,19 +89,28 @@ namespace GeoSIMD
 
 	constexpr Vector<float> operator""_zf(long double val)
 		{return Vector<float>(0,0,val);}
-      
-	constexpr Vector<double> operator""_V(long double val)
+#endif
+
+#ifdef __AVX__
+	constexpr Vector<double>
+	operator""_V(long double val)
 		{return Vector<double>(val,val,val);}
       
-	constexpr Vector<double> operator""_x(long double val)
+	constexpr Vector<double>
+	operator""_x(long double val)
 		{return Vector<double>(val,0,0);}
       
-	constexpr Vector<double> operator""_y(long double val)
+	constexpr Vector<double>
+	operator""_y(long double val)
 		{return Vector<double>(0,val,0);}
 
-	constexpr Vector<double> operator""_z(long double val)
+	constexpr Vector<double>
+	operator""_z(long double val)
 		{return Vector<double>(0,0,val);}
-      
+#endif
+
+
+#ifdef __SSE2__      
 	constexpr Vector<int> operator""_V(unsigned long long int val)
 		{return Vector<int>(val,val,val);}
       
@@ -111,6 +122,7 @@ namespace GeoSIMD
 
 	constexpr Vector<int> operator""_z(unsigned long long int val)
 		{return Vector<int>(0,0,val);}
+#endif
 
 	template<class T>
 	constexpr Vector<T> operator*(T c,Vector<T> v) noexcept

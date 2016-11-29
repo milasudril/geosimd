@@ -2,6 +2,7 @@
 #define GEOSIMD_DIRECTION_HPP
 
 #include "vector.hpp"
+#include "rotation.hpp"
 #include <cmath>
 
 namespace GeoSIMD
@@ -42,6 +43,20 @@ namespace GeoSIMD
 			explicit constexpr operator Vector<T>() const noexcept
 				{return Vector<T>(x(),y(),z());}
 
+			Direction& transform(const Rotation<T>& R) noexcept
+				{
+				const auto& R_data=R.data();
+				vec4_t<T> temp;
+				for(int k=0;k<4;++k)
+					{
+					auto row=vec4_t<T>
+						{R_data(k,0),R_data(k,1),R_data(k,2),R_data(k,3)};
+					temp[k]=GeoSIMD::dot<T>(m_data,row);
+					}
+				m_data=temp;
+				return *this;
+				}
+
 		private:
 			vec4_t<T> m_data;
 		};
@@ -49,41 +64,54 @@ namespace GeoSIMD
 	template<class T>
 	constexpr Direction<T> x() noexcept;
 
+	template<class T>
+	constexpr Direction<T> y() noexcept;
+
+	template<class T>
+	constexpr Direction<T> z() noexcept;
+
+#ifdef __SSE__
 	template<>
 	constexpr Direction<float> x<float>() noexcept
 		{return Direction<float>(1.0_xf);}
-
-	template<>
-	constexpr Direction<double> x<double>() noexcept
-		{return Direction<double>(1.0_x);}
-
-	template<class T>
-	constexpr Direction<T> y() noexcept;
 
 	template<>
 	constexpr Direction<float> y<float>() noexcept
 		{return Direction<float>(1.0_yf);}
 
 	template<>
-	constexpr Direction<double> y<double>() noexcept
-		{return Direction<double>(1.0_y);}
-
-	template<class T>
-	constexpr Direction<T> z() noexcept;
-
-	template<>
 	constexpr Direction<float> z<float>() noexcept
 		{return Direction<float>(1.0_zf);}
+#endif
+
+#ifdef __AVX__
+	template<>
+	constexpr Direction<double> x<double>() noexcept
+		{return Direction<double>(1.0_x);}
+
+	template<>
+	constexpr Direction<double> y<double>() noexcept
+		{return Direction<double>(1.0_y);}
 
 	template<>
 	constexpr Direction<double> z<double>() noexcept
 		{return Direction<double>(1.0_z);}
+#endif
+
+
 
 	template<class T>
 	constexpr T dot(Direction<T> a,Direction<T> b) noexcept
 		{return a.dot(b);}
+
 	static_assert(dot(x<float>(),y<float>())==0.0f,"Dot product broken");
 	static_assert(dot(x<float>(),x<float>())==1.0f,"Dot product broken");
+
+	template<class U,class T>
+	constexpr Angle<U> angle(Direction<T> a,Direction<T> b) noexcept
+		{return Angle<U>(std::acos(dot(a,b)));}
+
+	
 	}
 
 #endif

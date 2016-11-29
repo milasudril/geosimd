@@ -46,14 +46,14 @@ namespace GeoSIMD
 					{
 					vec4_t<T> row{cols[0][k],cols[1][k],cols[2][k],cols[3][k]};
 					for(int l=0;l<4;++l)
-						{cols[l][k]=dot(row,c.cols[l]);}
+						{cols[l][k]=dot<T>(row,c.cols[l]);}
 					}
 				return *this;
 				}
 		  
-			static constexpr mat4_t<T> identity() noexcept
+			static constexpr mat4_t identity() noexcept
 				{
-				mat4_t<T> ret{};
+				mat4_t ret{};
 				ret.cols[0]=vec4_t<T>{one<T>(),zero<T>(),zero<T>(),zero<T>()};
 				ret.cols[1]=vec4_t<T>{zero<T>(),one<T>(),zero<T>(),zero<T>()};
 				ret.cols[2]=vec4_t<T>{zero<T>(),zero<T>(),one<T>(),zero<T>()};
@@ -76,12 +76,6 @@ namespace GeoSIMD
 
 		  
 		private:
-			static constexpr T dot(vec4_t<T> a,vec4_t<T> b) noexcept
-				{
-				a*=b;
-				return a[0] + a[1] + a[2] + a[3];
-				}
-
 			vec4_t<T> cols[4];
 		};
 
