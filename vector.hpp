@@ -2,6 +2,7 @@
 #define GEOSIMD_VECTOR_HPP
 
 #include "storage.hpp"
+#include "constants.hpp"
 
 namespace GeoSIMD
 	{
@@ -9,7 +10,7 @@ namespace GeoSIMD
 	class Vector
 		{
 		public:
-			constexpr explicit Vector(T x,T y,T z):m_data{x,y,z,0}
+			constexpr explicit Vector(T x,T y,T z) noexcept:m_data{x,y,z,zero<T>()}
 				{}
 
 			constexpr T x() const noexcept
@@ -32,25 +33,26 @@ namespace GeoSIMD
 
 			constexpr Vector& operator*=(T c) noexcept
 				{
-				m_data*=c;
+				m_data*=vec4_t<T>{c,c,c,c};
 				return *this;
 				}
 
 			constexpr Vector& operator/=(T c) noexcept
 				{
-				m_data/=c;
+				auto temp=one<T>()/c;
+				m_data*=vec4_t<T>{temp,temp,temp,temp};
 				return *this;
 				}
 
 			constexpr Vector& operator+=(Vector v) noexcept
 				{
-				m_data+=v;
+				m_data+=v.m_data;
 				return *this;
 				}
 
 			constexpr Vector& operator-=(Vector v) noexcept
 				{
-				m_data-=v;
+				m_data-=v.m_data;
 				return *this;
 				}
 
@@ -144,6 +146,8 @@ namespace GeoSIMD
 	static_assert(cross(1.0_yf,1.0_zf)==1.0_xf,"Cross product broken");
 	static_assert(cross(1.0_zf,1.0_xf)==1.0_yf,"Cross product broken");
 	static_assert(cross(1.0_xf,1.0_xf)==0.0_Vf,"Cross product broken");
+
+	constexpr auto test=1.0_xf + 1.0_yf;
 	}
 
 #endif
