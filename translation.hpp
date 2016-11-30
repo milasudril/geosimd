@@ -11,8 +11,11 @@ namespace GeoSIMD
 	class Translation
 		{
 		public:
-			constexpr explicit Translation():
+			constexpr Translation():
 				m_data(mat4_t<T>::identity())
+				{}
+
+			constexpr Translation(Vector<T> offset):m_data(init(offset))
 				{}
 
 			constexpr const mat4_t<T>& data() const noexcept
@@ -32,6 +35,14 @@ namespace GeoSIMD
 
 		private:
 			mat4_t<T> m_data;
+			static mat4_t<T> init(Vector<T> offset)
+				{
+				mat4_t<T> R=mat4_t<T>::identity();
+				auto temp=offset.data();
+				temp[3]=one<T>();
+				R.column(3)=temp;
+				return R;
+				}
 		};
 
 	template<class T>
@@ -40,7 +51,7 @@ namespace GeoSIMD
 
 	template<class T>
 	Translation<T> translate(Vector<T> offset) noexcept
-		{return Translation<T>().translate(offset);}
+		{return Translation<T>(offset);}
 	}
 
 #endif
