@@ -1,5 +1,5 @@
 //@	{
-//@	"targets":[{"name":"test","type":"application","cxxoptions":{"cflags_extra":["-fast-math"],"cxxversion_min":201402}}]
+//@	"targets":[{"name":"test","type":"application","cxxoptions":{"cflags_extra":["-fast-math","march=native"],"cxxversion_min":201402}}]
 //@	}
 
 #include "direction.hpp"
@@ -9,7 +9,7 @@
 
 using namespace GeoSIMD;
 
-void print(const mat4_t<float>& m,int line)
+void print(const mat4_t<double>& m,int line)
 	{
 	printf("%d:\n",line);
 	for(int row=0;row<4;++row)
@@ -21,7 +21,7 @@ void print(const mat4_t<float>& m,int line)
 	putchar('\n');
 	}
 
-void print(const vec4_t<float>& m,int line)
+void print(const vec4_t<double>& m,int line)
 	{
 	printf("%d: ",line);
 	putchar('(');
@@ -32,29 +32,29 @@ void print(const vec4_t<float>& m,int line)
 
 int main()
 	{
-	Rotation<float> rot_a;
-	Rotation<float> rot_b;
-	rot_a.rotateX(90.0_degf);
+	Rotation<double> rot_a;
+	Rotation<double> rot_b;
+	rot_a.rotateX(90.0_deg);
 
 	print(rot_a.data(),__LINE__);
 
-	rot_a.rotateX(-90.0_degf);
+	rot_a.rotateX(-90.0_deg);
 	print(rot_a.data(),__LINE__);
 	assert(rot_a==rot_b);
 
 
-	auto e1=transform(x<float>(),rotateZ(rot_a,90.0_degf));
+	auto e1=transform(x<double>(),rotateZ(rot_a,90.0_deg));
 	print(e1.data(),__LINE__);
 
-	auto P=transform(origin<float>(),translate(Translation<float>(),1.0_xf));
-	P=transform(P,rotateZ<float>(90.0_degf));
+	auto P=transform(origin<double>(),translate(Translation<double>(),1.0_x));
+	P=transform(P,rotateZ<double>(90.0_deg));
 	print(P.data(),__LINE__);
 
-	auto T_tot=Transformation<float>(rotateZ<float>(90.0_degf))
-		.append(translate(1.0_xf));
+	auto T_tot=Transformation<double>(rotateZ<double>(0.25_r))
+		.append(translate(1.0_x));
 	print(T_tot.data(),__LINE__);
 
-	auto P2=transform(origin<float>(),T_tot);
+	auto P2=transform(origin<double>(),T_tot);
 	print(P2.data(),__LINE__);
 
 	return 0;
