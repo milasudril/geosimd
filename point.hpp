@@ -91,20 +91,15 @@ namespace GeoSIMD
 		}
 
 	template<class T>
-	Point<T> transform(Point<T> p,const mat4_t<T>& R_data) noexcept
+	inline Point<T> transform(Point<T> p,const mat4_t<T>& R_data) noexcept
 		{
 		Point<T> ret;
-		for(int k=0;k<4;++k)
-			{
-			auto row=vec4_t<T>
-				{R_data(k,0),R_data(k,1),R_data(k,2),R_data(k,3)};
-			ret.m_data[k]=GeoSIMD::dot<T>(p.m_data,row);
-			}
+		ret.m_data=R_data*p.m_data;
 		return ret;
 		}
 
 	template<class T,class U>
-	Point<T> transform(Point<T> p,const U& u)
+	inline Point<T> transform(Point<T> p,const U& u)
 		{return transform(p,u.data());}
 	}
 

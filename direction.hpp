@@ -98,16 +98,10 @@ namespace GeoSIMD
 	static_assert(angle(x<float>(),y<float>())==90.0_degf,"Bad angle between vectors");
 
 	template<class T>
-	Direction<T> transform(Direction<T> dir,const Rotation<T>& R) noexcept
+	inline Direction<T> transform(Direction<T> dir,const Rotation<T>& R) noexcept
 		{
-		const auto& R_data=R.data();
 		Direction<T> ret;
-		for(int k=0;k<4;++k)
-			{
-			auto row=vec4_t<T>
-				{R_data(k,0),R_data(k,1),R_data(k,2),R_data(k,3)};
-			ret.Vector<T>::m_data[k]=GeoSIMD::dot<T>(dir.Vector<T>::m_data,row);
-			}
+		ret.m_data=R.data()*dir.data();
 		return ret;
 		}
 	}

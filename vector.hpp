@@ -175,16 +175,10 @@ namespace GeoSIMD
 	static_assert(cross(1.0_xf,1.0_zf)==-1.0_yf,"Cross product broken");
 
 	template<class T>
-	Vector<T> transform(Vector<T> v,const Rotation<T>& R) noexcept
+	inline Vector<T> transform(Vector<T> v,const Rotation<T>& R) noexcept
 		{
-		const auto& R_data=R.data();
 		Vector<T> ret;
-		for(int k=0;k<4;++k)
-			{
-			auto row=vec4_t<T>
-				{R_data(k,0),R_data(k,1),R_data(k,2),R_data(k,3)};
-			ret.m_data[k]=GeoSIMD::dot<T>(v.m_data,row);
-			}
+		ret.m_data=R.data()*v.data();
 		return ret;
 		}
 	}
