@@ -11,12 +11,12 @@ namespace GeoSIMD
 	class Transformation
 		{
 		public:
-			constexpr explicit Transformation():
+			constexpr Transformation():
 				m_data(mat4_t<T>::identity())
 				{}
 
 			template<class U>
-			Transformation(const U& R):Transformation()
+			explicit Transformation(const U& R):Transformation()
 				{append(R);}
 
 			constexpr const mat4_t<T>& data() const noexcept
