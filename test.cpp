@@ -57,5 +57,10 @@ int main()
 	auto P2=transform(origin<double>(),T_tot);
 	print(P2.data(),__LINE__);
 
+	P=transform(origin<double>(),translate(1.0_x));
+
+	auto V=P2 - P;
+	print(V.data(),__LINE__);
+
 	return 0;
 	}

@@ -14,6 +14,12 @@ namespace GeoSIMD
 	Vector<T> transform(Vector<T> v,const Rotation<T>& R) noexcept;
 
 	template<class T>
+	class Point;
+
+	template<class T>
+	inline Vector<T> operator-(Point<T> a,Point<T> b) noexcept;
+
+	template<class T>
 	class Vector
 		{
 		public:
@@ -84,6 +90,7 @@ namespace GeoSIMD
 			vec4_t<T> m_data;
 
 			friend Vector<T> transform<>(Vector<T> v,const Rotation<T>& R) noexcept;
+			friend Vector<T> operator-<>(Point<T> a,Point<T> b) noexcept;
 		};
 
 #ifdef __SSE__

@@ -80,11 +80,15 @@ namespace GeoSIMD
 		{return a-=b;}
 
 	template<class T>
-	constexpr Vector<T> operator-(Point<T> a,Point<T> b) noexcept
-		{return a.data() - b.data();}
+	Vector<T> operator-(Point<T> a,Point<T> b) noexcept
+		{
+		Vector<T> ret;
+		ret.m_data=a.data() - b.data();
+		return ret;
+		}
 
 	template<class T>
-	constexpr T dist_2(Point<T> a,Point<T> b) noexcept
+	T dist_2(Point<T> a,Point<T> b) noexcept
 		{
 		auto diff=a-b;
 		return dot(diff,diff);
