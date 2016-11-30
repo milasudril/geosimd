@@ -6,7 +6,7 @@ This is a header-only library that contains functions using SIMD for 3D geometry
  * Different types for translations and rotations
  * A special type for angles
 
-These abstractions are implemented following the ZOAP principle.
+These abstractions are implemented with ZOAP in mind.
 
 Directions
 ----------
@@ -18,4 +18,4 @@ Vectors are translation invariant. They can be rotated and scaled. The latter tr
 
 Points
 ------
-Points in space. Any transformation can be applied to a point. It is possible to add Vectors to points, and to subtract Points. The latter will produce a Vector. It is not possible to add two points.
+Points in space. Any transformation can be applied to a point. It is possible to add Vectors to points, and to subtract Points. The latter will produce a Vector. It is not possible to add two points. However, it *is* possible to compute their centroid.

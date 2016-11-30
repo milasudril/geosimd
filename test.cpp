@@ -62,5 +62,13 @@ int main()
 	auto V=P2 - P;
 	print(V.data(),__LINE__);
 
+	auto C=centroid({P2,P});
+	print(C.data(),__LINE__);
+
+	Point<double> points[2]={P2,P};
+	auto C1=centroid(points,points+2);
+	print(C1.data(),__LINE__);
+	assert(C==C1);
+
 	return 0;
 	}
