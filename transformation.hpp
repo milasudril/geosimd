@@ -30,6 +30,9 @@ namespace GeoSIMD
 			constexpr bool operator==(const Transformation<T>& rot) noexcept
 				{return m_data==rot.m_data;}
 
+			constexpr const T* matrixData() noexcept
+				{return m_data.data();}
+
 		private:
 			mat4_t<T> m_data;
 		};

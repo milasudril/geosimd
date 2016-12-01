@@ -78,12 +78,20 @@ namespace GeoSIMD
 		{return static_cast<T>(u)/static_cast<T>(v);}
 
 	template<class T>
-	Angle<T> operator+(Angle<T> u,Angle<T> v) noexcept
+	constexpr Angle<T> operator+(Angle<T> u,Angle<T> v) noexcept
 		{return u+=v;}
 
 	template<class T>
-	Angle<T> operator-(Angle<T> u,Angle<T> v) noexcept
+	constexpr Angle<T> operator-(Angle<T> u,Angle<T> v) noexcept
 		{return u-=v;}
+
+	template<class T>
+	constexpr Angle<T> operator/(Angle<T> u,T c) noexcept
+		{return u/=c;}
+
+	template<class T>
+	constexpr Angle<T> operator*(Angle<T> u,T c) noexcept
+		{return u*=c;}
 
 	template<class U,class T>
 	constexpr U sin(Angle<T> x)

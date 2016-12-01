@@ -76,6 +76,9 @@ namespace GeoSIMD
 				return 1;
 				}
 
+			constexpr const T* data() noexcept
+				{return &cols[0][0];}
+
 		  
 		private:
 			vec4_t<T> cols[4];
