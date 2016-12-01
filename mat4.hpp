@@ -94,6 +94,10 @@ namespace GeoSIMD
 		{return A-=B;}
 
 	template<class T>
+	mat4_t<T> operator*(mat4_t<T> A,const mat4_t<T>& B)
+		{return A*=B;}
+
+	template<class T>
 	vec4_t<T> operator*(const mat4_t<T>& A,vec4_t<T> x) noexcept
 		{
 		vec4_t<T> ret;

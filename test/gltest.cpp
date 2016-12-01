@@ -19,6 +19,9 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#define GLM_FORCE_RADIANS
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include <cstdio>
 #include <memory>
@@ -120,9 +123,9 @@ static GLuint shaderProgramCreate(const char* vertex_shader_src
 
 static constexpr GLfloat verts[]=
 	{
-	-0.25f, -0.25f, 0.0f,
-	 0.25f, -0.25f, 0.0f,
-	 0.0f,  0.25f, 0.0f,
+	-1.0f, -1.0f, 0.0f,
+	 1.0f, -1.0f, 0.0f,
+	 0.0f,  1.0f, 0.0f
 	};
 
 static constexpr const char* vertex_shader=
@@ -151,7 +154,6 @@ class GLScene
 			glBindVertexArray(m_vertex_array);
 			glGenBuffers(1,&m_vertex_buffer);
 			glBindBuffer(GL_ARRAY_BUFFER,m_vertex_buffer);
-			glPointSize(2);
 		
 			m_shader=shaderProgramCreate(vertex_shader,fragment_shader);
 			m_mvp_id=glGetUniformLocation(m_shader,"MVP");
@@ -164,12 +166,29 @@ class GLScene
 			{
 			glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 			glUseProgram(m_shader);
-			Transformation<float> mvp(Frustum<float>(0.1f,10.0f,4.0f/3.0f,45.0_degf));
-			mvp.push(translate<float>(2.0_zf))
-				.push(rotateZ<float>(30.0_degf));
+
+
+
+			auto frust=Frustum<float>(1.0f,16.0f,4.0f/3.0f,45.0_degf);
+			auto trans=translate<float>(-4.0_zf);
+
+			auto mvp=frust.data() * trans.data();
+		//	mvp.push(translate<float>(4.0_zf));
+
+		//	auto p=transform(origin<float>(),mvp);
+		//	printf("%.7g %.7g %.7g\n",p.x(),p.y(),p.z());
+			//	.push(rotateZ<float>(30.0_degf));
 			
 
-			glUniformMatrix4fv(m_mvp_id, 1, GL_FALSE, mvp.matrixData());
+			glUniformMatrix4fv(m_mvp_id, 1, GL_FALSE, mvp.data());
+
+			auto projection=glm::perspective(static_cast<float>(45.0_degf)
+				,4.0f/3.0f,1.0f,16.0f);
+			auto view=glm::translate(glm::mat4(),glm::vec3(0,0,-4.0f));
+			auto mvpglm=projection*view;
+
+			glUniformMatrix4fv(m_mvp_id, 1, GL_FALSE, mvp.data());
+
 			glEnableVertexAttribArray(0);
 			glBindBuffer(GL_ARRAY_BUFFER, m_vertex_buffer);
 			glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,0,nullptr);

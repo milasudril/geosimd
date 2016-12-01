@@ -18,8 +18,10 @@ namespace GeoSIMD
 			Frustum(T z_min,T z_max,Angle<U> fov_x,T view_ratio) noexcept
 				{
 				auto tan_theta=tan<float>(fov_x/two<U>());
-				auto min=Point<T>(tan_theta*z_min,tan_theta*z_min/view_ratio,z_min);
-				auto max=Point<T>(tan_theta*z_max,tan_theta*z_max/view_ratio,z_max);
+				auto x_max=tan_theta*z_min;
+				auto y_max=y_max/view_ratio;
+				auto min=Point<T>(-x_max,-y_max,z_min);
+				auto max=Point<T>(x_max,y_max,z_max);
 				m_data=init(min,max);
 				}
 
@@ -27,8 +29,10 @@ namespace GeoSIMD
 			Frustum(T z_min,T z_max,T view_ratio,Angle<U> fov_y) noexcept
 				{
 				auto tan_theta=tan<float>(fov_y/two<U>());
-				auto min=Point<T>(tan_theta*z_min*view_ratio,tan_theta*z_min,z_min);
-				auto max=Point<T>(tan_theta*z_max*view_ratio,tan_theta*z_max,z_max);
+				auto y_max=tan_theta*z_min;
+				auto x_max=y_max*view_ratio;
+				auto min=Point<T>(-x_max,-y_max,z_min);
+				auto max=Point<T>(x_max,y_max,z_max);
 				m_data=init(min,max);
 				}
 
@@ -74,8 +78,8 @@ namespace GeoSIMD
 					{
 					 zero<T>()
 					,zero<T>()
-					,zero<T>()
 					,-two<T>()*max.z()*min.z()/size.z()
+					,zero<T>()
 					};
 
 				return ret;
