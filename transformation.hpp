@@ -3,8 +3,6 @@
 #ifndef GEOSIMD_TRANSFORMATION_HPP
 #define GEOSIMD_TRANSFORMATION_HPP
 
-#include "translation.hpp"
-
 namespace GeoSIMD
 	{
 	template<class T>
@@ -16,14 +14,14 @@ namespace GeoSIMD
 				{}
 
 			template<class U>
-			explicit Transformation(const U& R):Transformation()
-				{append(R);}
+			constexpr explicit Transformation(const U& R):m_data(R.data())
+				{}
 
 			constexpr const mat4_t<T>& data() const noexcept
 				{return m_data;}
 
 			template<class U>
-			Transformation& append(const U& R) noexcept
+			Transformation& push(const U& R) noexcept
 				{
 				m_data*=R.data();
 				return *this;

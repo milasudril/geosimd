@@ -4,7 +4,8 @@
 
 #include "direction.hpp"
 #include "point.hpp"
-#include "frustum.hpp"
+#include "translation.hpp"
+#include "transformation.hpp"
 #include <cstdio>
 #include <cassert>
 
@@ -52,7 +53,7 @@ int main()
 	print(P.data(),__LINE__);
 
 	auto T_tot=Transformation<double>(rotateZ<double>(0.25_r))
-		.append(translate(1.0_x));
+		.push(translate(1.0_x));
 	print(T_tot.data(),__LINE__);
 
 	auto P2=transform(origin<double>(),T_tot);

@@ -3,7 +3,6 @@
 #ifndef GEOSIMD_POINT_HPP
 #define GEOSIMD_POINT_HPP
 
-#include "transformation.hpp"
 #include <cassert>
 
 namespace GeoSIMD
