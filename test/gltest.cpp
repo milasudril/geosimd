@@ -19,9 +19,6 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#define GLM_FORCE_RADIANS
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
 
 #include <cstdio>
 #include <memory>
@@ -120,14 +117,6 @@ static GLuint shaderProgramCreate(const char* vertex_shader_src
 	}
 
 
-
-static constexpr GLfloat verts[]=
-	{
-	-1.0f, -1.0f, 0.0f,
-	 1.0f, -1.0f, 0.0f,
-	 0.0f,  1.0f, 0.0f
-	};
-
 static constexpr const char* vertex_shader=
 	"#version 330 core\n"
 	"layout(location = 0) in vec3 vertexPosition_modelspace;\n"
@@ -154,12 +143,14 @@ class GLScene
 			glBindVertexArray(m_vertex_array);
 			glGenBuffers(1,&m_vertex_buffer);
 			glBindBuffer(GL_ARRAY_BUFFER,m_vertex_buffer);
+			glGenBuffers(1,&m_element_buffer);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,m_element_buffer);
 		
 			m_shader=shaderProgramCreate(vertex_shader,fragment_shader);
 			m_mvp_id=glGetUniformLocation(m_shader,"MVP");
 
-		//	glBufferData(GL_ARRAY_BUFFER,sizeof(teapot_vertices),teapot_vertices,GL_STATIC_DRAW);
-			glBufferData(GL_ARRAY_BUFFER,sizeof(verts),verts,GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER,sizeof(teapot_vertices),teapot_vertices,GL_STATIC_DRAW);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(teapot_faces),teapot_faces,GL_STATIC_DRAW);
 			}
 
 		void render()
@@ -167,28 +158,25 @@ class GLScene
 			glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 			glUseProgram(m_shader);
 
-			Transformation<float> mvp(Frustum<float>{1.0f,16.0f,4.0f/3.0f,45.0_degf});
-			mvp.push(translate<float>(-4.0_zf));			
-
-			glUniformMatrix4fv(m_mvp_id, 1, GL_FALSE, mvp.data());
-
-			auto projection=glm::perspective(static_cast<float>(45.0_degf)
-				,4.0f/3.0f,1.0f,16.0f);
-			auto view=glm::translate(glm::mat4(),glm::vec3(0,0,-4.0f));
-			auto mvpglm=projection*view;
+			Transformation<float> mvp(Frustum<float>{1.0f,32.0f,4.0f/3.0f,45.0_degf});
+			mvp.push(translate<float>(-2.0_yf - 12.0_zf))
+				.push(rotateX<float>(-75.0_degf));
 
 			glUniformMatrix4fv(m_mvp_id, 1, GL_FALSE, mvp.data());
 
 			glEnableVertexAttribArray(0);
 			glBindBuffer(GL_ARRAY_BUFFER, m_vertex_buffer);
 			glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,0,nullptr);
-			glDrawArrays(GL_TRIANGLES,0,3);
+			glDrawElements(GL_TRIANGLES,sizeof(teapot_faces)/sizeof(teapot_faces[0]),GL_UNSIGNED_INT,nullptr);
 			glDisableVertexAttribArray(0);
 			}
 
 		~GLScene()
 			{
 			glDeleteProgram(m_shader);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
+			glDeleteBuffers(1,&m_element_buffer);
+
 			glBindBuffer(GL_ARRAY_BUFFER,0);
 			glDeleteBuffers(1,&m_vertex_buffer);
 
@@ -198,6 +186,7 @@ class GLScene
 	private:
 		GLuint m_vertex_array;
 		GLuint m_vertex_buffer;
+		GLuint m_element_buffer;
 		GLuint m_shader;
 
 		GLuint m_mvp_id;
