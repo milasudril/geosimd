@@ -1,5 +1,5 @@
 //@	{
-//@	"targets":[{"name":"test","type":"application","cxxoptions":{"cflags_extra":["-fast-math","march=native"],"cxxversion_min":201402}}]
+//@	"targets":[{"name":"functest","type":"application","cxxoptions":{"cflags_extra":["-fast-math","march=native"],"cxxversion_min":201402}}]
 //@	}
 
 #include "direction.hpp"
