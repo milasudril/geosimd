@@ -36,8 +36,11 @@ namespace GeoSIMD
 				m_data=init(min,max);
 				}
 
-			const mat4_t<T>& data() const noexcept
+			const mat4_t<T>& matrix() const noexcept
 				{return m_data;}
+
+			const T* data() const noexcept
+				{return m_data.data();}
 
 			bool operator==(const Frustum& frst) noexcept
 				{return m_data==frst.m_data;}

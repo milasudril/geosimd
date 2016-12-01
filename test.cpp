@@ -38,10 +38,10 @@ int main()
 	Rotation<double> rot_b;
 	rot_a.rotateX(90.0_deg);
 
-	print(rot_a.data(),__LINE__);
+	print(rot_a.matrix(),__LINE__);
 
 	rot_a.rotateX(-90.0_deg);
-	print(rot_a.data(),__LINE__);
+	print(rot_a.matrix(),__LINE__);
 	assert(rot_a==rot_b);
 
 
@@ -54,7 +54,7 @@ int main()
 
 	auto T_tot=Transformation<double>(rotateZ<double>(0.25_r))
 		.push(translate(1.0_x));
-	print(T_tot.data(),__LINE__);
+	print(T_tot.matrix(),__LINE__);
 
 	auto P2=transform(origin<double>(),T_tot);
 	print(P2.data(),__LINE__);

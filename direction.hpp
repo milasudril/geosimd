@@ -101,7 +101,7 @@ namespace GeoSIMD
 	inline Direction<T> transform(Direction<T> dir,const Rotation<T>& R) noexcept
 		{
 		Direction<T> ret;
-		ret.m_data=R.data()*dir.data();
+		ret.m_data=R.matrix()*dir.data();
 		return ret;
 		}
 	}

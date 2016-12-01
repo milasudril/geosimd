@@ -76,7 +76,7 @@ namespace GeoSIMD
 				return 1;
 				}
 
-			constexpr const T* data() noexcept
+			constexpr const T* data() const noexcept
 				{return &cols[0][0];}
 
 		  

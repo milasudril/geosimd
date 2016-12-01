@@ -122,7 +122,7 @@ namespace GeoSIMD
 
 	template<class T,class U>
 	inline Point<T> transform(Point<T> p,const U& u)
-		{return transform(p,u.data());}
+		{return transform(p,u.matrix());}
 
 	template<class T,int N>
 	inline Point<T> centroid(const Point<T>(&points)[N])

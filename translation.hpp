@@ -18,8 +18,11 @@ namespace GeoSIMD
 			constexpr Translation(Vector<T> offset):m_data(init(offset))
 				{}
 
-			constexpr const mat4_t<T>& data() const noexcept
+			constexpr const mat4_t<T>& matrix() const noexcept
 				{return m_data;}
+
+			constexpr const T* data() const noexcept
+				{return m_data.data();}
 
 			Translation& translate(Vector<T> offset) noexcept
 				{

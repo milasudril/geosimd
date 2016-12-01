@@ -185,7 +185,7 @@ namespace GeoSIMD
 	inline Vector<T> transform(Vector<T> v,const Rotation<T>& R) noexcept
 		{
 		Vector<T> ret;
-		ret.m_data=R.data()*v.data();
+		ret.m_data=R.matrix()*v.data();
 		return ret;
 		}
 	}

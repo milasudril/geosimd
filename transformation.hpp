@@ -14,23 +14,23 @@ namespace GeoSIMD
 				{}
 
 			template<class U>
-			constexpr explicit Transformation(const U& R):m_data(R.data())
+			constexpr explicit Transformation(const U& R):m_data(R.matrix())
 				{}
 
-			constexpr const mat4_t<T>& data() const noexcept
+			constexpr const mat4_t<T>& matrix() const noexcept
 				{return m_data;}
 
 			template<class U>
 			Transformation& push(const U& R) noexcept
 				{
-				m_data*=R.data();
+				m_data*=R.matrix();
 				return *this;
 				}
 
 			constexpr bool operator==(const Transformation<T>& rot) noexcept
 				{return m_data==rot.m_data;}
 
-			constexpr const T* matrixData() noexcept
+			constexpr const T* data() noexcept
 				{return m_data.data();}
 
 		private:

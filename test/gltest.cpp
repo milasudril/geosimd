@@ -167,18 +167,8 @@ class GLScene
 			glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 			glUseProgram(m_shader);
 
-
-
-			auto frust=Frustum<float>(1.0f,16.0f,4.0f/3.0f,45.0_degf);
-			auto trans=translate<float>(-4.0_zf);
-
-			auto mvp=frust.data() * trans.data();
-		//	mvp.push(translate<float>(4.0_zf));
-
-		//	auto p=transform(origin<float>(),mvp);
-		//	printf("%.7g %.7g %.7g\n",p.x(),p.y(),p.z());
-			//	.push(rotateZ<float>(30.0_degf));
-			
+			Transformation<float> mvp(Frustum<float>{1.0f,16.0f,4.0f/3.0f,45.0_degf});
+			mvp.push(translate<float>(-4.0_zf));			
 
 			glUniformMatrix4fv(m_mvp_id, 1, GL_FALSE, mvp.data());
 

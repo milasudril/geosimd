@@ -32,8 +32,11 @@ namespace GeoSIMD
 				m_data(init_z(angle))
 				{}
 
-			constexpr const mat4_t<T>& data() const noexcept
+			constexpr const mat4_t<T>& matrix() const noexcept
 				{return m_data;}
+
+			constexpr const T* data() const noexcept
+				{return m_data.data();}
 
 			template<class U>
 			Rotation& rotateX(Angle<U> angle) noexcept
