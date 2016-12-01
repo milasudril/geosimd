@@ -11,42 +11,25 @@ namespace GeoSIMD
 	class Frustum
 		{
 		public:
-			Frustum(Point<T> min,Point<T> max) noexcept
+			Frustum(Point<T> min,Point<T> max) noexcept:m_data(init(min,max))
+				{}
+
+			template<class U>
+			Frustum(T z_min,T z_max,Angle<U> fov_x,T view_ratio) noexcept
 				{
-				auto size=max - min;
-				auto mid=centroid({min,max});
+				auto tan_theta=tan(fov_x/two<U>());
+				auto min=Point<T>(tan_theta*z_min,tan_theta*z_min/view_ratio,z_min);
+				auto max=Point<T>(tan_theta*z_max,tan_theta*z_max/view_ratio,z_max);
+				m_data=init(min,max);
+				}
 
-				m_data[0]=vec4_t<T>
-					{
-					 two<T>()*min.z()/size.x()
-					,zero<T>()
-					,zero<T>()
-					,zero<T>()
-					};
-
-				m_data[1]=vec4_t<T>
-					{
-					 zero<T>()
-					,two<T>()*min.z()/size.y()
-					,zero<T>()
-					,zero<T>()
-					}
-
-				m_data[2]=vec4_t<T>
-					{
-					 two<T>()*mid.x()/size.x()
-					,two<T>()*mid.y()/size.y()
-					,-two<T>()*mid.z()/size.z()
-					,-one<T>()
-					};
-
-				m_data[3]=vec4_t<T>
-					{
-					 zero<T>()
-					,zero<T>()
-					,zero<T>()
-					,-two<T>()*max.z()*min.z()/size.z()
-					};
+			template<class U>
+			Frustum(T z_min,T z_max,T view_ratio,Angle<U> fov_y) noexcept
+				{
+				auto tan_theta=tan(fov_y/two<U>());
+				auto min=Point<T>(tan_theta*z_min*view_ratio,tan_theta*z_min,z_min);
+				auto max=Point<T>(tan_theta*z_max*view_ratio,tan_theta*z_max,z_max);
+				m_data=init(min,max);
 				}
 
 			const mat4_t<T>& data() const noexcept
@@ -57,6 +40,44 @@ namespace GeoSIMD
 
 		private:
 			mat4_t<T> m_data;
+			static mat4_t<T> init(Point<T> min,Point<T> max)
+				{
+				mat4_t<T> ret;
+				auto size=max - min;
+				auto mid=centroid({min,max});
+
+				ret[0]=vec4_t<T>
+					{
+					 two<T>()*min.z()/size.x()
+					,zero<T>()
+					,zero<T>()
+					,zero<T>()
+					};
+
+				ret[1]=vec4_t<T>
+					{
+					 zero<T>()
+					,two<T>()*min.z()/size.y()
+					,zero<T>()
+					,zero<T>()
+					};
+
+				ret[2]=vec4_t<T>
+					{
+					 two<T>()*mid.x()/size.x()
+					,two<T>()*mid.y()/size.y()
+					,-two<T>()*mid.z()/size.z()
+					,-one<T>()
+					};
+
+				ret[3]=vec4_t<T>
+					{
+					 zero<T>()
+					,zero<T>()
+					,zero<T>()
+					,-two<T>()*max.z()*min.z()/size.z()
+					};
+				}
 		};
 	}
 

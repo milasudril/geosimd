@@ -5,18 +5,10 @@
 
 #include "angle.hpp"
 #include "mat4.hpp"
+#include "axis.hpp"
 
 namespace GeoSIMD
 	{
-	struct X
-		{};
-
-	struct Y
-		{};
-
-	struct Z
-		{};
-
 	template<class T>
 	class Rotation
 		{

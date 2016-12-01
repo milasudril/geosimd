@@ -4,6 +4,7 @@
 
 #include "direction.hpp"
 #include "point.hpp"
+#include "frustum.hpp"
 #include <cstdio>
 #include <cassert>
 

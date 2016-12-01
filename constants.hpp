@@ -33,6 +33,21 @@ namespace GeoSIMD
 		{return 1.0;}
 
 
+
+	template<class T>
+	constexpr T two() noexcept
+		{return 2;}
+
+	template<>
+	constexpr float two<>() noexcept
+		{return 2.0f;}
+
+	template<>
+	constexpr double two<>() noexcept
+		{return 2.0;}
+
+
+
 	template<class T>
 	constexpr T pi() noexcept;
 
