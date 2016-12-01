@@ -11,7 +11,7 @@ namespace GeoSIMD
 	class Angle
 		{
 		public:
-        	explicit constexpr Angle(T value) noexcept:m_value(value)
+			explicit constexpr Angle(T value) noexcept:m_value(value)
 				{}
           
        		constexpr T cos() const noexcept
@@ -57,7 +57,7 @@ namespace GeoSIMD
 				{return Angle<T>(-m_value);}
 		
 		private:
-        	T m_value;
+			T m_value;
         };
 
 	constexpr Angle<float> operator""_radf(long double val) noexcept

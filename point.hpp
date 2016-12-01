@@ -56,8 +56,8 @@ namespace GeoSIMD
 
 			constexpr bool operator==(Point v) const noexcept
 				{
-                return m_data[0]==v.m_data[0]
-                  	&& m_data[1]==v.m_data[1]
+				return m_data[0]==v.m_data[0]
+					&& m_data[1]==v.m_data[1]
 					&& m_data[2]==v.m_data[2];
                 }
 
