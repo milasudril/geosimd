@@ -14,15 +14,6 @@ namespace GeoSIMD
 			explicit constexpr Angle(T value) noexcept:m_value(value)
 				{}
           
-       		constexpr T cos() const noexcept
-				{return std::cos(m_value);}
-          
-			constexpr T sin() const noexcept
-				{return std::sin(m_value);}
-
-			constexpr T tan() const noexcept
-				{return std::tan(m_value);}
-          
 			constexpr Angle& operator+=(Angle a) noexcept
 				{
 				m_value+=a.m_value;
@@ -47,14 +38,18 @@ namespace GeoSIMD
 				return *this;
 				}
 
-			constexpr explicit operator T() const noexcept
-				{return m_value;}
-
 			constexpr bool operator==(const Angle& b) const noexcept
 				{return m_value==b.m_value;}
 
 			constexpr Angle<T> operator-() const noexcept
 				{return Angle<T>(-m_value);}
+
+			explicit constexpr operator double() const noexcept
+				{return static_cast<double>(m_value);}
+
+			explicit constexpr operator float() const noexcept
+				{return static_cast<float>(m_value);}
+				
 		
 		private:
 			T m_value;
@@ -90,22 +85,22 @@ namespace GeoSIMD
 	Angle<T> operator-(Angle<T> u,Angle<T> v) noexcept
 		{return u-=v;}
 
-	template<class T>
-	constexpr T cos(Angle<T> u) noexcept
-		{return u.cos();}
+	template<class U,class T>
+	constexpr U sin(Angle<T> x)
+		{return std::sin(static_cast<U>(x));}
 
-	template<class T>
-	constexpr T sin(Angle<T> u) noexcept
-		{return u.sin();}
+	template<class U,class T>
+	constexpr U cos(Angle<T> x)
+		{return std::cos(static_cast<U>(x));}
 
-	template<class T>
-	constexpr T tan(Angle<T> u) noexcept
-		{return u.tan();}
+	template<class U,class T>
+	constexpr U tan(Angle<T> x)
+		{return std::tan(static_cast<U>(x));}
 
-	static_assert(sin(30.0_degf)==0.5f,"Sine is broken");
-	static_assert(std::abs(cos(60.0_degf) - 0.5f)<1.0e-7f,"Cosine is broken");
-	static_assert(sin(45.0_degf)==cos(45.0_degf),"hmm");
-	static_assert(tan(45.0_degf)==1.0f,"Tangent is broken");
+	static_assert(sin<float>(30.0_degf)==0.5f,"Sine is broken");
+	static_assert(std::abs(cos<float>(60.0_degf) - 0.5f)<1.0e-7f,"Cosine is broken");
+	static_assert(sin<float>(45.0_degf)==cos<float>(45.0_degf),"hmm");
+	static_assert(tan<float>(45.0_degf)==1.0f,"Tangent is broken");
 	}
 
 #endif

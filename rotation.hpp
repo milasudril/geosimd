@@ -75,8 +75,8 @@ namespace GeoSIMD
 				{
 				mat4_t<T> R(mat4_t<T>::identity());
 				R.column(0)=vec4_t<T>{one<T>(),zero<T>(),zero<T>(),zero<T>()};
-				R.column(1)=vec4_t<T>{zero<T>(),cos(angle),sin(angle),zero<T>()};
-				R.column(2)=vec4_t<T>{zero<T>(),-sin(angle),cos(angle),zero<T>()};
+				R.column(1)=vec4_t<T>{zero<T>(),cos<T>(angle),sin<T>(angle),zero<T>()};
+				R.column(2)=vec4_t<T>{zero<T>(),-sin<T>(angle),cos<T>(angle),zero<T>()};
 				return R;
 				}
 
@@ -84,9 +84,9 @@ namespace GeoSIMD
 			static mat4_t<T> init_y(Angle<U> angle)
 				{
 				mat4_t<T> R(mat4_t<T>::identity());
-				R.column(0)=vec4_t<T>{cos(angle),zero<T>(),-sin(angle),zero<T>()};
+				R.column(0)=vec4_t<T>{cos<T>(angle),zero<T>(),-sin<T>(angle),zero<T>()};
 				R.column(1)=vec4_t<T>{zero<T>(),one<T>(),zero<T>(),zero<T>()};
-				R.column(2)=vec4_t<T>{sin(angle),zero<T>(),cos(angle),zero<T>()};
+				R.column(2)=vec4_t<T>{sin<T>(angle),zero<T>(),cos<T>(angle),zero<T>()};
 				return R;
 				}
 
@@ -94,8 +94,8 @@ namespace GeoSIMD
 			static mat4_t<T> init_z(Angle<U> angle)
 				{
 				mat4_t<T> R(mat4_t<T>::identity());
-				R.column(0)=vec4_t<T>{cos(angle),sin(angle),zero<T>(),zero<T>()};
-				R.column(1)=vec4_t<T>{-sin(angle),cos(angle),zero<T>(),zero<T>()};
+				R.column(0)=vec4_t<T>{cos<T>(angle),sin<T>(angle),zero<T>(),zero<T>()};
+				R.column(1)=vec4_t<T>{-sin<T>(angle),cos<T>(angle),zero<T>(),zero<T>()};
 				R.column(2)=vec4_t<T>{zero<T>(),zero<T>(),one<T>(),zero<T>()};
 				return R;
 				}
