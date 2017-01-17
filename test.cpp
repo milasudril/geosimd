@@ -10,6 +10,7 @@
 #include "linesegment.hpp"
 #include "cuboidaligned.hpp"
 #include "sphere.hpp"
+#include "triangle.hpp"
 #include <cstdio>
 #include <cassert>
 
