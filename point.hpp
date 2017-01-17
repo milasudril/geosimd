@@ -18,6 +18,8 @@ namespace GeoSIMD
 	class Point
 		{
 		public:
+			typedef vec4_t<T> Representation;
+
 			constexpr Point() noexcept:m_data{zero<T>(),zero<T>(),zero<T>(),one<T>()}
 				{}
 
@@ -61,7 +63,7 @@ namespace GeoSIMD
 					&& m_data[2]==v.m_data[2];
                 }
 
-			constexpr vec4_t<T> data() const noexcept
+			constexpr Representation data() const noexcept
 				{return m_data;}
 
 			template<int N>
@@ -80,7 +82,7 @@ namespace GeoSIMD
 			static Point centroid(const Point* begin,const Point* end) noexcept;
 
 		private:
-			vec4_t<T> m_data;
+			Representation m_data;
 
 			friend Point<T> transform<>(Point<T> p,const mat4_t<T>& R_data) noexcept;
 		};

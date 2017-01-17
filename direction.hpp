@@ -17,6 +17,9 @@ namespace GeoSIMD
 	class Direction:private Vector<T>
 		{
 		public:
+			using Vector<T>::data;
+			using typename Vector<T>::Representation;
+
 			constexpr explicit Direction(Vector<T> v)
 				:Vector<T>( v/std::sqrt(GeoSIMD::dot(v,v)) )
 				{}
@@ -36,12 +39,10 @@ namespace GeoSIMD
 			constexpr T dot(Direction v) const noexcept
 				{return Vector<T>::dot(v);}
 
-			constexpr vec4_t<T> data() const noexcept
-				{return Vector<T>::data();}
-
 			template<class U>
 			constexpr Vector<U> operator*(U c) const noexcept
 				{return c*(*this);}
+
 
 		private:
 			Direction(){}

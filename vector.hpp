@@ -23,6 +23,8 @@ namespace GeoSIMD
 	class Vector
 		{
 		public:
+			typedef vec4_t<T> Representation;
+
 			constexpr explicit Vector(T x,T y,T z) noexcept:m_data{x,y,z,zero<T>()}
 				{}
 
@@ -82,12 +84,12 @@ namespace GeoSIMD
 				return temp[0] + temp[1] + temp[2];
 				}
 
-			constexpr vec4_t<T> data() const noexcept
+			constexpr Representation data() const noexcept
 				{return m_data;}
 
 		protected:
 			Vector(){}
-			vec4_t<T> m_data;
+			Representation m_data;
 
 			friend Vector<T> transform<>(Vector<T> v,const Rotation<T>& R) noexcept;
 			friend Vector<T> operator-<>(Point<T> a,Point<T> b) noexcept;
