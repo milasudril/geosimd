@@ -50,6 +50,12 @@ namespace GeoSIMD
 	template<class T>
 	inline constexpr T centroid(const Sphere<T>& obj) noexcept
 		{return obj.origin();}
+
+	template<class T>
+	inline constexpr T distance(const Sphere<T>& a,const Sphere<T>& b)
+		{
+		return std::sqrt(distance_squared(a.origin(),b.origin())) - (a.radius() + b.radius());
+		}
 	}
 
 #endif
