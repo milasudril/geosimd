@@ -68,6 +68,10 @@ namespace GeoSIMD
 		a*=b;
 		return a[0] + a[1] + a[2] + a[3];
 		}
+
+	template<class T>
+	constexpr auto native_type(const T* ptr) noexcept
+		{return reinterpret_cast<const typename T::Representation*>(ptr);}
 	}
 
 #endif
