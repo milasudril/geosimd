@@ -6,6 +6,10 @@
 #include "point.hpp"
 #include "translation.hpp"
 #include "transformation.hpp"
+#include "line.hpp"
+#include "linesegment.hpp"
+#include "cuboidaligned.hpp"
+#include "sphere.hpp"
 #include <cstdio>
 #include <cassert>
 

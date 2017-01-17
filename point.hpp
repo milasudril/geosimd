@@ -67,7 +67,7 @@ namespace GeoSIMD
 				{return m_data;}
 
 			template<int N>
-			static Point centroid(const Point(&points)[N]) noexcept
+			static constexpr Point centroid(const Point(&points)[N]) noexcept
 				{
 				static_assert(N!=0,"At least one point is needed");
 				Point<T> ret;
@@ -88,31 +88,30 @@ namespace GeoSIMD
 		};
 
 	template<class T>
-	constexpr Point<T> origin() noexcept
+	inline constexpr Point<T> origin() noexcept
 		{return Point<T>(zero<T>(),zero<T>(),zero<T>());}
 
 	template<class T>
-	constexpr Point<T> operator+(Point<T> a,Vector<T> b) noexcept
+	inline constexpr Point<T> operator+(Point<T> a,Vector<T> b) noexcept
 		{return a+=b;}
 
 	template<class T>
-	constexpr Point<T> operator-(Point<T> a,Vector<T> b) noexcept
+	inline constexpr Point<T> operator-(Point<T> a,Vector<T> b) noexcept
 		{return a-=b;}
 
 	template<class T>
-	Vector<T> operator-(Point<T> a,Point<T> b) noexcept
+	inline constexpr Vector<T> operator-(Point<T> a,Point<T> b) noexcept
 		{
-		Vector<T> ret;
+		Vector<T> ret{};
 		ret.m_data=a.data() - b.data();
 		return ret;
 		}
 
 	template<class T>
-	T dist_2(Point<T> a,Point<T> b) noexcept
-		{
-		auto diff=a-b;
-		return dot(diff,diff);
-		}
+	inline constexpr T distance_squared(Point<T> a,Point<T> b) noexcept
+		{return length_squared(a-b);}
+
+	static_assert(distance_squared(origin<float>(),Point<float>(1.0f,1.0f,1.0f))==3.0f,"distance broken");
 
 	template<class T>
 	inline Point<T> transform(Point<T> p,const mat4_t<T>& R_data) noexcept
@@ -123,11 +122,11 @@ namespace GeoSIMD
 		}
 
 	template<class T,class U>
-	inline Point<T> transform(Point<T> p,const U& u)
+	inline Point<T> transform(Point<T> p,const U& u) noexcept
 		{return transform(p,u.matrix());}
 
 	template<class T,int N>
-	inline Point<T> centroid(const Point<T>(&points)[N])
+	inline constexpr Point<T> centroid(const Point<T>(&points)[N]) noexcept
 		{return Point<T>::centroid(points);}
 
 	template<class T>
@@ -147,7 +146,7 @@ namespace GeoSIMD
 		}
 
 	template<class T>
-	inline Point<T> centroid(const Point<T>* begin,const Point<T>* end)
+	inline Point<T> centroid(const Point<T>* begin,const Point<T>* end) noexcept
 		{return Point<T>::centroid(begin,end);}
 	}
 

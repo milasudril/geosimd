@@ -17,13 +17,16 @@ namespace GeoSIMD
 	class Point;
 
 	template<class T>
-	inline Vector<T> operator-(Point<T> a,Point<T> b) noexcept;
+	inline constexpr Vector<T> operator-(Point<T> a,Point<T> b) noexcept;
 
 	template<class T>
 	class Vector
 		{
 		public:
 			typedef vec4_t<T> Representation;
+
+			constexpr Vector() noexcept:m_data{zero<T>(),zero<T>(),zero<T>(),zero<T>()}
+				{}
 
 			constexpr explicit Vector(T x,T y,T z) noexcept:m_data{x,y,z,zero<T>()}
 				{}
@@ -88,7 +91,6 @@ namespace GeoSIMD
 				{return m_data;}
 
 		protected:
-			Vector(){}
 			Representation m_data;
 
 			friend Vector<T> transform<>(Vector<T> v,const Rotation<T>& R) noexcept;
@@ -168,6 +170,10 @@ namespace GeoSIMD
 		{return a.dot(b);}  
 	static_assert(dot(1.0_xf,1.0_yf)==0.0f,"Dot product broken");
 	static_assert(dot(1.0_xf,1.0_xf)==1.0f,"Dot product broken");
+
+	template<class T>
+	constexpr T length_squared(Vector<T> a) noexcept
+		{return dot(a,a);}
 
       
 	template<class T>
