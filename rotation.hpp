@@ -6,6 +6,7 @@
 #include "angle.hpp"
 #include "mat4.hpp"
 #include "axis.hpp"
+#include "quaternion.hpp"
 
 namespace GeoSIMD
 	{
@@ -16,6 +17,13 @@ namespace GeoSIMD
 			constexpr Rotation():
 				m_data(mat4_t<T>::identity())
 				{}
+
+			Rotation(Quaternion q) noexcept
+				{
+				auto n=1.0f/sqrt(length2(q));
+				q*=n;
+				m_data.column(0)=vec4_t<T>{1.0f - 2.0f*q.y};
+				}
 
 			template<class U>
 			constexpr Rotation(Angle<U> angle,X) noexcept:
