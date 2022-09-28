@@ -86,7 +86,10 @@ namespace geosimd
 		return to_string(a.vector());
 	}
 
-	template<normed_space Space>
+	template<class T>
+	concept normed_affine_space = normed_space<T> && affine_space<T>;
+
+	template<normed_affine_space Space>
 	constexpr auto distance(point<Space> a, point<Space> b)
 	{
 		return norm(a - b);
