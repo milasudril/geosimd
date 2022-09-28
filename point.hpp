@@ -1,153 +1,91 @@
-//@	{"targets":[{"name":"point.hpp","type":"include"}]}
-
 #ifndef GEOSIMD_POINT_HPP
 #define GEOSIMD_POINT_HPP
 
-#include "vector.hpp"
-#include <cassert>
+#include "./affine_space.hpp"
 
-namespace GeoSIMD
+#include <string>
+
+namespace geosimd
+{
+	template<affine_space Space>
+	class point
 	{
-	template<class T>
-	class Point;
+	public:
+		using vector_type = typename Space::vector_type;
+		using scalar_type = typename Space::scalar_type;
+		static constexpr size_t dimension_count = Space::dimension_count();
 
-	template<class T>
-	Point<T> transform(Point<T> p,const mat4_t<T>& R_data) noexcept;
+		constexpr point() = default;
 
-	template<class T>
-	class Point
+		constexpr explicit point(vector_type vector):m_vector{Space::origin() + vector}{}
+
+		template<size_t index>
+		constexpr scalar_type& get()
 		{
-		public:
-			typedef vec4_t<T> Representation;
-
-			constexpr Point() noexcept:m_data{zero<T>(),zero<T>(),zero<T>(),one<T>()}
-				{}
-
-			constexpr explicit Point(T x,T y,T z):m_data{x,y,z,one<T>()}
-				{}
-
-			constexpr T x() const noexcept
-				{return m_data[0];}
-
-			constexpr T& x() noexcept
-				{return m_data[0];}
-
-			constexpr T y() const noexcept
-				{return m_data[1];}
-
-			constexpr T& y() noexcept
-				{return m_data[1];}
-
-			constexpr T z() const noexcept
-				{return m_data[2];}
-
-			constexpr T& z() noexcept
-				{return m_data[2];}
-
-			constexpr Point& operator+=(Vector<T> v) noexcept
-				{
-				m_data+=v.data();
-				return *this;
-				}
-
-			constexpr Point& operator-=(Vector<T> v) noexcept
-				{
-				m_data-=v.data();
-				return *this;
-				}
-
-			constexpr bool operator==(Point v) const noexcept
-				{
-				return m_data[0]==v.m_data[0]
-					&& m_data[1]==v.m_data[1]
-					&& m_data[2]==v.m_data[2];
-                }
-
-			constexpr Representation data() const noexcept
-				{return m_data;}
-
-			template<int N>
-			static constexpr Point centroid(const Point(&points)[N]) noexcept
-				{
-				static_assert(N!=0,"At least one point is needed");
-				Point<T> ret;
-				for(int k=0;k<N;++k)
-					{ret.m_data+=points[k].m_data;}
-
-				ret.m_data/=static_cast<T>(N);
-				ret.m_data[3]=one<T>();
-				return ret;
-				}
-
-			static Point centroid(const Point* begin,const Point* end) noexcept;
-
-		private:
-			Representation m_data;
-
-			friend Point<T> transform<>(Point<T> p,const mat4_t<T>& R_data) noexcept;
-		};
-
-	template<class T>
-	inline constexpr Point<T> origin() noexcept
-		{return Point<T>(zero<T>(),zero<T>(),zero<T>());}
-
-	template<class T>
-	inline constexpr Point<T> operator+(Point<T> a,Vector<T> b) noexcept
-		{return a+=b;}
-
-	template<class T>
-	inline constexpr Point<T> operator-(Point<T> a,Vector<T> b) noexcept
-		{return a-=b;}
-
-	template<class T>
-	inline constexpr Vector<T> operator-(Point<T> a,Point<T> b) noexcept
-		{
-		Vector<T> ret{};
-		ret.m_data=a.data() - b.data();
-		return ret;
+			static_assert(index >= 0 && index < dimension_count);
+			return m_vector[index];
 		}
 
-	template<class T>
-	inline constexpr T distance_squared(Point<T> a,Point<T> b) noexcept
-		{return length_squared(a-b);}
-
-	static_assert(distance_squared(origin<float>(),Point<float>(1.0f,1.0f,1.0f))==3.0f,"distance broken");
-
-	template<class T>
-	inline Point<T> transform(Point<T> p,const mat4_t<T>& R_data) noexcept
+		template<size_t index>
+		constexpr scalar_type get () const
 		{
-		Point<T> ret;
-		ret.m_data=R_data*p.m_data;
-		return ret;
+			static_assert(index >= 0 && index < dimension_count);
+			return m_vector;
 		}
 
-	template<class T,class U>
-	inline Point<T> transform(Point<T> p,const U& u) noexcept
-		{return transform(p,u.matrix());}
-
-	template<class T,int N>
-	inline constexpr Point<T> centroid(const Point<T>(&points)[N]) noexcept
-		{return Point<T>::centroid(points);}
-
-	template<class T>
-	Point<T> Point<T>::centroid(const Point<T>* begin,const Point<T>* end) noexcept
+		constexpr point& operator+=(vector_type v)
 		{
-		auto N=end - begin;
-		assert(N!=0);
-		Point<T> ret;
-		while(begin!=end)
-			{
-			ret.m_data+=begin->m_data;
-			++begin;
-			}
-		ret.m_data/=static_cast<T>(N);
-		ret.m_data[3]=one<T>();
-		return ret;
+			m_vector += v;
+			return *this;
 		}
 
-	template<class T>
-	inline Point<T> centroid(const Point<T>* begin,const Point<T>* end) noexcept
-		{return Point<T>::centroid(begin,end);}
+		constexpr point& operator-=(vector_type v)
+		{
+			m_vector -= v;
+			return *this;
+		}
+
+		constexpr auto vector() const
+		{
+			return m_vector;
+		}
+
+	private:
+		vector_type m_vector;
+	};
+
+	template<affine_space Space>
+	constexpr auto operator+(point<Space> a, typename Space::vector_type v)
+	{
+		return a += v;
 	}
+
+	template<affine_space Space>
+	constexpr auto operator-(point<Space> a, typename Space::vector_type v)
+	{
+		return a -= v;
+	}
+
+	template<affine_space Space>
+	constexpr auto operator-(point<Space> a, point<Space> b)
+	{
+		return a.vector() - b.vector();
+	}
+
+	template<affine_space Space>
+	constexpr auto origin()
+	{
+		return point<Space>{typename Space::vector_type{}};
+	}
+
+	template<affine_space Space>
+	inline std::string to_string(point<Space> a)
+	{
+		using std::to_string;
+		return to_string(a.vector());
+	}
+
+
+}
 
 #endif
