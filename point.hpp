@@ -2,6 +2,7 @@
 #define GEOSIMD_POINT_HPP
 
 #include "./affine_space.hpp"
+#include "./normed_space.hpp"
 
 #include <string>
 
@@ -85,7 +86,11 @@ namespace geosimd
 		return to_string(a.vector());
 	}
 
-
+	template<normed_space Space>
+	constexpr auto distance(point<Space> a, point<Space> b)
+	{
+		return norm(a - b);
+	}
 }
 
 #endif

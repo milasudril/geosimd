@@ -56,3 +56,11 @@ TESTCASE(geosimd_point_subtract)
 	EXPECT_EQ(loc_a - loc_b, 2);
 }
 
+TESTCASE(geosimd_point_distance)
+{
+	geosimd::point<my_affine_space> loc_a{5};
+	geosimd::point<my_affine_space> loc_b{-3};
+
+	EXPECT_EQ(distance(loc_a, loc_b), 8);
+}
+
