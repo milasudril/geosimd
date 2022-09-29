@@ -3,6 +3,7 @@
 
 #include "./affine_space.hpp"
 #include "./normed_space.hpp"
+#include "./hilbert_space.hpp"
 
 #include <string>
 
@@ -94,6 +95,23 @@ namespace geosimd
 	{
 		return norm(a - b);
 	}
+
+	template<class T>
+	concept affine_hilbert_space = hilbert_space<T> && affine_space<T>;
+
+	template<affine_hilbert_space H>
+	constexpr auto distance_squared(point<H> a, point<H> b)
+	{
+		auto const dx = a- b;
+		return inner_product(dx, dx);
+	}
+
+	template<affine_hilbert_space H>
+	constexpr auto distance(point<H> a, point<H> b)
+	{
+		return std::sqrt(distance_squared(a, b));
+	}
+
 }
 
 #endif

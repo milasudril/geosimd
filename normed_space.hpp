@@ -1,7 +1,6 @@
 #ifndef GEOSIMD_NORMEDSPACE_HPP
 #define GEOSIMD_NORMEDSPACE_HPP
 
-#include <cstddef>
 #include <concepts>
 #include <cstdlib>
 #include <cmath>
