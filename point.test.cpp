@@ -19,15 +19,15 @@ namespace
 	};
 }
 
-static_assert(std::is_same_v<geosimd::point<my_affine_space>::vector_type, int>);
-static_assert(std::is_same_v<geosimd::point<my_affine_space>::scalar_type, int>);
-static_assert(geosimd::point<my_affine_space>::dimension_count == 1);
+static_assert(std::is_same_v<geosimd::location<my_affine_space>::vector_type, int>);
+static_assert(std::is_same_v<geosimd::location<my_affine_space>::scalar_type, int>);
+static_assert(geosimd::location<my_affine_space>::dimension_count == 1);
 static_assert(geosimd::origin<my_affine_space>().vector() ==
-	geosimd::point<my_affine_space>{0}.vector());
+	geosimd::location<my_affine_space>{0}.vector());
 
-TESTCASE(geosimd_point_add_vector)
+TESTCASE(geosimd_location_add_vector)
 {
-	geosimd::point<my_affine_space> loc{1};
+	geosimd::location<my_affine_space> loc{1};
 	loc += 2;
 
 	EXPECT_EQ(loc.vector(), 3);
@@ -37,9 +37,9 @@ TESTCASE(geosimd_point_add_vector)
 	EXPECT_EQ(loc.vector(), 8);
 }
 
-TESTCASE(geosimd_point_subtract_vector)
+TESTCASE(geosimd_location_subtract_vector)
 {
-	geosimd::point<my_affine_space> loc{3};
+	geosimd::location<my_affine_space> loc{3};
 	loc -= 1;
 	EXPECT_EQ(loc.vector(), 2);
 
@@ -48,18 +48,18 @@ TESTCASE(geosimd_point_subtract_vector)
 	EXPECT_EQ(loc.vector(), -8);
 }
 
-TESTCASE(geosimd_point_subtract)
+TESTCASE(geosimd_location_subtract)
 {
-	geosimd::point<my_affine_space> loc_a{5};
-	geosimd::point<my_affine_space> loc_b{3};
+	geosimd::location<my_affine_space> loc_a{5};
+	geosimd::location<my_affine_space> loc_b{3};
 
 	EXPECT_EQ(loc_a - loc_b, 2);
 }
 
-TESTCASE(geosimd_point_distance)
+TESTCASE(geosimd_location_distance)
 {
-	geosimd::point<my_affine_space> loc_a{5};
-	geosimd::point<my_affine_space> loc_b{-3};
+	geosimd::location<my_affine_space> loc_a{5};
+	geosimd::location<my_affine_space> loc_b{-3};
 
 	EXPECT_EQ(distance(loc_a, loc_b), 8);
 }

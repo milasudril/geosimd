@@ -1,6 +1,8 @@
 #ifndef GEOSIMD_AFFINESPACE_HPP
 #define GEOSIMD_AFFINESPACE_HPP
 
+#include "./vector_space.hpp"
+
 #include <cstddef>
 #include <concepts>
 
