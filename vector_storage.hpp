@@ -30,24 +30,28 @@ namespace geosimd
 	template<class T, size_t N>
 	using vec_t = vector_storage<T, N>::type;
 
+	template<class T, size_t N>
+	class emulated_vector<std::complex<T>> : public std::complex<vec_t<T, N>> {};
+
 	template<std::arithmetic T>
 	[[gnu::always_inline]] constexpr auto conj(T val)
 	{
 		return val;
 	};
 
-	template<std::arithmetic T>
+	template<class T>
 	[[gnu::always_inline]] constexpr auto conj(std::complex<T> val)
 	{
 		return ::std::conj(val);
 	}
 
 	template<class T, size_t N>
-	constexpr auto inner_product(vec_t<T, N> a, vec_t<T, N> a)
+	constexpr auto inner_product(vec_t<T, N> a, vec_t<T, N> b)
 	{
+		auto const prod = a*conj(b);
 		T ret{};
 		for(size_t k = 0; k != N; ++k)
-		{ ret += a[k]*conj(b[k]); }
+		{ ret += prod; }
 
 		return ret;
 	}
