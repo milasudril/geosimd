@@ -61,7 +61,9 @@ namespace geosimd
 		{p1 - p2} -> std::same_as<VectorType>;
 	};
 
-
+	template<class T>
+	concept affine_space = vector_space<T>
+		&& point<typename T::point_type, typename T::vector_type, typename T::scalar_type>;
 
 #if 0
 
