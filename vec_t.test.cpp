@@ -1,6 +1,6 @@
-//@	{"target":{"name":"vector_storage.test"}}
+//@	{"target":{"name":"vec_t.test"}}
 
-#include "./vector_storage.hpp"
+#include "./vec_t.hpp"
 
 #include "testfwk/testfwk.hpp"
 
