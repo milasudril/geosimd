@@ -20,10 +20,8 @@ namespace testcases
 	static_assert(geosimd::affine_space<writable_address_space>);
 	static_assert(geosimd::metric_space<writable_address_space>);
 	static_assert(geosimd::normed_space<writable_address_space>);
-
-	constexpr std::array<std::byte, 4> testarray{};
-	static_assert(geosimd::distance(std::data(testarray), std::data(testarray) + std::size(testarray))
-		== std::ssize(testarray));
+	static_assert(!geosimd::hilbert_space<writable_address_space>);
+	static_assert(!geosimd::affine_hilbert_space<writable_address_space>);
 
 	struct number_line
 	{
@@ -36,6 +34,8 @@ namespace testcases
 	static_assert(geosimd::affine_space<number_line>);
 	static_assert(geosimd::metric_space<number_line>);
 	static_assert(geosimd::normed_space<number_line>);
+	static_assert(!geosimd::hilbert_space<number_line>);
+	static_assert(!geosimd::affine_hilbert_space<number_line>);
 
 	struct complex_plane
 	{
@@ -48,6 +48,8 @@ namespace testcases
 	static_assert(geosimd::affine_space<complex_plane>);
 	static_assert(geosimd::metric_space<complex_plane>);
 	static_assert(geosimd::normed_space<complex_plane>);
+	static_assert(!geosimd::hilbert_space<complex_plane>);
+	static_assert(!geosimd::affine_hilbert_space<complex_plane>);
 
 	struct timeline
 	{
@@ -61,6 +63,8 @@ namespace testcases
 	static_assert(geosimd::affine_space<timeline>);
 	static_assert(geosimd::metric_space<timeline>);
 	static_assert(geosimd::normed_space<timeline>);
+	static_assert(!geosimd::hilbert_space<timeline>);
+	static_assert(!geosimd::affine_hilbert_space<timeline>);
 }
 
 
