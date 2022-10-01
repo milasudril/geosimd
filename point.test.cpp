@@ -5,6 +5,7 @@
 #include "testfwk/testfwk.hpp"
 
 #include <array>
+#include <chrono>
 
 namespace testcases
 {
@@ -44,6 +45,18 @@ namespace testcases
 	static_assert(geosimd::vector_space<complex_plane>);
 	static_assert(geosimd::affine_space<complex_plane>);
 	static_assert(geosimd::metric_space<complex_plane>);
+
+	struct timeline
+	{
+		using vector_type = std::chrono::steady_clock::duration;
+		using scalar_type = std::chrono::steady_clock::duration::rep;
+		using point_type = std::chrono::steady_clock::time_point;
+	};
+	static_assert(geosimd::supports_abs<timeline::vector_type>);
+
+	static_assert(geosimd::vector_space<timeline>);
+	static_assert(geosimd::affine_space<timeline>);
+	static_assert(geosimd::metric_space<timeline>);
 }
 
 

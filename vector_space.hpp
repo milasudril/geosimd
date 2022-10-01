@@ -32,34 +32,6 @@ namespace geosimd
 		|| is_complex_v<T, float>
 		|| is_complex_v<T, double>;
 
-	template<class T>
-	concept has_value_type = requires
-	{
-		typename T::value_type;
-	};
-
-	static_assert(has_value_type<std::complex<double>>);
-
-	template<class T, bool = false>
-	struct deep_scalar
-	{
-		using type = T;
-	};
-
-	template<class T>
-	class deep_scalar<T, true>
-	{
-	private:
-		using next_type = typename T::value_type;
-	public:
-		using type = typename deep_scalar<next_type, has_value_type<next_type>>::type;
-	};
-
-	template<class T>
-	using deep_scalar_t = deep_scalar<T, has_value_type<T>>::type;
-
-	static_assert(std::is_same_v<deep_scalar_t<std::complex<double>>, double>);
-
 	template<class T, class ScalarType>
 	concept vector = std::equality_comparable<T> && scalar<ScalarType> && requires(T a, T b, ScalarType c)
 	{
@@ -98,10 +70,10 @@ namespace geosimd
 	template<class T>
 	concept supports_abs = requires(T a)
 	{
-		{ abs(a) } -> std::same_as<deep_scalar_t<T>>;
+		{ abs(a) };
 	} || requires(T a)
 	{
-		{ std::abs(a) } -> std::same_as<deep_scalar_t<T>>;
+		{ std::abs(a) };
 	};
 
 	template<supports_abs T>
@@ -123,7 +95,7 @@ namespace geosimd
 		&& requires(T)
 	{
 		{ distance(std::declval<typename T::point_type>(), std::declval<typename T::point_type>()) }
-			-> std::same_as<typename T::scalar_type>;
+			-> std::totally_ordered;
 	};
 
 
