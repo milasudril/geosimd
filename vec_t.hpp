@@ -6,8 +6,40 @@
 
 namespace geosimd
 {
+	template<class Derived>
+	struct arithmetic_mixin
+	{
+		GEOSIMD_INLINE constexpr Derived& operator*=(Derived other)
+		{
+			auto& derived = static_cast<Derived&>(*this);
+			derived.get() *= other.get();
+			return derived;
+		}
+
+		GEOSIMD_INLINE constexpr Derived& operator/=(Derived other)
+		{
+			auto& derived = static_cast<Derived&>(*this);
+			derived.get() /= other.get();
+			return derived;
+		}
+
+		GEOSIMD_INLINE constexpr Derived& operator+=(Derived other)
+		{
+			auto& derived = static_cast<Derived&>(*this);
+			derived.get() += other.get();
+			return derived;
+		}
+
+		GEOSIMD_INLINE constexpr Derived& operator-=(Derived other)
+		{
+			auto& derived = static_cast<Derived&>(*this);
+			derived.get() -= other.get();
+			return derived;
+		}
+	};
+
 	template<class T, size_t N>
-	class vec_t
+	class vec_t:public arithmetic_mixin<vec_t<T, N>>
 	{
 	public:
 		using element_type = vector_storage<T, N>;
@@ -17,41 +49,16 @@ namespace geosimd
 
 		GEOSIMD_INLINE constexpr vec_t(element_type val):m_value{val}{}
 
-		GEOSIMD_INLINE constexpr vec_t& operator*=(vec_t other)
-		{
-			m_value*=other.m_value;
-			return *this;
-		}
-
-		GEOSIMD_INLINE constexpr vec_t& operator/=(vec_t other)
-		{
-			m_value/=other.m_value;
-			return *this;
-		}
-
-		GEOSIMD_INLINE constexpr vec_t& operator+=(vec_t other)
-		{
-			m_value+=other.m_value;
-			return *this;
-		}
-
-		GEOSIMD_INLINE constexpr vec_t& operator-=(vec_t other)
-		{
-			m_value-=other.m_value;
-			return *this;
-		}
-
 		GEOSIMD_INLINE constexpr T& operator[](size_t n)
-		{
-			return m_value[n];
-		}
+		{ return m_value[n]; }
 
 		GEOSIMD_INLINE constexpr T operator[](size_t n) const
-		{
-			return m_value[n];
-		}
+		{ return m_value[n]; }
 
 		GEOSIMD_INLINE constexpr auto get() const
+		{ return m_value; }
+
+		GEOSIMD_INLINE constexpr auto& get()
 		{ return m_value; }
 
 	private:
@@ -60,34 +67,26 @@ namespace geosimd
 
 	template<class T, size_t N>
 	GEOSIMD_INLINE constexpr auto operator*(vec_t<T, N> a, vec_t<T, N> b)
-	{
-		return a *= b;
-	}
+	{ return a *= b; }
 
 	template<class T, size_t N>
 	GEOSIMD_INLINE constexpr auto operator/(vec_t<T, N> a, vec_t<T, N> b)
-	{
-		return a /= b;
-	}
+	{ return a /= b; }
 
 	template<class T, size_t N>
 	GEOSIMD_INLINE constexpr auto operator+(vec_t<T, N> a, vec_t<T, N> b)
-	{
-		return a += b;
-	}
+	{ return a += b; }
 
 	template<class T, size_t N>
 	GEOSIMD_INLINE constexpr auto operator-(vec_t<T, N> a, vec_t<T, N> b)
-	{
-		return a -= b;
-	}
+	{ return a -= b; }
 
 	template<class T, size_t N>
 	GEOSIMD_INLINE constexpr auto conj(vec_t<T, N> val)
 	{ return val; }
 
 	template<class T, size_t N>
-	class vec_t<std::complex<T>, N>
+	class vec_t<std::complex<T>, N>:public arithmetic_mixin<vec_t<std::complex<T>, N>>
 	{
 	public:
 		using element_type = vector_storage<std::complex<T>, N>;
@@ -100,40 +99,14 @@ namespace geosimd
 		GEOSIMD_INLINE constexpr auto get() const
 		{ return m_value; }
 
+		GEOSIMD_INLINE constexpr auto& get()
+		{ return m_value; }
+
 		GEOSIMD_INLINE constexpr auto operator[](size_t n) const
 		{
 			auto const real_val = m_value.real()[n];
 			auto const imag_val = m_value.imag()[n];
 			return std::complex<T>{real_val, imag_val};
-		}
-
-		GEOSIMD_INLINE constexpr vec_t& operator*=(vec_t other)
-		{
-			m_value*=other.m_value;
-			return *this;
-		}
-
-		GEOSIMD_INLINE constexpr vec_t& operator/=(vec_t other)
-		{
-			m_value/=other.m_value;
-			return *this;
-		}
-
-		GEOSIMD_INLINE constexpr vec_t& operator+=(vec_t other)
-		{
-			m_value+=other.m_value;
-			return *this;
-		}
-
-		GEOSIMD_INLINE constexpr vec_t& operator-=(vec_t other)
-		{
-			m_value-=other.m_value;
-			return *this;
-		}
-
-		GEOSIMD_INLINE constexpr T& operator[](size_t n)
-		{
-			return m_value[n];
 		}
 
 	private:
