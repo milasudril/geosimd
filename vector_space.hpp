@@ -46,6 +46,9 @@ namespace geosimd
 		{zero(std::declval<empty<T>>())} -> std::same_as<T>;
 	};
 
+	template<class T>
+	concept vector_space = vector<typename T::vector_type, typename T::scalar_type>;
+
 	template<class T, class VectorType, class ScalarType>
 	concept point = std::equality_comparable<T>
 		&& vector<VectorType, ScalarType>
@@ -57,6 +60,9 @@ namespace geosimd
 		{p1 -= v} -> std::same_as<T&>;
 		{p1 - p2} -> std::same_as<VectorType>;
 	};
+
+
+
 #if 0
 
 
