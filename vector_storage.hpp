@@ -11,6 +11,7 @@ namespace geosimd
 	class emulated_vector
 	{
 	public:
+		// TODO: Implement when needed
 	private:
 		std::array<T, N> m_data;
 	};
