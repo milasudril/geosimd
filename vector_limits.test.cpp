@@ -1,6 +1,6 @@
-//@	{"target":{"name":"vector_storage.test"}}
+//@	{"target":{"name":"vector_limits.test"}}
 
-#include "./vector_storage.hpp"
+#include "./vector_limits.hpp"
 
 #include "testfwk/testfwk.hpp"
 
