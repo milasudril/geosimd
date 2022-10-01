@@ -5,6 +5,8 @@
 #include <concepts>
 #include <cstdint>
 #include <complex>
+#include <cmath>
+#include <cstdlib>
 
 #include <string>
 
@@ -29,6 +31,34 @@ namespace geosimd
 		|| is_complex_v<T, long long>
 		|| is_complex_v<T, float>
 		|| is_complex_v<T, double>;
+
+	template<class T>
+	concept has_value_type = requires
+	{
+		typename T::value_type;
+	};
+
+	static_assert(has_value_type<std::complex<double>>);
+
+	template<class T, bool = false>
+	struct deep_scalar
+	{
+		using type = T;
+	};
+
+	template<class T>
+	class deep_scalar<T, true>
+	{
+	private:
+		using next_type = typename T::value_type;
+	public:
+		using type = typename deep_scalar<next_type, has_value_type<next_type>>::type;
+	};
+
+	template<class T>
+	using deep_scalar_t = deep_scalar<T, has_value_type<T>>::type;
+
+	static_assert(std::is_same_v<deep_scalar_t<std::complex<double>>, double>);
 
 	template<class T, class ScalarType>
 	concept vector = std::equality_comparable<T> && scalar<ScalarType> && requires(T a, T b, ScalarType c)
@@ -66,7 +96,24 @@ namespace geosimd
 		&& point<typename T::point_type, typename T::vector_type, typename T::scalar_type>;
 
 	template<class T>
-	constexpr auto distance(T const* a, T const* b)
+	concept supports_abs = requires(T a)
+	{
+		{ abs(a) } -> std::same_as<deep_scalar_t<T>>;
+	} || requires(T a)
+	{
+		{ std::abs(a) } -> std::same_as<deep_scalar_t<T>>;
+	};
+
+	template<supports_abs T>
+	constexpr auto distance(T a, T b)
+	{
+		using std::abs;
+		return abs(a - b);
+	}
+
+	template<std::totally_ordered T>
+	requires (!supports_abs<T>)
+	constexpr auto distance(T a, T b)
 	{
 		return a < b ? (b - a) : (a - b);
 	}
