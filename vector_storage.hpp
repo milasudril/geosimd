@@ -3,6 +3,8 @@
 
 #include "./vector_limits.hpp"
 
+#include <complex>
+
 #include <array>
 
 namespace geosimd
@@ -16,7 +18,7 @@ namespace geosimd
 		std::array<T, N> m_data;
 	};
 
-	template<class T, size_t N>
+	template<std::arithmetic T, size_t N>
 	using native_vector [[gnu::vector_size(sizeof(T)*N)]] = T;
 
 	template<class T, size_t N>
@@ -27,6 +29,28 @@ namespace geosimd
 
 	template<class T, size_t N>
 	using vec_t = vector_storage<T, N>::type;
+
+	template<std::arithmetic T>
+	[[gnu::always_inline]] constexpr auto conj(T val)
+	{
+		return val;
+	};
+
+	template<std::arithmetic T>
+	[[gnu::always_inline]] constexpr auto conj(std::complex<T> val)
+	{
+		return ::std::conj(val);
+	}
+
+	template<class T, size_t N>
+	constexpr auto inner_product(vec_t<T, N> a, vec_t<T, N> a)
+	{
+		T ret{};
+		for(size_t k = 0; k != N; ++k)
+		{ ret += a[k]*conj(b[k]); }
+
+		return ret;
+	}
 };
 
 #endif
