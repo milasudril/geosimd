@@ -1,6 +1,6 @@
-//@	{"target":{"name":"point.test"}}
+//@	{"target":{"name":"vector_spaces.test"}}
 
-#include "./point.hpp"
+#include "./vector_spaces.hpp"
 
 #include "testfwk/testfwk.hpp"
 
