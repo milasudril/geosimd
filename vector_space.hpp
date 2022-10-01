@@ -98,6 +98,20 @@ namespace geosimd
 			-> std::totally_ordered;
 	};
 
+	template<supports_abs T>
+	constexpr auto norm(T val)
+	{
+		using std::abs;
+		return abs(val);
+	}
+
+	template<class T>
+	concept normed_space = vector_space<T>
+		&& requires(T)
+	{
+		{ norm(std::declval<typename T::vector_type>()) } -> std::totally_ordered;
+	};
+
 
 #if 0
 

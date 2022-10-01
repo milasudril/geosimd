@@ -2,7 +2,6 @@
 #define GEOSIMD_POINT_HPP
 
 #include "./vector_space.hpp"
-#include "./normed_space.hpp"
 #include "./hilbert_space.hpp"
 
 #include <string>
