@@ -86,7 +86,7 @@ namespace geosimd
 		using std::to_string;
 		return to_string(a.vector());
 	}
-
+#if 1
 	template<class T>
 	concept normed_affine_space = normed_space<T> && affine_space<T>;
 
@@ -111,7 +111,7 @@ namespace geosimd
 	{
 		return std::sqrt(distance_squared(a, b));
 	}
-
+#endif
 }
 
 #endif

@@ -4,6 +4,9 @@
 #include <cstddef>
 #include <concepts>
 #include <cstdint>
+#include <complex>
+
+#include <string>
 
 namespace geosimd
 {
@@ -11,11 +14,24 @@ namespace geosimd
 	using empty = std::type_identity<T>;
 
 	template<class T>
-	T zero(empty<T>)
+	constexpr T zero(empty<T>)
 	{ return T{}; }
 
+	template<class T, class U>
+	constexpr auto is_complex_v = std::is_same_v<T, std::complex<U>>;
+
+	template<class T>
+	concept scalar = (std::is_arithmetic_v<T> && std::is_signed_v<T>)
+		|| is_complex_v<T, char>
+		|| is_complex_v<T, short>
+		|| is_complex_v<T, int>
+		|| is_complex_v<T, long>
+		|| is_complex_v<T, long long>
+		|| is_complex_v<T, float>
+		|| is_complex_v<T, double>;
+
 	template<class T, class ScalarType>
-	concept vector = std::equality_comparable<T> && requires(T a, T b, ScalarType c)
+	concept vector = std::equality_comparable<T> && scalar<ScalarType> && requires(T a, T b, ScalarType c)
 	{
 		{a + b} -> std::same_as<T>;
 		{a - b} -> std::same_as<T>;
@@ -30,10 +46,10 @@ namespace geosimd
 		{zero(std::declval<empty<T>>())} -> std::same_as<T>;
 	};
 
-	template<class T, class VectorType>
+	template<class T, class VectorType, class ScalarType>
 	concept point = std::equality_comparable<T>
-		&& !std::is_same_v<T, VectorType>
-		&& requires(T p1,T p2, VectorType v)
+		&& vector<VectorType, ScalarType>
+		&& requires(T p1, T p2, VectorType v)
 	{
 		{p1 + v} -> std::same_as<T>;
 		{p1 - v} -> std::same_as<T>;
@@ -41,10 +57,9 @@ namespace geosimd
 		{p1 -= v} -> std::same_as<T&>;
 		{p1 - p2} -> std::same_as<VectorType>;
 	};
-
-	static_assert(point<int*, intptr_t>);
-
 #if 0
+
+
 	template<class T>
 	concept vector_space = requires(T)
 	{
@@ -86,5 +101,4 @@ namespace geosimd
 	};
 #endif
 }
-
 #endif
