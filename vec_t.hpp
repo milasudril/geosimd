@@ -51,7 +51,7 @@ namespace geosimd
 			return m_value[n];
 		}
 
-		auto get() const
+		GEOSIMD_INLINE constexpr auto get() const
 		{ return m_value; }
 
 	private:
@@ -87,7 +87,7 @@ namespace geosimd
 	{ return val; }
 
 	template<class T, size_t N>
-	class vec_t<std::complex<T>, N> : public vector_storage<std::complex<T>, N>
+	class vec_t<std::complex<T>, N>
 	{
 	public:
 		using element_type = vector_storage<std::complex<T>, N>;
@@ -97,8 +97,15 @@ namespace geosimd
 
 		GEOSIMD_INLINE constexpr vec_t(element_type::base val):m_value{val}{}
 
-		auto get() const
+		GEOSIMD_INLINE constexpr auto get() const
 		{ return m_value; }
+
+		GEOSIMD_INLINE constexpr auto operator[](size_t n) const
+		{
+			auto const real_val = m_value.real()[n];
+			auto const imag_val = m_value.imag()[n];
+			return std::complex<T>{real_val, imag_val};
+		}
 
 	private:
 		element_type m_value;
