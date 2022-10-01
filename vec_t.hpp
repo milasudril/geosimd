@@ -36,13 +36,28 @@ namespace geosimd
 			derived.get() -= other.get();
 			return derived;
 		}
+
+		constexpr bool operator==(Derived other) const
+		{
+			auto const diff = static_cast<Derived const&>(*this) - other;
+			for(size_t k = 0; k != std::size(diff); ++k)
+			{
+				if(diff[k] != typename Derived::scalar_type{})
+				{ return false; }
+			}
+			return true;
+		}
 	};
 
 	template<class T, size_t N>
 	class vec_t:public arithmetic_mixin<vec_t<T, N>>
 	{
 	public:
+		GEOSIMD_INLINE static constexpr size_t size() { return N; }
+
 		using element_type = vector_storage<T, N>;
+
+		using scalar_type = T;
 
 		template<class ... U>
 		GEOSIMD_INLINE constexpr explicit vec_t(T first, U... args):m_value{first, args...}{}
@@ -85,10 +100,44 @@ namespace geosimd
 	GEOSIMD_INLINE constexpr auto conj(vec_t<T, N> val)
 	{ return val; }
 
+	template<class T>
+	std::string to_string(T val)
+	{
+		using std::to_string;
+		return to_string(val);
+	}
+
+	template<class T>
+	std::string to_string(std::complex<T> val)
+	{
+		using std::to_string;
+		return std::string{to_string(val.real())}
+			.append(" + ")
+			.append(to_string(val.imag()))
+			.append("i");
+	}
+
+	template<class T, size_t N>
+	std::string to_string(vec_t<T, N> val)
+	{
+		static_assert(N != 0);
+		std::string ret{"("};
+		for(size_t k = 0; k != N - 1; ++k)
+		{
+			ret.append(to_string(val[k])).append(", ");
+		}
+		ret.append(to_string(val[N - 1])).append(")");
+		return ret;
+	}
+
 	template<class T, size_t N>
 	class vec_t<std::complex<T>, N>:public arithmetic_mixin<vec_t<std::complex<T>, N>>
 	{
 	public:
+		using scalar_type = T;
+
+		GEOSIMD_INLINE static constexpr size_t size() { return N; }
+
 		using element_type = vector_storage<std::complex<T>, N>;
 
 		GEOSIMD_INLINE constexpr explicit vec_t(vec_t<T, N> real, vec_t<T, N> imag):

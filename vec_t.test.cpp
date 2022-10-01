@@ -44,3 +44,36 @@ TESTCASE(geosimd_vect_complex_inner_product)
 
 	EXPECT_EQ(inner_product(a, b), (std::complex<int>{492, 128}));
 }
+
+TESTCASE(geosimd_vect_real_add)
+{
+	geosimd::vec4i32_t const a{1, 2, 3, 4};
+	geosimd::vec4i32_t const b{5, 6, 7, 8};
+	auto const c = a + b;
+	EXPECT_EQ(c, (geosimd::vec4i32_t{6, 8, 10, 12}));
+}
+
+TESTCASE(geosimd_vect_complex_add)
+{
+	geosimd::vec_t<std::complex<int>, 4> const a
+	{
+		geosimd::vec4i32_t{1, 2, 3, 4},
+		geosimd::vec4i32_t{5, 6, 7, 8}
+	};
+
+	geosimd::vec_t<std::complex<int>, 4> const b
+	{
+		geosimd::vec4i32_t{9, 10, 11, 12},
+		geosimd::vec4i32_t{13, 14, 15, 16}
+	};
+
+	auto const c = a + b;
+
+	geosimd::vec_t<std::complex<int>, 4> const expected
+	{
+		geosimd::vec4i32_t{10, 12, 14, 16},
+		geosimd::vec4i32_t{18, 20, 22, 24}
+	};
+
+	EXPECT_EQ(c, expected);
+}
