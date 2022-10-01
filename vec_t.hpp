@@ -47,6 +47,11 @@ namespace geosimd
 			}
 			return true;
 		}
+
+		constexpr bool operator!=(Derived other) const
+		{
+			return !(*this == other);
+		}
 	};
 
 	template<class T, size_t N>
