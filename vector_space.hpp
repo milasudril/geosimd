@@ -65,6 +65,21 @@ namespace geosimd
 	concept affine_space = vector_space<T>
 		&& point<typename T::point_type, typename T::vector_type, typename T::scalar_type>;
 
+	template<class T>
+	constexpr auto distance(T const* a, T const* b)
+	{
+		return a < b ? (b - a) : (a - b);
+	}
+
+	template<class T>
+	concept metric_space = affine_space<T>
+		&& requires(T)
+	{
+		{ distance(std::declval<typename T::point_type>(), std::declval<typename T::point_type>()) }
+			-> std::same_as<typename T::scalar_type>;
+	};
+
+
 #if 0
 
 
