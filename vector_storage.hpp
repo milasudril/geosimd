@@ -18,7 +18,10 @@ namespace geosimd
 		std::array<T, N> m_data;
 	};
 
-	template<std::arithmetic T, size_t N>
+	template<class T>
+	concept arithmetic = std::is_arithmetic_v<T>;
+
+	template<arithmetic T, size_t N>
 	using native_vector [[gnu::vector_size(sizeof(T)*N)]] = T;
 
 	template<class T, size_t N>
@@ -31,9 +34,9 @@ namespace geosimd
 	using vec_t = vector_storage<T, N>::type;
 
 	template<class T, size_t N>
-	class emulated_vector<std::complex<T>> : public std::complex<vec_t<T, N>> {};
+	class emulated_vector<std::complex<T>, N> : public std::complex<vec_t<T, N>> {};
 
-	template<std::arithmetic T>
+	template<arithmetic T>
 	[[gnu::always_inline]] constexpr auto conj(T val)
 	{
 		return val;
@@ -55,6 +58,6 @@ namespace geosimd
 
 		return ret;
 	}
-};
+}
 
 #endif
