@@ -68,10 +68,10 @@ namespace geosimd
 	template<class T>
 	concept supports_abs = requires(T a)
 	{
-		{ abs(a) };
+		{ abs(a) } -> std::totally_ordered;
 	} || requires(T a)
 	{
-		{ std::abs(a) };
+		{ std::abs(a) } -> std::totally_ordered;
 	};
 
 	template<supports_abs T>
