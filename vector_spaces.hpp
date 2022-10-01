@@ -1,5 +1,5 @@
-#ifndef GEOSIMD_VECTORSPACE_HPP
-#define GEOSIMD_VECTORSPACE_HPP
+#ifndef GEOSIMD_VECTORSPACES_HPP
+#define GEOSIMD_VECTORSPACES_HPP
 
 #include <cstddef>
 #include <concepts>
@@ -7,8 +7,6 @@
 #include <complex>
 #include <cmath>
 #include <cstdlib>
-
-#include <string>
 
 namespace geosimd
 {

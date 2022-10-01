@@ -1,7 +1,7 @@
 #ifndef GEOSIMD_POINT_HPP
 #define GEOSIMD_POINT_HPP
 
-#include "./vector_space.hpp"
+#include "./vector_spaces.hpp"
 
 #include <string>
 
