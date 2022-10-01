@@ -4,7 +4,7 @@
 
 #include "testfwk/testfwk.hpp"
 
-TESTCASE(geosimd_vector_storage_real_inner_product)
+TESTCASE(geosimd_vect_real_inner_product)
 {
 	geosimd::vec4i32_t a{1, 2, 3, 4};
 	geosimd::vec4i32_t b{5, 6, 7, 8};
@@ -12,7 +12,7 @@ TESTCASE(geosimd_vector_storage_real_inner_product)
 	EXPECT_EQ(inner_product(a, b), 70);
 }
 
-TESTCASE(geosimd_vector_storage_complex_inner_product)
+TESTCASE(geosimd_vect_complex_conj)
 {
 	geosimd::vec_t<std::complex<int>, 4> a
 	{
@@ -26,12 +26,4 @@ TESTCASE(geosimd_vector_storage_complex_inner_product)
 		EXPECT_EQ(b.real()[k], a.real()[k]);
 		EXPECT_EQ(b.imag()[k], -a.imag()[k]);
 	}
-
-	geosimd::vec_t<std::complex<int>, 4> c
-	{
-		geosimd::vec4i32_t{9, 10, 11, 12},
-		geosimd::vec4i32_t{13, 14, 15, 16}
-	};
-
-	// TODO: auto const d = inner_product(a, c);
 }

@@ -2,6 +2,7 @@
 #define GEOSIMD_VECTORSTORAGE_HPP
 
 #include "./vector_limits.hpp"
+#include "./inline.hpp"
 
 #include <complex>
 
@@ -40,13 +41,11 @@ namespace geosimd
 	using vector_storage = vector_storage_impl<T, N, vector_limits::can_vectorize<T>(N)>::type;
 
 	template<class T, size_t N>
-	class emulated_vector<std::complex<T>, N> : public std::complex<vector_storage<T, N>>
+	struct emulated_vector<std::complex<T>, N> : public std::complex<vector_storage<T, N>>
 	{
 		using base = std::complex<vector_storage<T, N>>;
-	public:
 		using base::base;
-
-		[[gnu::always_inline]] constexpr auto get() const { return static_cast<base>(*this); }
+		explicit emulated_vector(base val):base{val}{}
 	};
 }
 
