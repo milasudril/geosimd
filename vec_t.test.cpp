@@ -28,7 +28,6 @@ TESTCASE(geosimd_vect_complex_conj)
 	}
 }
 
-#if 0
 TESTCASE(geosimd_vect_complex_inner_product)
 {
 	geosimd::vec_t<std::complex<int>, 4> const a
@@ -43,6 +42,5 @@ TESTCASE(geosimd_vect_complex_inner_product)
 		geosimd::vec4i32_t{13, 14, 15, 16}
 	};
 
-	EXPECT_EQ(inner_product(a, b), 70);
+	EXPECT_EQ(inner_product(a, b), (std::complex<int>{492, 128}));
 }
-#endif

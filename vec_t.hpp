@@ -107,6 +107,35 @@ namespace geosimd
 			return std::complex<T>{real_val, imag_val};
 		}
 
+		GEOSIMD_INLINE constexpr vec_t& operator*=(vec_t other)
+		{
+			m_value*=other.m_value;
+			return *this;
+		}
+
+		GEOSIMD_INLINE constexpr vec_t& operator/=(vec_t other)
+		{
+			m_value/=other.m_value;
+			return *this;
+		}
+
+		GEOSIMD_INLINE constexpr vec_t& operator+=(vec_t other)
+		{
+			m_value+=other.m_value;
+			return *this;
+		}
+
+		GEOSIMD_INLINE constexpr vec_t& operator-=(vec_t other)
+		{
+			m_value-=other.m_value;
+			return *this;
+		}
+
+		GEOSIMD_INLINE constexpr T& operator[](size_t n)
+		{
+			return m_value[n];
+		}
+
 	private:
 		element_type m_value;
 	};
