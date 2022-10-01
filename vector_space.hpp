@@ -111,5 +111,15 @@ namespace geosimd
 	{
 		{ norm(std::declval<typename T::vector_type>()) } -> std::totally_ordered;
 	};
+
+	template<class T>
+	concept hilbert_space = normed_space<T>
+		&& requires(T)
+	{
+		typename T::norm_is_sqrt_of_inner_product;
+
+		{ inner_product(std::declval<typename T::vector_type>(), std::declval<typename T::vector_type>()) }
+			-> std::totally_ordered;
+	};
 }
 #endif
