@@ -84,32 +84,6 @@ namespace geosimd
 		using std::to_string;
 		return to_string(a.vector());
 	}
-#if 1
-	template<class T>
-	concept normed_affine_space = normed_space<T> && affine_space<T>;
-
-	template<normed_affine_space Space>
-	constexpr auto distance(location<Space> a, location<Space> b)
-	{
-		return norm(a - b);
-	}
-
-	template<class T>
-	concept affine_hilbert_space = hilbert_space<T> && affine_space<T>;
-
-	template<affine_hilbert_space H>
-	constexpr auto distance_squared(location<H> a, location<H> b)
-	{
-		auto const dx = a- b;
-		return inner_product(dx, dx);
-	}
-
-	template<affine_hilbert_space H>
-	constexpr auto distance(location<H> a, location<H> b)
-	{
-		return std::sqrt(distance_squared(a, b));
-	}
-#endif
 }
 
 #endif

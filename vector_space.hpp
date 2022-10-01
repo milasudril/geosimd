@@ -121,5 +121,32 @@ namespace geosimd
 		{ inner_product(std::declval<typename T::vector_type>(), std::declval<typename T::vector_type>()) }
 			-> std::totally_ordered;
 	};
+
+	template<hilbert_space H>
+	constexpr auto norm_squared(typename H::vector_type a)
+	{
+		return inner_product(a, a);
+	}
+
+	template<hilbert_space H>
+	constexpr auto norm(typename H::vector_type a)
+	{
+		return std::sqrt(norm_squared(a));
+	}
+
+	template<class T>
+	concept affine_hilbert_space = metric_space<T> && hilbert_space<T>;
+
+	template<affine_hilbert_space H>
+	constexpr auto distance_squared(typename H::point_type a, typename H::point_type b)
+	{
+		return norm_squared(a - b);
+	}
+
+	template<affine_hilbert_space H>
+	constexpr auto distnace(typename H::point_type a, typename H::point_type b)
+	{
+		return std::sqrt(distance_squared(a, b));
+	}
 }
 #endif
