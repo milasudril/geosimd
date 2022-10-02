@@ -18,22 +18,22 @@ namespace geosimd
 		constexpr vec_t() = default;
 
 		template<class ... U>
-		GEOSIMD_INLINE constexpr explicit vec_t(T first, U... args):m_value{first, args...}{}
+		GEOSIMD_INLINE_OPT constexpr explicit vec_t(T first, U... args):m_value{first, args...}{}
 
-		GEOSIMD_INLINE constexpr vec_t(element_type val):m_value{val}{}
+		GEOSIMD_INLINE_OPT constexpr vec_t(element_type val):m_value{val}{}
 
-		GEOSIMD_INLINE static constexpr size_t size() { return N; }
+		GEOSIMD_INLINE_OPT static constexpr size_t size() { return N; }
 
-		GEOSIMD_INLINE constexpr T& operator[](size_t n)
+		GEOSIMD_INLINE_OPT constexpr T& operator[](size_t n)
 		{ return m_value[n]; }
 
-		GEOSIMD_INLINE constexpr T operator[](size_t n) const
+		GEOSIMD_INLINE_OPT constexpr T operator[](size_t n) const
 		{ return m_value[n]; }
 
-		GEOSIMD_INLINE constexpr auto get() const
+		GEOSIMD_INLINE_OPT constexpr auto get() const
 		{ return m_value; }
 
-		GEOSIMD_INLINE constexpr auto& get()
+		GEOSIMD_INLINE_OPT constexpr auto& get()
 		{ return m_value; }
 
 	private:
@@ -90,12 +90,12 @@ namespace geosimd
 		constexpr vec_t() = default;
 
 
-		GEOSIMD_INLINE constexpr explicit vec_t(vec_t<T, N> real, vec_t<T, N> imag):
+		GEOSIMD_INLINE_OPT constexpr explicit vec_t(vec_t<T, N> real, vec_t<T, N> imag):
 			m_value{real.get(), imag.get()}{}
 
-		GEOSIMD_INLINE constexpr vec_t(element_type::base val):m_value{val}{}
+		GEOSIMD_INLINE_OPT constexpr vec_t(element_type::base val):m_value{val}{}
 
-		GEOSIMD_INLINE static constexpr size_t size() { return N; }
+		GEOSIMD_INLINE_OPT static constexpr size_t size() { return N; }
 
 		GEOSIMD_FULL_INLINE constexpr auto operator[](size_t n) const
 		{
@@ -104,10 +104,10 @@ namespace geosimd
 			return std::complex<T>{real_val, imag_val};
 		}
 
-		GEOSIMD_INLINE constexpr auto get() const
+		GEOSIMD_INLINE_OPT constexpr auto get() const
 		{ return m_value; }
 
-		GEOSIMD_INLINE constexpr auto& get()
+		GEOSIMD_INLINE_OPT constexpr auto& get()
 		{ return m_value; }
 
 	private:

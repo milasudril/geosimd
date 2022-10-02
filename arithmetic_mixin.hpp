@@ -79,7 +79,7 @@ namespace geosimd
 			return true;
 		}
 
-		GEOSIMD_INLINE constexpr bool operator!=(Derived other) const
+		GEOSIMD_INLINE_OPT constexpr bool operator!=(Derived other) const
 		{
 			return !(*this == other);
 		}
