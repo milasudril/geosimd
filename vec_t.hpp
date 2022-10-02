@@ -70,6 +70,22 @@ namespace geosimd
 		}
 	};
 
+	template<class Op1, class Op2>
+	GEOSIMD_FULL_INLINE constexpr auto operator*(Op1 a, Op2 b)
+	{ return a *= b; }
+
+	template<class Op1, class Op2>
+	GEOSIMD_FULL_INLINE constexpr auto operator/(Op1 a, Op2 b)
+	{ return a /= b; }
+
+	template<class Op1, class Op2>
+	GEOSIMD_FULL_INLINE constexpr auto operator+(Op1 a, Op2 b)
+	{ return a += b; }
+
+	template<class Op1, class Op2>
+	GEOSIMD_FULL_INLINE constexpr auto operator-(Op1 a, Op2 b)
+	{ return a -= b; }
+
 	template<class T, size_t N>
 	class vec_t:public arithmetic_mixin<vec_t<T, N>, T>
 	{
@@ -100,36 +116,13 @@ namespace geosimd
 	};
 
 	template<class T, size_t N>
-	GEOSIMD_FULL_INLINE constexpr auto operator*(vec_t<T, N> a, vec_t<T, N> b)
-	{ return a *= b; }
-
-	template<class T, size_t N>
-	GEOSIMD_FULL_INLINE constexpr auto operator/(vec_t<T, N> a, vec_t<T, N> b)
-	{ return a /= b; }
-
-	template<class T, size_t N>
-	GEOSIMD_FULL_INLINE constexpr auto operator+(vec_t<T, N> a, vec_t<T, N> b)
-	{ return a += b; }
-
-	template<class T, size_t N>
-	GEOSIMD_FULL_INLINE constexpr auto operator-(vec_t<T, N> a, vec_t<T, N> b)
-	{ return a -= b; }
-
-	template<class T, size_t N>
 	GEOSIMD_FULL_INLINE constexpr auto operator*(T c, vec_t<T, N> a)
-	{ return a *= c; }
-
-	template<class T, size_t N>
-	GEOSIMD_FULL_INLINE constexpr auto operator*(vec_t<T, N> a, T c)
-	{ return a *= c; }
-
-	template<class T, size_t N>
-	GEOSIMD_FULL_INLINE constexpr auto operator/(vec_t<T, N> a, T c)
-	{ return a /= c; }
+	{ return a*c; }
 
 	template<class T, size_t N>
 	GEOSIMD_FULL_INLINE constexpr auto conj(vec_t<T, N> val)
 	{ return val; }
+
 
 	template<class T>
 	std::string to_string(T val)
