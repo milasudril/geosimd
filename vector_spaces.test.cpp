@@ -7,7 +7,7 @@
 #include <array>
 #include <chrono>
 
-namespace testcases
+namespace geosimd_test
 {
 	struct writable_address_space
 	{

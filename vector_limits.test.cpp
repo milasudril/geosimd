@@ -6,7 +6,7 @@
 
 #include <complex>
 
-namespace testcases
+namespace geosimd_test
 {
 	// This should be true on any x86-64 system
 

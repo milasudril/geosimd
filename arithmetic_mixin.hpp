@@ -3,6 +3,9 @@
 
 #include "./inline.hpp"
 
+#include <cstddef>
+#include <iterator>
+
 namespace geosimd
 {
 	template<class Derived, class ScalarType>
