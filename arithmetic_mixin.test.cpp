@@ -12,6 +12,10 @@ namespace geosimd_test
 	{
 		constexpr arithmetic_mixin_tester() = default;
 
+		constexpr explicit arithmetic_mixin_tester(geosimd::vector_storage<int, 4> vec):
+			m_vec{vec}
+		{}
+
 		constexpr explicit arithmetic_mixin_tester(int x, int y, int z, int w):
 			m_vec{x, y, z, w}
 		{}
@@ -119,4 +123,19 @@ TESTCASE(geosimd_arithmetic_mixin_sub_vec)
 
 	EXPECT_EQ(c, (geosimd_test::arithmetic_mixin_tester{1, 2, 3, 4}));
 	EXPECT_EQ(a, c);
+}
+
+TESTCASE(geosimd_arithmetic_mixin_unary_minus)
+{
+	geosimd_test::arithmetic_mixin_tester a{3, 5, 7, 9};
+	auto const b = -a;
+	EXPECT_EQ(b, (geosimd_test::arithmetic_mixin_tester{-3, -5, -7, -9}));
+	EXPECT_NE(b, a);
+}
+
+TESTCASE(geosimd_arithmetic_mixin_unary_plus)
+{
+	geosimd_test::arithmetic_mixin_tester a{3, 5, 7, 9};
+	auto const b = +a;
+	EXPECT_EQ(b, a);
 }

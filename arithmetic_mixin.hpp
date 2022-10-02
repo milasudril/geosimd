@@ -55,6 +55,18 @@ namespace geosimd
 			return derived;
 		}
 
+		GEOSIMD_FULL_INLINE constexpr Derived operator-() const
+		{
+			auto& derived = static_cast<Derived const&>(*this);
+			return Derived{-derived.get()};
+		}
+
+		GEOSIMD_FULL_INLINE constexpr Derived operator+() const
+		{
+			auto& derived = static_cast<Derived const&>(*this);
+			return derived;
+		}
+
 		GEOSIMD_FLATTEN constexpr bool operator==(Derived other) const
 		{
 			auto const diff = static_cast<Derived const&>(*this) - other;
@@ -70,6 +82,7 @@ namespace geosimd
 		{
 			return !(*this == other);
 		}
+
 	};
 
 	template<class Op1, class Op2>
