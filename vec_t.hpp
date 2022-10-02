@@ -6,43 +6,59 @@
 
 namespace geosimd
 {
-	template<class Derived>
+	template<class Derived, class ScalarType>
 	struct arithmetic_mixin
 	{
-		GEOSIMD_INLINE GEOSMID_FLATTEN constexpr Derived& operator*=(Derived other)
+		using scalar_type = ScalarType;
+
+		GEOSIMD_INLINE GEOSIMD_FLATTEN constexpr Derived& operator*=(Derived other)
 		{
 			auto& derived = static_cast<Derived&>(*this);
 			derived.get() *= other.get();
 			return derived;
 		}
 
-		GEOSIMD_INLINE GEOSMID_FLATTEN constexpr Derived& operator/=(Derived other)
+		GEOSIMD_INLINE GEOSIMD_FLATTEN constexpr Derived& operator/=(Derived other)
 		{
 			auto& derived = static_cast<Derived&>(*this);
 			derived.get() /= other.get();
 			return derived;
 		}
 
-		GEOSIMD_INLINE GEOSMID_FLATTEN constexpr Derived& operator+=(Derived other)
+		GEOSIMD_INLINE GEOSIMD_FLATTEN constexpr Derived& operator+=(Derived other)
 		{
 			auto& derived = static_cast<Derived&>(*this);
 			derived.get() += other.get();
 			return derived;
 		}
 
-		GEOSIMD_INLINE GEOSMID_FLATTEN constexpr Derived& operator-=(Derived other)
+		GEOSIMD_INLINE GEOSIMD_FLATTEN constexpr Derived& operator-=(Derived other)
 		{
 			auto& derived = static_cast<Derived&>(*this);
 			derived.get() -= other.get();
 			return derived;
 		}
 
-		constexpr bool operator==(Derived other) const
+		GEOSIMD_INLINE GEOSIMD_FLATTEN constexpr Derived& operator*=(scalar_type other)
+		{
+			auto& derived = static_cast<Derived&>(*this);
+			derived.get() *= other;
+			return derived;
+		}
+
+		GEOSIMD_INLINE GEOSIMD_FLATTEN constexpr Derived& operator/=(scalar_type other)
+		{
+			auto& derived = static_cast<Derived&>(*this);
+			derived.get() /= other;
+			return derived;
+		}
+
+		GEOSIMD_FLATTEN constexpr bool operator==(Derived other) const
 		{
 			auto const diff = static_cast<Derived const&>(*this) - other;
 			for(size_t k = 0; k != std::size(diff); ++k)
 			{
-				if(diff[k] != typename Derived::scalar_type{})
+				if(diff[k] != scalar_type{})
 				{ return false; }
 			}
 			return true;
@@ -55,14 +71,12 @@ namespace geosimd
 	};
 
 	template<class T, size_t N>
-	class vec_t:public arithmetic_mixin<vec_t<T, N>>
+	class vec_t:public arithmetic_mixin<vec_t<T, N>, T>
 	{
 	public:
 		GEOSIMD_INLINE static constexpr size_t size() { return N; }
 
 		using element_type = vector_storage<T, N>;
-
-		using scalar_type = T;
 
 		template<class ... U>
 		GEOSIMD_INLINE constexpr explicit vec_t(T first, U... args):m_value{first, args...}{}
@@ -136,7 +150,7 @@ namespace geosimd
 	}
 
 	template<class T, size_t N>
-	class vec_t<std::complex<T>, N>:public arithmetic_mixin<vec_t<std::complex<T>, N>>
+	class vec_t<std::complex<T>, N>:public arithmetic_mixin<vec_t<std::complex<T>, N>, T>
 	{
 	public:
 		using scalar_type = T;
@@ -168,11 +182,11 @@ namespace geosimd
 	};
 
 	template<class T, size_t N>
-	GEOSIMD_INLINE GEOSMID_FLATTEN constexpr auto conj(vec_t<std::complex<T>, N> val)
+	GEOSIMD_INLINE GEOSIMD_FLATTEN constexpr auto conj(vec_t<std::complex<T>, N> val)
 	{ return vec_t<std::complex<T>, N>{conj(val.get())}; }
 
 	template<class T, size_t N>
-	GEOSMID_FLATTEN constexpr auto inner_product(vec_t<T, N> a, vec_t<T, N> b)
+	GEOSIMD_FLATTEN constexpr auto inner_product(vec_t<T, N> a, vec_t<T, N> b)
 	{
 		auto const prod = a * conj(b);
 		T ret{};
