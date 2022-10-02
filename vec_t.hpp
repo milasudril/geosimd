@@ -14,6 +14,8 @@ namespace geosimd
 
 		using element_type = vector_storage<T, N>;
 
+		constexpr vec_t() = default;
+
 		template<class ... U>
 		GEOSIMD_INLINE constexpr explicit vec_t(T first, U... args):m_value{first, args...}{}
 
@@ -79,6 +81,8 @@ namespace geosimd
 	{
 	public:
 		using scalar_type = T;
+
+		constexpr vec_t() = default;
 
 		GEOSIMD_INLINE static constexpr size_t size() { return N; }
 

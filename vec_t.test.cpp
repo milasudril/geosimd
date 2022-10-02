@@ -4,6 +4,10 @@
 
 #include "testfwk/testfwk.hpp"
 
+static_assert(std::is_trivial_v<geosimd::vec4i32_t>);
+
+static_assert(std::is_trivially_copyable_v<geosimd::vec_t<std::complex<int>, 4>>);
+
 TESTCASE(geosimd_vect_real_inner_product)
 {
 	geosimd::vec4i32_t const a{1, 2, 3, 4};

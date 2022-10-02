@@ -45,6 +45,7 @@ namespace geosimd
 	{
 		using base = std::complex<vector_storage<T, N>>;
 		using base::base;
+		constexpr emulated_vector() = default;
 		explicit emulated_vector(base val):base{val}{}
 	};
 }
