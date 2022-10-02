@@ -100,23 +100,35 @@ namespace geosimd
 	};
 
 	template<class T, size_t N>
-	GEOSIMD_INLINE constexpr auto operator*(vec_t<T, N> a, vec_t<T, N> b)
+	GEOSIMD_INLINE GEOSIMD_FLATTEN constexpr auto operator*(vec_t<T, N> a, vec_t<T, N> b)
 	{ return a *= b; }
 
 	template<class T, size_t N>
-	GEOSIMD_INLINE constexpr auto operator/(vec_t<T, N> a, vec_t<T, N> b)
+	GEOSIMD_INLINE GEOSIMD_FLATTEN constexpr auto operator/(vec_t<T, N> a, vec_t<T, N> b)
 	{ return a /= b; }
 
 	template<class T, size_t N>
-	GEOSIMD_INLINE constexpr auto operator+(vec_t<T, N> a, vec_t<T, N> b)
+	GEOSIMD_INLINE GEOSIMD_FLATTEN constexpr auto operator+(vec_t<T, N> a, vec_t<T, N> b)
 	{ return a += b; }
 
 	template<class T, size_t N>
-	GEOSIMD_INLINE constexpr auto operator-(vec_t<T, N> a, vec_t<T, N> b)
+	GEOSIMD_INLINE GEOSIMD_FLATTEN constexpr auto operator-(vec_t<T, N> a, vec_t<T, N> b)
 	{ return a -= b; }
 
 	template<class T, size_t N>
-	GEOSIMD_INLINE constexpr auto conj(vec_t<T, N> val)
+	GEOSIMD_INLINE GEOSIMD_FLATTEN constexpr auto operator*(T c, vec_t<T, N> a)
+	{ return a *= c; }
+
+	template<class T, size_t N>
+	GEOSIMD_INLINE GEOSIMD_FLATTEN constexpr auto operator*(vec_t<T, N> a, T c)
+	{ return a *= c; }
+
+	template<class T, size_t N>
+	GEOSIMD_INLINE GEOSIMD_FLATTEN constexpr auto operator/(vec_t<T, N> a, T c)
+	{ return a /= c; }
+
+	template<class T, size_t N>
+	GEOSIMD_INLINE GEOSIMD_FLATTEN constexpr auto conj(vec_t<T, N> val)
 	{ return val; }
 
 	template<class T>
@@ -170,7 +182,7 @@ namespace geosimd
 		GEOSIMD_INLINE constexpr auto& get()
 		{ return m_value; }
 
-		GEOSIMD_INLINE constexpr auto operator[](size_t n) const
+		GEOSIMD_INLINE GEOSIMD_FLATTEN constexpr auto operator[](size_t n) const
 		{
 			auto const real_val = m_value.real()[n];
 			auto const imag_val = m_value.imag()[n];
