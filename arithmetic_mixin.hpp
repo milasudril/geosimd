@@ -5,6 +5,7 @@
 
 #include <cstddef>
 #include <iterator>
+#include <type_traits>
 
 namespace geosimd
 {
@@ -82,7 +83,6 @@ namespace geosimd
 		{
 			return !(*this == other);
 		}
-
 	};
 
 	template<class Op1, class Op2>
@@ -100,6 +100,10 @@ namespace geosimd
 	template<class Op1, class Op2>
 	GEOSIMD_FULL_INLINE constexpr auto operator-(Op1 a, Op2 b)
 	{ return a -= b; }
+
+	template<class Derived, class ScalarType = typename Derived::scalar_type>
+	inline constexpr auto uses_arithmetic_mixin_v =
+		std::is_base_of_v<arithmetic_mixin<Derived, ScalarType>, Derived>;
 }
 
 #endif

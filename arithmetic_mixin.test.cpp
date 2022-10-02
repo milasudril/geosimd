@@ -10,6 +10,8 @@ namespace geosimd_test
 {
 	struct arithmetic_mixin_tester:geosimd::arithmetic_mixin<arithmetic_mixin_tester, int>
 	{
+		using scalar_type = int;
+
 		constexpr arithmetic_mixin_tester() = default;
 
 		constexpr explicit arithmetic_mixin_tester(geosimd::vector_storage<int, 4> vec):
@@ -31,6 +33,8 @@ namespace geosimd_test
 	};
 
 	static_assert(std::is_trivial_v<arithmetic_mixin_tester>);
+
+	static_assert(geosimd::uses_arithmetic_mixin_v<arithmetic_mixin_tester>);
 
 	std::string to_string(arithmetic_mixin_tester val)
 	{

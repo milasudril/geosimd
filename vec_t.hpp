@@ -10,7 +10,8 @@ namespace geosimd
 	class vec_t:public arithmetic_mixin<vec_t<T, N>, T>
 	{
 	public:
-		GEOSIMD_INLINE static constexpr size_t size() { return N; }
+
+		using scalar_type = T;
 
 		using element_type = vector_storage<T, N>;
 
@@ -20,6 +21,8 @@ namespace geosimd
 		GEOSIMD_INLINE constexpr explicit vec_t(T first, U... args):m_value{first, args...}{}
 
 		GEOSIMD_INLINE constexpr vec_t(element_type val):m_value{val}{}
+
+		GEOSIMD_INLINE static constexpr size_t size() { return N; }
 
 		GEOSIMD_INLINE constexpr T& operator[](size_t n)
 		{ return m_value[n]; }
@@ -82,22 +85,17 @@ namespace geosimd
 	public:
 		using scalar_type = T;
 
+		using element_type = vector_storage<std::complex<T>, N>;
+
 		constexpr vec_t() = default;
 
-		GEOSIMD_INLINE static constexpr size_t size() { return N; }
-
-		using element_type = vector_storage<std::complex<T>, N>;
 
 		GEOSIMD_INLINE constexpr explicit vec_t(vec_t<T, N> real, vec_t<T, N> imag):
 			m_value{real.get(), imag.get()}{}
 
 		GEOSIMD_INLINE constexpr vec_t(element_type::base val):m_value{val}{}
 
-		GEOSIMD_INLINE constexpr auto get() const
-		{ return m_value; }
-
-		GEOSIMD_INLINE constexpr auto& get()
-		{ return m_value; }
+		GEOSIMD_INLINE static constexpr size_t size() { return N; }
 
 		GEOSIMD_FULL_INLINE constexpr auto operator[](size_t n) const
 		{
@@ -105,6 +103,12 @@ namespace geosimd
 			auto const imag_val = m_value.imag()[n];
 			return std::complex<T>{real_val, imag_val};
 		}
+
+		GEOSIMD_INLINE constexpr auto get() const
+		{ return m_value; }
+
+		GEOSIMD_INLINE constexpr auto& get()
+		{ return m_value; }
 
 	private:
 		element_type m_value;
