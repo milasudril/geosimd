@@ -28,4 +28,6 @@ The main abstraction over SIMD operations is `vec_t`. In addition to arithmetic 
 
 A note on performance
 ---------------------
-While efforts has been made to force the compiler to optimize away abstractions also without any optimizations turned on, it is still recommended to enable all optimizations when using this library.
+While efforts has been made to force the compiler to optimize away abstractions also without any optimizations turned on, it is still recommended to enable all optimizations when using this library. This means that the following options are recommended
+
+`-O3 -ffast-math -ftree-vectorize`

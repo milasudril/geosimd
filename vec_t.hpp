@@ -80,10 +80,10 @@ namespace geosimd
 	}
 
 	template<class T, size_t N>
-	class vec_t<std::complex<T>, N>:public arithmetic_mixin<vec_t<std::complex<T>, N>, T>
+	class vec_t<std::complex<T>, N>:public arithmetic_mixin<vec_t<std::complex<T>, N>, std::complex<T>>
 	{
 	public:
-		using scalar_type = T;
+		using scalar_type = std::complex<T>;
 
 		using element_type = vector_storage<std::complex<T>, N>;
 
@@ -109,6 +109,21 @@ namespace geosimd
 
 		GEOSIMD_INLINE_OPT constexpr auto& get()
 		{ return m_value; }
+
+
+		GEOSIMD_INLINE_OPT auto& operator/=(T x)
+		{
+			m_value = element_type{m_value.real()/x, m_value.imag()/x};
+			return *this;
+		}
+
+		GEOSIMD_INLINE_OPT auto& operator/=(scalar_type x)
+		{
+			auto const conj_x = std::conj(x);
+			m_value = element_type{m_value * conj_x};
+			*this /= ((x*conj_x).real());
+			return *this;
+		}
 
 	private:
 		element_type m_value;

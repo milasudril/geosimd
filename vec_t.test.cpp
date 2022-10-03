@@ -2,14 +2,17 @@
 
 #include "./vec_t.hpp"
 
+#include "./vector_spaces.hpp"
+
 #include "testfwk/testfwk.hpp"
 
 static_assert(std::is_trivial_v<geosimd::vec4i32_t>);
-
-static_assert(std::is_trivially_copyable_v<geosimd::vec_t<std::complex<int>, 4>>);
-
+static_assert(geosimd::vector<geosimd::vec4i32_t, int32_t>);
 static_assert(geosimd::uses_arithmetic_mixin_v<geosimd::vec4i32_t>);
 
+static_assert(std::is_trivially_copyable_v<geosimd::vec_t<std::complex<int>, 4>>);
+static_assert(geosimd::vector<geosimd::vec_t<std::complex<int>, 4>
+	, std::complex<int32_t>>);
 static_assert(geosimd::uses_arithmetic_mixin_v<geosimd::vec_t<std::complex<int>, 4>>);
 
 TESTCASE(geosimd_vect_real_inner_product)
@@ -58,4 +61,42 @@ TESTCASE(geosimd_vect_real_mul_scalar)
 	geosimd::vec4i32_t const a{1, 2, 3, 4};
 	auto const c = 2*a;
 	EXPECT_EQ(c, (geosimd::vec4i32_t{2, 4, 6, 8}));
+}
+
+TESTCASE(geosimd_vect_complex_div_scalar)
+{
+	geosimd::vec_t<std::complex<int>, 4> const a
+	{
+		geosimd::vec4i32_t{-11, -10, -9, -8},
+		geosimd::vec4i32_t{23, 30, 37, 44},
+	};
+
+	std::complex<int> const c{4, 3};
+
+	auto const b = a/c;
+	geosimd::vec_t<std::complex<int>, 4> const expected
+	{
+		geosimd::vec4i32_t{1, 2, 3, 4},
+		geosimd::vec4i32_t{5, 6, 7, 8},
+	};
+
+	EXPECT_EQ(b, expected);
+}
+
+TESTCASE(geosimd_vect_complex_div_inner_scalar)
+{
+	geosimd::vec_t<std::complex<int>, 4> const a
+	{
+		geosimd::vec4i32_t{-12, -9, -6, -3},
+		geosimd::vec4i32_t{0, 3, 6, 9},
+	};
+
+	auto const b = a/3;
+	geosimd::vec_t<std::complex<int>, 4> const expected
+	{
+		geosimd::vec4i32_t{-4, -3, -2, -1},
+		geosimd::vec4i32_t{0, 1, 2, 3},
+	};
+
+	EXPECT_EQ(b, expected);
 }
