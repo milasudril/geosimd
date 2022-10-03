@@ -142,6 +142,12 @@ namespace geosimd
 			return *this;
 		}
 
+		GEOSIMD_INLINE_OPT auto& operator/=(vec_t<T, N> x)
+		{
+			m_value /= x.get();
+			return *this;
+		}
+
 	private:
 		element_type m_value;
 	};

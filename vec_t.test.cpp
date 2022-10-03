@@ -124,3 +124,23 @@ TESTCASE(geosimd_vect_complex_div_complex)
 
 	EXPECT_EQ(c, expected);
 }
+
+TESTCASE(geosimd_vect_complex_div_real_vec)
+{
+	geosimd::vec_t<std::complex<int>, 4> const a
+	{
+		geosimd::vec4i32_t{9, 20, 33, 48},
+		geosimd::vec4i32_t{45, 60, 77, 96},
+	};
+
+	geosimd::vec4i32_t const b{9, 10, 11, 12};
+
+	auto const c = a/b;
+	geosimd::vec_t<std::complex<int>, 4> const expected
+	{
+		geosimd::vec4i32_t{1, 2, 3, 4},
+		geosimd::vec4i32_t{5, 6, 7, 8},
+	};
+
+	EXPECT_EQ(c, expected);
+}
