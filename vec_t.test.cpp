@@ -63,6 +63,26 @@ TESTCASE(geosimd_vect_real_mul_scalar)
 	EXPECT_EQ(c, (geosimd::vec4i32_t{2, 4, 6, 8}));
 }
 
+TESTCASE(geosimd_vect_complex_mul_scalar)
+{
+	geosimd::vec_t<std::complex<int>, 4> const a
+	{
+		geosimd::vec4i32_t{1, 2, 3, 4},
+		geosimd::vec4i32_t{5, 6, 7, 8},
+	};
+
+	std::complex<int> const b{2, 3};
+
+	auto const c = a*b;
+	geosimd::vec_t<std::complex<int>, 4> const expected
+	{
+		geosimd::vec4i32_t{-13, -14, -15, -16},
+		geosimd::vec4i32_t{13, 18, 23, 28},
+	};
+
+	EXPECT_EQ(c, expected);
+}
+
 TESTCASE(geosimd_vect_complex_div_scalar)
 {
 	geosimd::vec_t<std::complex<int>, 4> const a
