@@ -119,18 +119,12 @@ namespace geosimd
 		constexpr auto imag() const
 		{ return m_value.imag(); }
 
-
-		GEOSIMD_INLINE_OPT auto& operator/=(T x)
-		{
-			m_value = element_type{m_value.real()/x, m_value.imag()/x};
-			return *this;
-		}
-
 		GEOSIMD_INLINE_OPT auto& operator/=(scalar_type x)
 		{
 			auto const conj_x = std::conj(x);
-			m_value *=  conj_x;
-			*this /= ((x*conj_x).real());
+			m_value *= conj_x;
+			auto const tmp = (x*conj_x).real();
+			m_value = element_type{m_value.real()/tmp, m_value.imag()/tmp};
 			return *this;
 		}
 
@@ -139,12 +133,6 @@ namespace geosimd
 			auto const conj_x = conj(x);
 			m_value *= conj_x.get();
 			m_value /= ((x*conj_x).real());
-			return *this;
-		}
-
-		GEOSIMD_INLINE_OPT auto& operator/=(vec_t<T, N> x)
-		{
-			m_value /= x.get();
 			return *this;
 		}
 

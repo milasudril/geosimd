@@ -127,6 +127,7 @@ TESTCASE(geosimd_vect_complex_div_scalar)
 	EXPECT_EQ(b, expected);
 }
 
+#if 0
 TESTCASE(geosimd_vect_complex_div_inner_scalar)
 {
 	geosimd::vec_t<std::complex<int>, 4> const a
@@ -144,6 +145,7 @@ TESTCASE(geosimd_vect_complex_div_inner_scalar)
 
 	EXPECT_EQ(b, expected);
 }
+#endif
 
 TESTCASE(geosimd_vect_complex_div_complex)
 {
@@ -169,6 +171,7 @@ TESTCASE(geosimd_vect_complex_div_complex)
 	EXPECT_EQ(c, expected);
 }
 
+#if 0
 TESTCASE(geosimd_vect_complex_div_real_vec)
 {
 	geosimd::vec_t<std::complex<int>, 4> const a
@@ -188,3 +191,4 @@ TESTCASE(geosimd_vect_complex_div_real_vec)
 
 	EXPECT_EQ(c, expected);
 }
+#endif
