@@ -14,19 +14,6 @@ namespace geosimd
 	{
 		using scalar_type = ScalarType;
 
-		GEOSIMD_FULL_INLINE constexpr Derived& operator*=(Derived other)
-		{
-			auto& derived = static_cast<Derived&>(*this);
-			derived.get() *= other.get();
-			return derived;
-		}
-
-		GEOSIMD_FULL_INLINE constexpr Derived& operator/=(Derived other)
-		{
-			auto& derived = static_cast<Derived&>(*this);
-			derived.get() /= other.get();
-			return derived;
-		}
 
 		GEOSIMD_FULL_INLINE constexpr Derived& operator+=(Derived other)
 		{
@@ -82,6 +69,20 @@ namespace geosimd
 		GEOSIMD_INLINE_OPT constexpr bool operator!=(Derived other) const
 		{
 			return !(*this == other);
+		}
+
+		GEOSIMD_FULL_INLINE constexpr Derived& operator*=(Derived other)
+		{
+			auto& derived = static_cast<Derived&>(*this);
+			derived.get() *= other.get();
+			return derived;
+		}
+
+		GEOSIMD_FULL_INLINE constexpr Derived& operator/=(Derived other)
+		{
+			auto& derived = static_cast<Derived&>(*this);
+			derived.get() /= other.get();
+			return derived;
 		}
 	};
 
