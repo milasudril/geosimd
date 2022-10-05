@@ -123,7 +123,7 @@ namespace geosimd
 		{
 			auto const conj_x = std::conj(x);
 			m_value *= conj_x;
-			auto const tmp = (x*conj_x).real();
+			auto const tmp = x.real()*x.real() + x.imag()*x.imag();
 			m_value = element_type{m_value.real()/tmp, m_value.imag()/tmp};
 			return *this;
 		}
@@ -132,7 +132,7 @@ namespace geosimd
 		{
 			auto const conj_x = conj(x);
 			m_value *= conj_x.get();
-			m_value /= ((x*conj_x).real());
+			m_value /= x.real()*x.real() + x.imag()*x.imag();
 			return *this;
 		}
 
