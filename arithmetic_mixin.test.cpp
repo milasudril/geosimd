@@ -15,21 +15,18 @@ namespace geosimd_test
 		constexpr arithmetic_mixin_tester() = default;
 
 		constexpr explicit arithmetic_mixin_tester(geosimd::vector_storage<int, 4> vec):
-			m_vec{vec}
+			m_value{vec}
 		{}
 
 		constexpr explicit arithmetic_mixin_tester(int x, int y, int z, int w):
-			m_vec{x, y, z, w}
+			m_value{x, y, z, w}
 		{}
 
-		geosimd::vector_storage<int, 4> m_vec;
-
-		auto& get() { return m_vec; }
-		auto get() const { return m_vec; }
+		geosimd::vector_storage<int, 4> m_value;
 
 		static constexpr size_t size() { return 4; }
 
-		auto operator[](size_t n) const { return m_vec[n]; }
+		auto operator[](size_t n) const { return m_value[n]; }
 	};
 
 	static_assert(std::is_trivial_v<arithmetic_mixin_tester>);
