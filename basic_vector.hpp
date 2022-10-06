@@ -16,9 +16,13 @@ namespace geosimd
 
 		friend class vectorops_mixin<vector_type, typename V::scalar_type>;
 
+		GEOSIMD_INLINE_OPT constexpr basic_vector():m_value{}{}
+
 		template<class ... Args>
 		requires std::conjunction_v<std::is_same<scalar_type, Args>...>
-		explicit basic_vector(scalar_type x, Args ... xn):m_value{x, xn..., scalar_type{}}{}
+		GEOSIMD_INLINE_OPT constexpr explicit basic_vector(scalar_type x, Args ... xn):
+			m_value{x, xn..., scalar_type{}}
+		{}
 
 		GEOSIMD_INLINE_OPT constexpr scalar_type operator[](size_t n) const
 		{ return m_value[n]; }

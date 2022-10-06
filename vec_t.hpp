@@ -19,7 +19,7 @@ namespace geosimd
 		constexpr vec_t() = default;
 
 		template<class ... Args>
-		requires std::conjunction_v<std::is_same<scalar_type, Args>...>
+		requires (std::conjunction_v<std::is_same<scalar_type, Args>...> && sizeof...(Args) == N - 1)
 		GEOSIMD_INLINE_OPT constexpr explicit vec_t(scalar_type x, Args... xn):m_value{x, xn...}{}
 
 		GEOSIMD_INLINE_OPT constexpr vec_t(element_type val):m_value{val}{}
@@ -49,7 +49,6 @@ namespace geosimd
 	template<class T, size_t N>
 	GEOSIMD_FULL_INLINE constexpr auto conj(vec_t<T, N> val)
 	{ return val; }
-
 
 	template<class T>
 	std::string to_string(T val)
@@ -96,7 +95,6 @@ namespace geosimd
 		using element_type = vector_storage<std::complex<T>, N>;
 
 		constexpr vec_t() = default;
-
 
 		GEOSIMD_INLINE_OPT constexpr explicit vec_t(vec_t<T, N> real, vec_t<T, N> imag):
 			m_value{real.get(), imag.get()}{}
