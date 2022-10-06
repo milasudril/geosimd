@@ -18,8 +18,9 @@ namespace geosimd
 
 		constexpr vec_t() = default;
 
-		template<class ... U>
-		GEOSIMD_INLINE_OPT constexpr explicit vec_t(T first, U... args):m_value{first, args...}{}
+		template<class ... Args>
+		requires std::conjunction_v<std::is_same<scalar_type, Args>...>
+		GEOSIMD_INLINE_OPT constexpr explicit vec_t(scalar_type x, Args... xn):m_value{x, xn...}{}
 
 		GEOSIMD_INLINE_OPT constexpr vec_t(element_type val):m_value{val}{}
 
