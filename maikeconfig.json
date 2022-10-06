@@ -62,7 +62,8 @@
                             "-g",
                             "-Wall",
                             "-Wextra",
-                            "-Werror"
+                            "-Werror",
+                            "-fconcepts-diagnostics-depth=2"
                         ],
                         "iquote": [
                             "."

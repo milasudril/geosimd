@@ -35,6 +35,9 @@ namespace geosimd
 			return derived;
 		}
 
+		GEOSIMD_FULL_INLINE friend constexpr auto operator*(scalar_type a, Derived b)
+		{ return b *= a; }
+
 		GEOSIMD_FULL_INLINE constexpr Derived& operator/=(scalar_type other)
 		{
 			auto& derived = static_cast<Derived&>(*this);
