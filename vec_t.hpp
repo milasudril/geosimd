@@ -2,15 +2,15 @@
 #define GEOSIMD_VECT_HPP
 
 #include "./vector_storage.hpp"
-#include "./arithmetic_mixin.hpp"
+#include "./vectorops_mixin.hpp"
 
 namespace geosimd
 {
 	template<class T, size_t N>
-	class vec_t:public arithmetic_mixin<vec_t<T, N>, T, true>
+	class vec_t:public vectorops_mixin<vec_t<T, N>, T, true>
 	{
 	public:
-		friend class arithmetic_mixin<vec_t<T, N>, T, true>;
+		friend class vectorops_mixin<vec_t<T, N>, T, true>;
 
 		using scalar_type = T;
 
@@ -84,10 +84,10 @@ namespace geosimd
 	GEOSIMD_FULL_INLINE constexpr auto conj(vec_t<std::complex<T>, N> val);
 
 	template<class T, size_t N>
-	class vec_t<std::complex<T>, N>:public arithmetic_mixin<vec_t<std::complex<T>, N>, std::complex<T>, true>
+	class vec_t<std::complex<T>, N>:public vectorops_mixin<vec_t<std::complex<T>, N>, std::complex<T>, true>
 	{
 	public:
-		friend class arithmetic_mixin<vec_t<std::complex<T>, N>, std::complex<T>, true>;
+		friend class vectorops_mixin<vec_t<std::complex<T>, N>, std::complex<T>, true>;
 		using enable_hadamard_prodcut_t = void;
 
 		using scalar_type = std::complex<T>;

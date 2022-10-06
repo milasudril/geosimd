@@ -8,12 +8,12 @@
 
 static_assert(std::is_trivial_v<geosimd::vec4i32_t>);
 static_assert(geosimd::vector<geosimd::vec4i32_t, int32_t>);
-static_assert(geosimd::uses_arithmetic_mixin_v<geosimd::vec4i32_t>);
+static_assert(geosimd::uses_vectorops_mixin_v<geosimd::vec4i32_t>);
 
 static_assert(std::is_trivially_copyable_v<geosimd::vec_t<std::complex<int>, 4>>);
 static_assert(geosimd::vector<geosimd::vec_t<std::complex<int>, 4>
 	, std::complex<int32_t>>);
-static_assert(geosimd::uses_arithmetic_mixin_v<geosimd::vec_t<std::complex<int>, 4>>);
+static_assert(geosimd::uses_vectorops_mixin_v<geosimd::vec_t<std::complex<int>, 4>>);
 
 TESTCASE(geosimd_vect_real_inner_product)
 {

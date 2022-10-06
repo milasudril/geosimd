@@ -1,5 +1,5 @@
-#ifndef ARITHMETIC_MIXIN_HPP
-#define ARITHMETIC_MIXIN_HPP
+#ifndef GEOSIMD_VECTORPS_MIXIN_HPP
+#define GEOSIMD_VECTORPS_MIXIN_HPP
 
 #include "./inline.hpp"
 
@@ -10,10 +10,9 @@
 namespace geosimd
 {
 	template<class Derived, class ScalarType, bool EnableHadamardProduct = false>
-	struct arithmetic_mixin
+	struct vectorops_mixin
 	{
 		using scalar_type = ScalarType;
-
 
 		GEOSIMD_FULL_INLINE constexpr Derived& operator+=(Derived other)
 		{
@@ -107,9 +106,9 @@ namespace geosimd
 	{ return a -= b; }
 
 	template<class Derived, class ScalarType = typename Derived::scalar_type>
-	inline constexpr auto uses_arithmetic_mixin_v =
-		std::is_base_of_v<arithmetic_mixin<Derived, ScalarType, false>, Derived> ||
-		std::is_base_of_v<arithmetic_mixin<Derived, ScalarType, true>, Derived>;
+	inline constexpr auto uses_vectorops_mixin_v =
+		std::is_base_of_v<vectorops_mixin<Derived, ScalarType, false>, Derived> ||
+		std::is_base_of_v<vectorops_mixin<Derived, ScalarType, true>, Derived>;
 }
 
 #endif
