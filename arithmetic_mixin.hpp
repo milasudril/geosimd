@@ -9,7 +9,7 @@
 
 namespace geosimd
 {
-	template<class Derived, class ScalarType>
+	template<class Derived, class ScalarType, bool EnableHadamardProduct = false>
 	struct arithmetic_mixin
 	{
 		using scalar_type = ScalarType;
@@ -71,6 +71,8 @@ namespace geosimd
 			return !(*this == other);
 		}
 
+		template<class T = Derived>
+		requires EnableHadamardProduct
 		GEOSIMD_FULL_INLINE constexpr Derived& operator*=(Derived other)
 		{
 			auto& derived = static_cast<Derived&>(*this);
@@ -78,6 +80,8 @@ namespace geosimd
 			return derived;
 		}
 
+		template<class T = Derived>
+		requires EnableHadamardProduct
 		GEOSIMD_FULL_INLINE constexpr Derived& operator/=(Derived other)
 		{
 			auto& derived = static_cast<Derived&>(*this);
@@ -104,7 +108,8 @@ namespace geosimd
 
 	template<class Derived, class ScalarType = typename Derived::scalar_type>
 	inline constexpr auto uses_arithmetic_mixin_v =
-		std::is_base_of_v<arithmetic_mixin<Derived, ScalarType>, Derived>;
+		std::is_base_of_v<arithmetic_mixin<Derived, ScalarType, false>, Derived> ||
+		std::is_base_of_v<arithmetic_mixin<Derived, ScalarType, true>, Derived>;
 }
 
 #endif

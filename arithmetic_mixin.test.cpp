@@ -8,7 +8,7 @@
 
 namespace geosimd_test
 {
-	struct arithmetic_mixin_tester:geosimd::arithmetic_mixin<arithmetic_mixin_tester, int>
+	struct arithmetic_mixin_tester:geosimd::arithmetic_mixin<arithmetic_mixin_tester, int, true>
 	{
 		using scalar_type = int;
 
@@ -27,6 +27,8 @@ namespace geosimd_test
 		static constexpr size_t size() { return 4; }
 
 		auto operator[](size_t n) const { return m_value[n]; }
+
+		using enable_hadamard_prodcut_t = int;
 	};
 
 	static_assert(std::is_trivial_v<arithmetic_mixin_tester>);
