@@ -15,6 +15,12 @@ namespace geosimd
 		{ a[std::declval<size_t>()] };
 	};
 
+	template<class VectorType>
+	concept has_size = requires(VectorType a)
+	{
+		{ std::size(a) } -> std::same_as<size_t>;
+	};
+
 	template<vector_space V>
 	class basic_vector:public vectorops_mixin<basic_vector<V>, typename V::scalar_type>
 	{
@@ -47,6 +53,14 @@ namespace geosimd
 			{ return m_value[n]; }
 			else
 			{ return m_value; }
+		}
+
+		GEOSIMD_INLINE_OPT constexpr size_t size() const
+		{
+			if constexpr(has_size<storage_type>)
+			{ return std::size(m_value) - static_cast<size_t>(has_homogenous_coordinates<V>); }
+			else
+			{ return 1; }
 		}
 
 	private:

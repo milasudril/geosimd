@@ -39,6 +39,8 @@ TESTCASE(geosimd_basic_vector_3d_construct)
 	EXPECT_EQ(b[1], 2);
 	EXPECT_EQ(b[2], 3);
 	EXPECT_EQ(b[3], 0);
+
+	EXPECT_EQ(std::size(b), 3);
 }
 
 TESTCASE(geosimd_basic_vector_1d_construct)
@@ -48,4 +50,6 @@ TESTCASE(geosimd_basic_vector_1d_construct)
 
 	constexpr geosimd::basic_vector<geosimd_test::my_vector_space_1d> b{1};
 	EXPECT_EQ(b[0], 1);
+
+	EXPECT_EQ(std::size(b), 1);
 }
