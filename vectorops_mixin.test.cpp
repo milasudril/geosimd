@@ -8,9 +8,11 @@
 
 namespace geosimd_test
 {
-	struct vectorops_mixin_tester:geosimd::vectorops_mixin<vectorops_mixin_tester, int, true>
+	struct vectorops_mixin_tester:geosimd::vectorops_mixin<vectorops_mixin_tester, int>
 	{
 		using scalar_type = int;
+
+		using enable_hadamard_product_t = void;
 
 		constexpr vectorops_mixin_tester() = default;
 
@@ -28,7 +30,6 @@ namespace geosimd_test
 
 		auto operator[](size_t n) const { return m_value[n]; }
 
-		using enable_hadamard_prodcut_t = int;
 	};
 
 	static_assert(std::is_trivial_v<vectorops_mixin_tester>);

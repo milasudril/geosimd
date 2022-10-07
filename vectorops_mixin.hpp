@@ -9,7 +9,7 @@
 
 namespace geosimd
 {
-	template<class Derived, class ScalarType, bool EnableHadamardProduct = false>
+	template<class Derived, class ScalarType>
 	struct vectorops_mixin
 	{
 		using scalar_type = ScalarType;
@@ -74,7 +74,7 @@ namespace geosimd
 		}
 
 		template<class T = Derived>
-		requires EnableHadamardProduct
+		requires requires(T) { typename Derived::enable_hadamard_product_t; }
 		GEOSIMD_FULL_INLINE constexpr Derived& operator*=(Derived other)
 		{
 			auto& derived = static_cast<Derived&>(*this);
@@ -83,7 +83,7 @@ namespace geosimd
 		}
 
 		template<class T = Derived>
-		requires EnableHadamardProduct
+		requires requires(T) { typename T::enable_hadamard_product_t; }
 		GEOSIMD_FULL_INLINE constexpr Derived& operator/=(Derived other)
 		{
 			auto& derived = static_cast<Derived&>(*this);
@@ -110,8 +110,7 @@ namespace geosimd
 
 	template<class Derived, class ScalarType = typename Derived::scalar_type>
 	inline constexpr auto uses_vectorops_mixin_v =
-		std::is_base_of_v<vectorops_mixin<Derived, ScalarType, false>, Derived> ||
-		std::is_base_of_v<vectorops_mixin<Derived, ScalarType, true>, Derived>;
+		std::is_base_of_v<vectorops_mixin<Derived, ScalarType>, Derived>;
 }
 
 #endif

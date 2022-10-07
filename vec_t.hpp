@@ -7,10 +7,12 @@
 namespace geosimd
 {
 	template<class T, size_t N>
-	class vec_t:public vectorops_mixin<vec_t<T, N>, T, true>
+	class vec_t:public vectorops_mixin<vec_t<T, N>, T>
 	{
 	public:
-		friend class vectorops_mixin<vec_t<T, N>, T, true>;
+		using enable_hadamard_product_t = void;
+
+		friend class vectorops_mixin<vec_t<T, N>, T>;
 
 		using scalar_type = T;
 
@@ -84,11 +86,11 @@ namespace geosimd
 	GEOSIMD_FULL_INLINE constexpr auto conj(vec_t<std::complex<T>, N> val);
 
 	template<class T, size_t N>
-	class vec_t<std::complex<T>, N>:public vectorops_mixin<vec_t<std::complex<T>, N>, std::complex<T>, true>
+	class vec_t<std::complex<T>, N>:public vectorops_mixin<vec_t<std::complex<T>, N>, std::complex<T>>
 	{
 	public:
-		friend class vectorops_mixin<vec_t<std::complex<T>, N>, std::complex<T>, true>;
-		using enable_hadamard_prodcut_t = void;
+		friend class vectorops_mixin<vec_t<std::complex<T>, N>, std::complex<T>>;
+		using enable_hadamard_product_t= void;
 
 		using scalar_type = std::complex<T>;
 
