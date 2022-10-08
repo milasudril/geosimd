@@ -127,49 +127,33 @@ namespace geosimd
 		&& (supports_norm<typename T::vector_type> || overrides_norm<T>);
 
 	template<class T, class ScalarType>
-	concept usable_in_hilbert_space = vector<T, ScalarType>
-		&& requires(T a)
+	concept supports_inner_product = vector<T, ScalarType> && requires(T a, T b)
 	{
-		{ inner_product(a) } -> std::totally_ordered;
+		{inner_product(a, b)} -> std::same_as<ScalarType>;
+
+		{inner_product(a)} -> std::totally_ordered;
 	};
 
-#if 0
 	template<class T>
-	concept hilbert_space = normed_space<T>
-		&& requires(T)
-	{
-		typename T::norm_is_sqrt_of_inner_product;
+	concept inner_product_space = vector_space<T>
+		&& supports_inner_product<typename T::vector_type, typename T::scalar_type>;
 
-		{ inner_product(std::declval<typename T::vector_type>(), std::declval<typename T::vector_type>()) }
-			-> std::totally_ordered;
+	template<class VectorType, class ScalarType>
+	requires supports_inner_product<VectorType, ScalarType>
+	struct hilbert_space
+	{
+		using vector_type = VectorType;
+		using scalar_type = ScalarType;
+
+		static constexpr auto norm(vector_type v)
+		{
+			return std::sqrt(norm_squared(v));
+		}
+
+		static constexpr auto norm_squared(vector_type v)
+		{
+			return inner_product(v);
+		}
 	};
-
-	template<hilbert_space H>
-	constexpr auto norm_squared(typename H::vector_type a)
-	{
-		return inner_product(a, a);
-	}
-
-	template<hilbert_space H>
-	constexpr auto norm(typename H::vector_type a)
-	{
-		return std::sqrt(norm_squared(a));
-	}
-
-	template<class T>
-	concept affine_hilbert_space = metric_space<T> && hilbert_space<T>;
-
-	template<affine_hilbert_space H>
-	constexpr auto distance_squared(typename H::point_type a, typename H::point_type b)
-	{
-		return norm_squared(a - b);
-	}
-
-	template<affine_hilbert_space H>
-	constexpr auto distnace(typename H::point_type a, typename H::point_type b)
-	{
-		return std::sqrt(distance_squared(a, b));
-	}
-#endif
 }
 #endif
