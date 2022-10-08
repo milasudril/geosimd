@@ -20,8 +20,6 @@ namespace geosimd_test
 	static_assert(geosimd::affine_space<writable_address_space>);
 	static_assert(geosimd::metric_space<writable_address_space>);
 	static_assert(geosimd::normed_space<writable_address_space>);
-	static_assert(!geosimd::hilbert_space<writable_address_space>);
-	static_assert(!geosimd::affine_hilbert_space<writable_address_space>);
 
 	struct number_line
 	{
@@ -34,8 +32,6 @@ namespace geosimd_test
 	static_assert(geosimd::affine_space<number_line>);
 	static_assert(geosimd::metric_space<number_line>);
 	static_assert(geosimd::normed_space<number_line>);
-	static_assert(!geosimd::hilbert_space<number_line>);
-	static_assert(!geosimd::affine_hilbert_space<number_line>);
 
 	struct complex_plane
 	{
@@ -48,8 +44,6 @@ namespace geosimd_test
 	static_assert(geosimd::affine_space<complex_plane>);
 	static_assert(geosimd::metric_space<complex_plane>);
 	static_assert(geosimd::normed_space<complex_plane>);
-	static_assert(!geosimd::hilbert_space<complex_plane>);
-	static_assert(!geosimd::affine_hilbert_space<complex_plane>);
 
 	struct timeline
 	{
@@ -63,8 +57,6 @@ namespace geosimd_test
 	static_assert(geosimd::affine_space<timeline>);
 	static_assert(geosimd::metric_space<timeline>);
 	static_assert(geosimd::normed_space<timeline>);
-	static_assert(!geosimd::hilbert_space<timeline>);
-	static_assert(!geosimd::affine_hilbert_space<timeline>);
 }
 
 

@@ -89,12 +89,18 @@ namespace geosimd
 	}
 
 	template<class T>
-	concept metric_space = affine_space<T>
-		&& requires(T)
+	concept supports_distance = requires(T a, T b)
 	{
-		{ distance(std::declval<typename T::point_type>(), std::declval<typename T::point_type>()) }
-			-> std::totally_ordered;
+		{ distance(a, b) } -> std::totally_ordered;
 	};
+
+	template<class T>
+	concept metric_space = affine_space<T>
+		&& (supports_distance<typename T::point_type> || requires(T)
+	{
+		{ T::distnace(std::declval<typename T::point_type>(), std::declval<typename T::point_type>()) }
+			-> std::totally_ordered;
+	});
 
 	template<supports_abs T>
 	constexpr auto norm(T val)
@@ -104,11 +110,17 @@ namespace geosimd
 	}
 
 	template<class T>
-	concept normed_space = vector_space<T>
-		&& requires(T)
+	concept supports_norm = requires(T a)
 	{
-		{ norm(std::declval<typename T::vector_type>()) } -> std::totally_ordered;
+		{ norm(a) } -> std::totally_ordered;
 	};
+
+	template<class T>
+	concept normed_space = vector_space<T>
+		&& (supports_norm<typename T::vector_type> || requires(T)
+	{
+		{ T::norm(std::declval<typename T::vector_type>()) } -> std::totally_ordered;
+	});
 
 	template<class T, class ScalarType>
 	concept usable_in_hilbert_space = vector<T, ScalarType>
@@ -117,6 +129,7 @@ namespace geosimd
 		{ inner_product(a) } -> std::totally_ordered;
 	};
 
+#if 0
 	template<class T>
 	concept hilbert_space = normed_space<T>
 		&& requires(T)
@@ -153,5 +166,6 @@ namespace geosimd
 	{
 		return std::sqrt(distance_squared(a, b));
 	}
+#endif
 }
 #endif
