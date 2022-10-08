@@ -1,4 +1,4 @@
-//	{"target":{"name":"basic_point.test"}}
+//@	{"target":{"name":"basic_point.test"}}
 
 #include "./basic_point.hpp"
 
@@ -14,6 +14,12 @@ namespace geosimd
 		using point_type = geosimd::vec4i32_t;
 	};
 
-	static_assert(geosimd::point<geosimd::basic_point<my_vector_space_3d>,
-		geosimd::basic_vector<my_vector_space_3d>, int>);
+	struct my_vector_space_1d
+	{
+		using vector_type = intptr_t;
+		using scalar_type = intptr_t;
+		using point_type = std::byte*;
+	};
+
+	static_assert(geosimd::affine_space<my_vector_space_1d>);
 }

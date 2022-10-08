@@ -8,14 +8,12 @@
 namespace geosimd
 {
 	template<affine_space V>
-	class basic_point:public vectorops_mixin<basic_point<V>, typename V::scalar_type>
+	class basic_point
 	{
 	public:
 		using vector_type = typename V::vector_type;
 		using scalar_type = typename V::scalar_type;
 		using storage_type = typename V::point_type;
-
-		friend class vectorops_mixin<basic_point, typename V::scalar_type>;
 
 		template<class T = void>
 		requires(!has_homogenous_coordinates<V>)
