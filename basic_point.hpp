@@ -59,9 +59,36 @@ namespace geosimd
 		GEOSIMD_INLINE_OPT constexpr auto get() const
 		{ return m_value; }
 
+		constexpr bool operator==(basic_point const&) const = default;
+		constexpr bool operator!=(basic_point const&) const = default;
+
+		GEOSIMD_INLINE_OPT constexpr basic_point& operator+=(vector_type other)
+		{
+			m_value += other;
+			return *this;
+		}
+
+		GEOSIMD_INLINE_OPT constexpr basic_point& operator-=(vector_type other)
+		{
+			m_value -= other;
+			return *this;
+		}
+
 	private:
 		storage_type m_value;
 	};
+
+	template<affine_space V>
+	GEOSIMD_INLINE_OPT constexpr auto operator+(basic_point<V> a, typename basic_point<V>::vector_type b)
+	{ return a += b; }
+
+	template<affine_space V>
+	GEOSIMD_INLINE_OPT constexpr auto operator-(basic_point<V> a, typename basic_point<V>::vector_type b)
+	{ return a -= b; }
+
+	template<affine_space V>
+	GEOSIMD_INLINE_OPT constexpr auto operator-(basic_point<V> a, basic_point<V> b)
+	{ return typename basic_point<V>::vector_type{a.get() - b.get()}; }
 #if 0
 	template<normed_space V>
 	auto norm(basic_point<V> a)

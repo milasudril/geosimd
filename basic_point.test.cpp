@@ -23,5 +23,5 @@ namespace geosimd
 
 	static_assert(geosimd::affine_space<my_vector_space_1d>);
 
-//	static_assert(geosimd::point<geosimd::basic_point<my_vector_space_1d>>);
+	static_assert(geosimd::point<geosimd::basic_point<my_vector_space_1d>>);
 }
