@@ -145,7 +145,7 @@ namespace geosimd
 	concept inner_product_space = vector_space<T>
 		&& supports_inner_product<typename T::vector_type, typename T::scalar_type>;
 
-	template<class VectorType, class ScalarType>
+	template<class VectorType, class ScalarType = VectorType::scalar_type>
 	requires supports_inner_product<VectorType, ScalarType>
 	struct hilbert_space
 	{

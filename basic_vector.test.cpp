@@ -8,7 +8,7 @@
 
 namespace geosimd_test
 {
-	struct my_vector_space_3d:public geosimd::hilbert_space<geosimd::vec4i32_t, int>
+	struct my_vector_space_3d:public geosimd::hilbert_space<geosimd::vec4i32_t>
 	{
 		using enable_homogenous_coordinates_t = void;
 	};

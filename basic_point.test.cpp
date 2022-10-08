@@ -8,11 +8,14 @@
 
 namespace geosimd
 {
-	struct my_vector_space_3d:public geosimd::hilbert_space<geosimd::vec4i32_t, int>
+	struct my_vector_space_3d:public geosimd::hilbert_space<geosimd::vec4i32_t>
 	{
 		using enable_homogenous_coordinates_t = void;
 		using point_type = geosimd::vec4i32_t;
 	};
+
+	static_assert(geosimd::affine_space<my_vector_space_3d>);
+	static_assert(geosimd::point<geosimd::basic_point<my_vector_space_3d>>);
 
 	struct my_vector_space_1d
 	{
@@ -22,6 +25,5 @@ namespace geosimd
 	};
 
 	static_assert(geosimd::affine_space<my_vector_space_1d>);
-
 	static_assert(geosimd::point<geosimd::basic_point<my_vector_space_1d>>);
 }
