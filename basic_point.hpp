@@ -1,36 +1,45 @@
-#ifndef GEOSIMD_BASICVECTOR_HPP
-#define GEOSIMD_BASICVECTOR_HPP
+#ifndef GEOSIMD_BASICPOINT_HPP
+#define GEOSIMD_BASICPOINT_HPP
 
 #include "./vector_spaces.hpp"
 #include "./vectorops_mixin.hpp"
+#include "./basic_vector.hpp"
 
 namespace geosimd
 {
-	template<vector_space V>
-	class basic_vector:public vectorops_mixin<basic_vector<V>>
+	template<affine_space V>
+	class basic_point:public vectorops_mixin<basic_point<V>, typename V::scalar_type>
 	{
 	public:
+		using vector_type = typename V::vector_type;
 		using scalar_type = typename V::scalar_type;
-		using storage_type = typename V::vector_type;
-		using vector_type = basic_vector<V>;
+		using storage_type = typename V::point_type;
 
-		friend class vectorops_mixin<vector_type>;
+		friend class vectorops_mixin<basic_point, typename V::scalar_type>;
 
-		// TODO: This should use zero(empty<scalar_type>{}) to initialize m_value
-		GEOSIMD_INLINE_OPT constexpr basic_vector():m_value{}{}
+		template<class T = void>
+		requires(!has_homogenous_coordinates<V>)
+		GEOSIMD_INLINE_OPT constexpr basic_point():m_value{}{}
+
+		template<class T = void>
+		requires(has_homogenous_coordinates<V> && has_size<storage_type>)
+		GEOSIMD_INLINE_OPT constexpr basic_point():m_value{}
+		{
+			m_value[std::size(m_value) - 1] = one(empty<scalar_type>{});
+		}
 
 		template<class ... Args>
 		requires std::conjunction_v<std::is_same<scalar_type, Args>...>
 			&& (!has_homogenous_coordinates<V>)
-		GEOSIMD_INLINE_OPT constexpr explicit basic_vector(scalar_type x, Args ... xn):
+		GEOSIMD_INLINE_OPT constexpr explicit basic_point(scalar_type x, Args ... xn):
 			m_value{x, xn...}
 		{}
 
 		template<class ... Args>
 		requires std::conjunction_v<std::is_same<scalar_type, Args>...>
 			&& (has_homogenous_coordinates<V>)
-		GEOSIMD_INLINE_OPT constexpr explicit basic_vector(scalar_type x, Args ... xn):
-			m_value{x, xn..., zero(empty<scalar_type>{})}
+		GEOSIMD_INLINE_OPT constexpr explicit basic_point(scalar_type x, Args ... xn):
+			m_value{x, xn..., one(empty<scalar_type>{})}
 		{}
 
 		GEOSIMD_INLINE_OPT constexpr scalar_type operator[](size_t n) const
@@ -55,9 +64,9 @@ namespace geosimd
 	private:
 		storage_type m_value;
 	};
-
+#if 0
 	template<normed_space V>
-	auto norm(basic_vector<V> a)
+	auto norm(basic_point<V> a)
 	{
 		if constexpr(overrides_norm<V>)
 		{ return V::norm(a.get()); }
@@ -67,10 +76,11 @@ namespace geosimd
 
 	template<vector_space V>
 	requires is_hilbert_space_v<V>
-	auto norm_squared(basic_vector<V> a)
+	auto norm_squared(basic_point<V> a)
 	{
 		return V::norm_squared(a.get());
 	}
+#endif
 }
 
 #endif

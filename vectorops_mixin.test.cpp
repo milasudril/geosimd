@@ -8,7 +8,7 @@
 
 namespace geosimd_test
 {
-	struct vectorops_mixin_tester:geosimd::vectorops_mixin<vectorops_mixin_tester, int>
+	struct vectorops_mixin_tester:geosimd::vectorops_mixin<vectorops_mixin_tester>
 	{
 		using scalar_type = int;
 

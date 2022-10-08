@@ -9,11 +9,9 @@
 
 namespace geosimd
 {
-	template<class Derived, class ScalarType>
+	template<class Derived>
 	struct vectorops_mixin
 	{
-		using scalar_type = ScalarType;
-
 		GEOSIMD_FULL_INLINE constexpr Derived& operator+=(Derived other)
 		{
 			auto& derived = static_cast<Derived&>(*this);
@@ -25,23 +23,6 @@ namespace geosimd
 		{
 			auto& derived = static_cast<Derived&>(*this);
 			derived.m_value -= other.m_value;
-			return derived;
-		}
-
-		GEOSIMD_FULL_INLINE constexpr Derived& operator*=(scalar_type other)
-		{
-			auto& derived = static_cast<Derived&>(*this);
-			derived.m_value *= other;
-			return derived;
-		}
-
-		GEOSIMD_FULL_INLINE friend constexpr auto operator*(scalar_type a, Derived b)
-		{ return b *= a; }
-
-		GEOSIMD_FULL_INLINE constexpr Derived& operator/=(scalar_type other)
-		{
-			auto& derived = static_cast<Derived&>(*this);
-			derived.m_value /= other;
 			return derived;
 		}
 
@@ -57,8 +38,33 @@ namespace geosimd
 			return derived;
 		}
 
+		template<class T = Derived>
+		GEOSIMD_FULL_INLINE constexpr Derived& operator*=(typename T::scalar_type other)
+		{
+			auto& derived = static_cast<Derived&>(*this);
+			derived.m_value *= other;
+			return derived;
+		}
+
+		template<class T = Derived>
+		GEOSIMD_FULL_INLINE friend constexpr auto operator*(typename T::scalar_type a, Derived b)
+		{ return b *= a; }
+
+		template<class T = Derived>
+		GEOSIMD_FULL_INLINE friend constexpr auto operator*(Derived b, typename T::scalar_type a)
+		{ return b *= a; }
+
+		template<class T = Derived>
+		GEOSIMD_FULL_INLINE constexpr Derived& operator/=(typename T::scalar_type other)
+		{
+			auto& derived = static_cast<Derived&>(*this);
+			derived.m_value /= other;
+			return derived;
+		}
+
 		GEOSIMD_FLATTEN constexpr bool operator==(Derived other) const
 		{
+			using scalar_type = typename Derived::scalar_type;
 			auto const diff = static_cast<Derived const&>(*this) - other;
 			for(size_t k = 0; k != std::size(diff); ++k)
 			{
@@ -90,27 +96,27 @@ namespace geosimd
 			derived.m_value /= other.m_value;
 			return derived;
 		}
+
+		GEOSIMD_FULL_INLINE friend constexpr auto operator*(Derived a, Derived b)
+		{ return a *= b; }
+
+		GEOSIMD_FULL_INLINE friend constexpr auto operator/(Derived a, Derived b)
+		{ return a /= b; }
+
+		template<class T = Derived>
+		GEOSIMD_FULL_INLINE friend constexpr auto operator/(Derived a, typename T::scalar_type b)
+		{ return a /= b; }
+
+		GEOSIMD_FULL_INLINE friend constexpr auto operator+(Derived a, Derived b)
+		{ return a += b; }
+
+		GEOSIMD_FULL_INLINE friend constexpr auto operator-(Derived a, Derived b)
+		{ return a -= b; }
 	};
 
-	template<class Op1, class Op2>
-	GEOSIMD_FULL_INLINE constexpr auto operator*(Op1 a, Op2 b)
-	{ return a *= b; }
 
-	template<class Op1, class Op2>
-	GEOSIMD_FULL_INLINE constexpr auto operator/(Op1 a, Op2 b)
-	{ return a /= b; }
-
-	template<class Op1, class Op2>
-	GEOSIMD_FULL_INLINE constexpr auto operator+(Op1 a, Op2 b)
-	{ return a += b; }
-
-	template<class Op1, class Op2>
-	GEOSIMD_FULL_INLINE constexpr auto operator-(Op1 a, Op2 b)
-	{ return a -= b; }
-
-	template<class Derived, class ScalarType = typename Derived::scalar_type>
-	inline constexpr auto uses_vectorops_mixin_v =
-		std::is_base_of_v<vectorops_mixin<Derived, ScalarType>, Derived>;
+	template<class Derived>
+	inline constexpr auto uses_vectorops_mixin_v = std::is_base_of_v<vectorops_mixin<Derived>, Derived>;
 }
 
 #endif
