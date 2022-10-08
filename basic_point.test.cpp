@@ -29,7 +29,7 @@ namespace geosimd_test
 	static_assert(geosimd::point<geosimd::basic_point<my_vector_space_1d>>);
 }
 
-TESTCASE(geosimd_basic_point_3d_construct)
+TESTCASE(geosimd_basic_point_3d)
 {
 	geosimd::basic_point<geosimd_test::my_vector_space_3d> const a{};
 	EXPECT_EQ(a[0], 0);
@@ -58,18 +58,14 @@ TESTCASE(geosimd_basic_point_3d_construct)
 	EXPECT_EQ(distance(b, c), 7);
 
 	EXPECT_EQ(std::size(b), 3);
+}
 
-#if 0
-/*
-	EXPECT_EQ(norm(b), 7);
-	geosimd::basic_vector<geosimd_test::my_vector_space_3d> a{2, 3, 6};
-	EXPECT_EQ(b[0], 2);
-	EXPECT_EQ(b[1], 3);
-	EXPECT_EQ(b[2], 6);
-	EXPECT_EQ(b[3], 0);*/
+TESTCASE(geosimd_basic_point_1d)
+{
+	std::array<std::byte, 3> values{};
+	geosimd::basic_point<geosimd_test::my_vector_space_1d> const a{std::data(values)};
 
+	geosimd::basic_point<geosimd_test::my_vector_space_1d> const b{std::data(values) + 3};
 
-
-	EXPECT_EQ(norm_squared(b), 49);
-#endif
+	EXPECT_EQ(distance(a, b), 3);
 }
