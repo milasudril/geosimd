@@ -103,7 +103,7 @@ namespace geosimd
 	template<metric_space V>
 	GEOSIMD_INLINE_OPT constexpr auto distance_squared(basic_point<V> a, basic_point<V> b)
 	{
-		return V::distance_squared(a, b);
+		return V::distance_squared(a.get(), b.get());
 	}
 }
 
