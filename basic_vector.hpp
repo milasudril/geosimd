@@ -44,7 +44,7 @@ namespace geosimd
 		requires std::conjunction_v<std::is_same<scalar_type, Args>...>
 			&& (has_homogenous_coordinates<V>)
 		GEOSIMD_INLINE_OPT constexpr explicit basic_vector(scalar_type x, Args ... xn):
-			m_value{x, xn..., scalar_type{}}
+			m_value{x, xn..., zero(empty<scalar_type>{})}
 		{}
 
 		GEOSIMD_INLINE_OPT constexpr scalar_type operator[](size_t n) const
@@ -77,6 +77,13 @@ namespace geosimd
 		{ return V::norm(a.get()); }
 		else
 		{ return norm(a.get()); }
+	}
+
+	template<vector_space V>
+	requires is_hilbert_space_v<V>
+	auto norm_squared(basic_vector<V> a)
+	{
+		return V::norm_squared(a.get());
 	}
 }
 

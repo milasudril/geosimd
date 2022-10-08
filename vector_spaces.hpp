@@ -155,5 +155,9 @@ namespace geosimd
 			return inner_product(v);
 		}
 	};
+
+	template<vector_space V>
+	constexpr inline auto is_hilbert_space_v =
+		std::is_base_of_v<hilbert_space<typename V::vector_type, typename V::scalar_type>, V>;
 }
 #endif

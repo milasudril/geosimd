@@ -16,6 +16,7 @@ namespace geosimd_test
 	static_assert(geosimd::vector_space<my_vector_space_3d>);
 	static_assert(geosimd::vector<geosimd::basic_vector<my_vector_space_3d>, int>);
 	static_assert(geosimd::inner_product_space<my_vector_space_3d>);
+	static_assert(geosimd::is_hilbert_space_v<my_vector_space_3d>);
 
 	struct my_vector_space_1d
 	{
@@ -42,6 +43,8 @@ TESTCASE(geosimd_basic_vector_3d_construct)
 	EXPECT_EQ(std::size(b), 3);
 
 	EXPECT_EQ(norm(b), 7);
+
+	EXPECT_EQ(norm_squared(b), 49);
 }
 
 TESTCASE(geosimd_basic_vector_1d_construct)
