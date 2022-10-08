@@ -9,11 +9,13 @@
 static_assert(std::is_trivial_v<geosimd::vec4i32_t>);
 static_assert(geosimd::vector<geosimd::vec4i32_t, int32_t>);
 static_assert(geosimd::uses_vectorops_mixin_v<geosimd::vec4i32_t>);
+static_assert(geosimd::usable_in_hilbert_space<geosimd::vec4i32_t, int32_t>);
 
-static_assert(std::is_trivially_copyable_v<geosimd::vec_t<std::complex<int>, 4>>);
-static_assert(geosimd::vector<geosimd::vec_t<std::complex<int>, 4>
+static_assert(std::is_trivially_copyable_v<geosimd::vec_t<std::complex<int32_t>, 4>>);
+static_assert(geosimd::vector<geosimd::vec_t<std::complex<int32_t>, 4>
 	, std::complex<int32_t>>);
-static_assert(geosimd::uses_vectorops_mixin_v<geosimd::vec_t<std::complex<int>, 4>>);
+static_assert(geosimd::uses_vectorops_mixin_v<geosimd::vec_t<std::complex<int32_t>, 4>>);
+static_assert(geosimd::usable_in_hilbert_space<geosimd::vec_t<std::complex<int32_t>, 4>, std::complex<int32_t>>);
 
 TESTCASE(geosimd_vect_real_inner_product)
 {
@@ -25,7 +27,7 @@ TESTCASE(geosimd_vect_real_inner_product)
 
 TESTCASE(geosimd_vect_complex_conj)
 {
-	geosimd::vec_t<std::complex<int>, 4> const a
+	geosimd::vec_t<std::complex<int32_t>, 4> const a
 	{
 		geosimd::vec4i32_t{1, 2, 3, 4},
 		geosimd::vec4i32_t{5, 6, 7, 8}
@@ -41,19 +43,19 @@ TESTCASE(geosimd_vect_complex_conj)
 
 TESTCASE(geosimd_vect_complex_inner_product)
 {
-	geosimd::vec_t<std::complex<int>, 4> const a
+	geosimd::vec_t<std::complex<int32_t>, 4> const a
 	{
 		geosimd::vec4i32_t{1, 2, 3, 4},
 		geosimd::vec4i32_t{5, 6, 7, 8}
 	};
 
-	geosimd::vec_t<std::complex<int>, 4> const b
+	geosimd::vec_t<std::complex<int32_t>, 4> const b
 	{
 		geosimd::vec4i32_t{9, 10, 11, 12},
 		geosimd::vec4i32_t{13, 14, 15, 16}
 	};
 
-	EXPECT_EQ(inner_product(a, b), (std::complex<int>{492, 128}));
+	EXPECT_EQ(inner_product(a, b), (std::complex<int32_t>{492, 128}));
 }
 
 TESTCASE(geosimd_vect_real_mul_scalar)
@@ -65,16 +67,16 @@ TESTCASE(geosimd_vect_real_mul_scalar)
 
 TESTCASE(geosimd_vect_complex_mul_scalar)
 {
-	geosimd::vec_t<std::complex<int>, 4> const a
+	geosimd::vec_t<std::complex<int32_t>, 4> const a
 	{
 		geosimd::vec4i32_t{1, 2, 3, 4},
 		geosimd::vec4i32_t{5, 6, 7, 8},
 	};
 
-	std::complex<int> const b{2, 3};
+	std::complex<int32_t> const b{2, 3};
 
 	auto const c = a*b;
-	geosimd::vec_t<std::complex<int>, 4> const expected
+	geosimd::vec_t<std::complex<int32_t>, 4> const expected
 	{
 		geosimd::vec4i32_t{-13, -14, -15, -16},
 		geosimd::vec4i32_t{13, 18, 23, 28},
@@ -85,20 +87,20 @@ TESTCASE(geosimd_vect_complex_mul_scalar)
 
 TESTCASE(geosimd_vect_complex_mul_vector)
 {
-	geosimd::vec_t<std::complex<int>, 4> const a
+	geosimd::vec_t<std::complex<int32_t>, 4> const a
 	{
 		geosimd::vec4i32_t{1, 2, 3, 4},
 		geosimd::vec4i32_t{5, 6, 7, 8},
 	};
 
-	geosimd::vec_t<std::complex<int>, 4> const b
+	geosimd::vec_t<std::complex<int32_t>, 4> const b
 	{
 		geosimd::vec4i32_t{9, 10, 11, 12},
 		geosimd::vec4i32_t{13, 14, 15, 16},
 	};
 
 	auto const c = a*b;
-	geosimd::vec_t<std::complex<int>, 4> const expected
+	geosimd::vec_t<std::complex<int32_t>, 4> const expected
 	{
 		geosimd::vec4i32_t{-56, -64, -72, -80},
 		geosimd::vec4i32_t{58, 88, 122, 160},
@@ -109,16 +111,16 @@ TESTCASE(geosimd_vect_complex_mul_vector)
 
 TESTCASE(geosimd_vect_complex_div_scalar)
 {
-	geosimd::vec_t<std::complex<int>, 4> const a
+	geosimd::vec_t<std::complex<int32_t>, 4> const a
 	{
 		geosimd::vec4i32_t{-11, -10, -9, -8},
 		geosimd::vec4i32_t{23, 30, 37, 44},
 	};
 
-	std::complex<int> const c{4, 3};
+	std::complex<int32_t> const c{4, 3};
 
 	auto const b = a/c;
-	geosimd::vec_t<std::complex<int>, 4> const expected
+	geosimd::vec_t<std::complex<int32_t>, 4> const expected
 	{
 		geosimd::vec4i32_t{1, 2, 3, 4},
 		geosimd::vec4i32_t{5, 6, 7, 8},
@@ -129,20 +131,20 @@ TESTCASE(geosimd_vect_complex_div_scalar)
 
 TESTCASE(geosimd_vect_complex_div_complex)
 {
-	geosimd::vec_t<std::complex<int>, 4> const a
+	geosimd::vec_t<std::complex<int32_t>, 4> const a
 	{
 		geosimd::vec4i32_t{-56, -64, -72, -80},
 		geosimd::vec4i32_t{58, 88, 122, 160},
 	};
 
-	geosimd::vec_t<std::complex<int>, 4> const b
+	geosimd::vec_t<std::complex<int32_t>, 4> const b
 	{
 		geosimd::vec4i32_t{9, 10, 11, 12},
 		geosimd::vec4i32_t{13, 14, 15, 16},
 	};
 
 	auto const c = a/b;
-	geosimd::vec_t<std::complex<int>, 4> const expected
+	geosimd::vec_t<std::complex<int32_t>, 4> const expected
 	{
 		geosimd::vec4i32_t{1, 2, 3, 4},
 		geosimd::vec4i32_t{5, 6, 7, 8},

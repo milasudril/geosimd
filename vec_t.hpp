@@ -160,6 +160,23 @@ namespace geosimd
 		return ret;
 	}
 
+	template<class T, size_t N>
+	GEOSIMD_FULL_INLINE constexpr auto inner_product(vec_t<T, N> a)
+	{
+		return inner_product(a, a);
+	}
+
+	template<class T, size_t N>
+	GEOSIMD_FLATTEN constexpr auto inner_product(vec_t<std::complex<T>, N> a)
+	{
+		auto const prod = a.real() * a.real() + a.imag() * a.imag();
+		T ret{};
+		for(size_t k = 0; k != N; ++k)
+		{ ret += prod[k]; }
+
+		return ret;
+	}
+
 	using vec4f32_t = vec_t<float, 4>;
 	using vec4i32_t = vec_t<int32_t, 4>;
 	using vec2i64_t = vec_t<int64_t, 2>;

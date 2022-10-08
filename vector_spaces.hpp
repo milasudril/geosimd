@@ -110,6 +110,13 @@ namespace geosimd
 		{ norm(std::declval<typename T::vector_type>()) } -> std::totally_ordered;
 	};
 
+	template<class T, class ScalarType>
+	concept usable_in_hilbert_space = vector<T, ScalarType>
+		&& requires(T a)
+	{
+		{ inner_product(a) } -> std::totally_ordered;
+	};
+
 	template<class T>
 	concept hilbert_space = normed_space<T>
 		&& requires(T)
