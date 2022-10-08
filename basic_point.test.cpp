@@ -31,7 +31,7 @@ namespace geosimd_test
 
 TESTCASE(geosimd_basic_point_3d)
 {
-	geosimd::basic_point<geosimd_test::my_vector_space_3d> const a{};
+	constexpr geosimd::basic_point<geosimd_test::my_vector_space_3d> a{};
 	EXPECT_EQ(a[0], 0);
 	EXPECT_EQ(a[1], 0);
 	EXPECT_EQ(a[2], 0);

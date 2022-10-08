@@ -5,6 +5,8 @@
 #include "./vectorops_mixin.hpp"
 #include "./basic_vector.hpp"
 
+#include <utility>
+
 namespace geosimd
 {
 	template<affine_space V>
@@ -15,17 +17,9 @@ namespace geosimd
 		using scalar_type = typename V::scalar_type;
 		using storage_type = typename V::point_type;
 
-		template<class T = void>
-		requires(!has_homogenous_coordinates<V>)
-		GEOSIMD_INLINE_OPT constexpr basic_point():m_value{}
+		GEOSIMD_INLINE_OPT constexpr basic_point():
+			m_value{make_origin(std::make_index_sequence<storage_type::size() - 1>())}
 		{}
-
-		template<class T = void>
-		requires(has_homogenous_coordinates<V> && has_size<storage_type>)
-		GEOSIMD_INLINE_OPT constexpr basic_point():m_value{}
-		{
-			m_value[std::size(m_value) - 1] = one(empty<scalar_type>{});
-		}
 
 		template<class ... Args>
 		requires std::conjunction_v<std::is_same<scalar_type, Args>...>
@@ -83,6 +77,28 @@ namespace geosimd
 
 	private:
 		storage_type m_value;
+
+		template<size_t ... Is>
+		requires(has_homogenous_coordinates<V> && has_size<storage_type>)
+		static constexpr auto make_origin(std::index_sequence<Is...>)
+		{
+			return storage_type
+			{
+				(static_cast<void>(Is), zero(empty<scalar_type>{}))...,
+				one(empty<scalar_type>{})
+			};
+		}
+
+		template<size_t ... Is>
+		requires(!has_homogenous_coordinates<V> && has_size<storage_type>)
+		static constexpr auto make_origin(std::index_sequence<Is...>)
+		{
+			return storage_type
+			{
+				(static_cast<void>(Is), zero(empty<scalar_type>{}))...,
+				zero(empty<scalar_type>{})
+			};
+		}
 	};
 
 	template<affine_space V>
