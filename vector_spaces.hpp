@@ -116,11 +116,15 @@ namespace geosimd
 	};
 
 	template<class T>
-	concept normed_space = vector_space<T>
-		&& (supports_norm<typename T::vector_type> || requires(T)
+	concept overrides_norm = vector_space<T>
+		&& requires(T)
 	{
 		{ T::norm(std::declval<typename T::vector_type>()) } -> std::totally_ordered;
-	});
+	};
+
+	template<class T>
+	concept normed_space = vector_space<T>
+		&& (supports_norm<typename T::vector_type> || overrides_norm<T>);
 
 	template<class T, class ScalarType>
 	concept usable_in_hilbert_space = vector<T, ScalarType>

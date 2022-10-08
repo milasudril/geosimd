@@ -63,9 +63,21 @@ namespace geosimd
 			{ return 1; }
 		}
 
+		GEOSIMD_INLINE_OPT constexpr auto get() const
+		{ return m_value; }
+
 	private:
 		storage_type m_value;
 	};
+
+	template<normed_space V>
+	auto norm(basic_vector<V> a)
+	{
+		if constexpr(overrides_norm<V>)
+		{ return V::norm(a.get()); }
+		else
+		{ return norm(a.get()); }
+	}
 }
 
 #endif
