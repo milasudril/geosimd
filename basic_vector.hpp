@@ -6,21 +6,6 @@
 
 namespace geosimd
 {
-	template<class V>
-	concept has_homogenous_coordinates = requires(V){ typename V::enable_homogenous_coordinates_t; };
-
-	template<class VectorType>
-	concept has_subscript_operator = requires(VectorType a)
-	{
-		{ a[std::declval<size_t>()] };
-	};
-
-	template<class VectorType>
-	concept has_size = requires(VectorType a)
-	{
-		{ std::size(a) } -> std::same_as<size_t>;
-	};
-
 	template<vector_space V>
 	class basic_vector:public vectorops_mixin<basic_vector<V>, typename V::scalar_type>
 	{

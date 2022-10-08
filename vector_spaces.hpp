@@ -159,5 +159,21 @@ namespace geosimd
 	template<vector_space V>
 	constexpr inline auto is_hilbert_space_v =
 		std::is_base_of_v<hilbert_space<typename V::vector_type, typename V::scalar_type>, V>;
+
+	template<class V>
+	concept has_homogenous_coordinates = requires(V){ typename V::enable_homogenous_coordinates_t; };
+
+	template<class VectorType>
+	concept has_subscript_operator = requires(VectorType a)
+	{
+		{ a[std::declval<size_t>()] };
+	};
+
+	template<class VectorType>
+	concept has_size = requires(VectorType a)
+	{
+		{ std::size(a) } -> std::same_as<size_t>;
+	};
+
 }
 #endif
