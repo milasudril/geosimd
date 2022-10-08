@@ -95,6 +95,13 @@ namespace geosimd
 	};
 
 	template<class T>
+	concept overrides_distance = affine_space<T>
+		&& requires(T)
+	{
+		{ T::distance(std::declval<typename T::vector_type>()) } -> std::totally_ordered;
+	};
+
+	template<class T>
 	concept metric_space = affine_space<T>
 		&& (supports_distance<typename T::point_type> || requires(T)
 	{

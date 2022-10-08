@@ -89,23 +89,22 @@ namespace geosimd
 	template<affine_space V>
 	GEOSIMD_INLINE_OPT constexpr auto operator-(basic_point<V> a, basic_point<V> b)
 	{ return typename basic_point<V>::vector_type{a.get() - b.get()}; }
-#if 0
-	template<normed_space V>
-	auto norm(basic_point<V> a)
+
+	template<metric_space V>
+	GEOSIMD_INLINE_OPT constexpr auto distance(basic_point<V> a, basic_point<V> b)
 	{
-		if constexpr(overrides_norm<V>)
-		{ return V::norm(a.get()); }
+		if constexpr(overrides_distance<V>)
+		{ return V::distance(a, b); }
 		else
-		{ return norm(a.get()); }
+		{ return distance(a, b); }
 	}
 
-	template<vector_space V>
+	template<affine_space V>
 	requires is_hilbert_space_v<V>
-	auto norm_squared(basic_point<V> a)
+	GEOSIMD_INLINE_OPT constexpr auto distance_squared(basic_point<V> a, basic_point<V> b)
 	{
-		return V::norm_squared(a.get());
+		return V::norm_squared(a - b);
 	}
-#endif
 }
 
 #endif
