@@ -178,7 +178,7 @@ namespace geosimd
 		using scalar_type = vector_space::scalar_type;
 
 		static constexpr auto distance(point_type a, point_type b)
-		{ return std::sqrt(distance_squared(a, b)); }
+		{ return vector_space::norm(a - b); }
 
 		static constexpr auto distance_squared(point_type a, point_type b)
 		{ return vector_space::norm_squared(a - b); }
