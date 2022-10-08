@@ -17,6 +17,10 @@ namespace geosimd
 	constexpr T zero(empty<T>)
 	{ return T{}; }
 
+	template<class T>
+	constexpr T one(empty<T>)
+	{ return static_cast<T>(1); }
+
 	template<class T, class U>
 	constexpr auto is_complex_v = std::is_same_v<T, std::complex<U>>;
 
@@ -98,16 +102,12 @@ namespace geosimd
 	concept overrides_distance = affine_space<T>
 		&& requires(T)
 	{
-		{ T::distance(std::declval<typename T::vector_type>()) } -> std::totally_ordered;
+		{ T::distance(std::declval<typename T::point_type>(), std::declval<typename T::point_type>()) }
+			-> std::totally_ordered;
 	};
 
 	template<class T>
-	concept metric_space = affine_space<T>
-		&& (supports_distance<typename T::point_type> || requires(T)
-	{
-		{ T::distnace(std::declval<typename T::point_type>(), std::declval<typename T::point_type>()) }
-			-> std::totally_ordered;
-	});
+	concept metric_space = affine_space<T> && (supports_distance<typename T::point_type> || overrides_distance<T>);
 
 	template<supports_abs T>
 	constexpr auto norm(T val)
@@ -145,7 +145,7 @@ namespace geosimd
 	concept inner_product_space = vector_space<T>
 		&& supports_inner_product<typename T::vector_type, typename T::scalar_type>;
 
-	template<class VectorType, class ScalarType = VectorType::scalar_type>
+	template<class VectorType, class ScalarType = typename VectorType::scalar_type>
 	requires supports_inner_product<VectorType, ScalarType>
 	struct hilbert_space
 	{
@@ -168,6 +168,21 @@ namespace geosimd
 
 	template<vector_space V>
 	constexpr inline auto is_hilbert_space_v = implements_hilbert_space<V>;
+
+	template<class PointType, normed_space V>
+	struct metric_normed_space: public V
+	{
+		using point_type = PointType;
+		using vector_space = V;
+		using vector_type = vector_space::vector_type;
+		using scalar_type = vector_space::scalar_type;
+
+		static constexpr auto distance(point_type a, point_type b)
+		{ return std::sqrt(distance_squared(a, b)); }
+
+		static constexpr auto distance_squared(point_type a, point_type b)
+		{ return vector_space::norm_squared(a - b); }
+	};
 
 	template<class V>
 	concept has_homogenous_coordinates = requires(V){ typename V::enable_homogenous_coordinates_t; };

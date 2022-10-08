@@ -17,7 +17,8 @@ namespace geosimd
 
 		template<class T = void>
 		requires(!has_homogenous_coordinates<V>)
-		GEOSIMD_INLINE_OPT constexpr basic_point():m_value{}{}
+		GEOSIMD_INLINE_OPT constexpr basic_point():m_value{}
+		{}
 
 		template<class T = void>
 		requires(has_homogenous_coordinates<V> && has_size<storage_type>)
@@ -94,16 +95,15 @@ namespace geosimd
 	GEOSIMD_INLINE_OPT constexpr auto distance(basic_point<V> a, basic_point<V> b)
 	{
 		if constexpr(overrides_distance<V>)
-		{ return V::distance(a, b); }
+		{ return V::distance(a.get(), b.get()); }
 		else
-		{ return distance(a, b); }
+		{ return distance(a.get(), b.get()); }
 	}
 
-	template<affine_space V>
-	requires is_hilbert_space_v<V>
+	template<metric_space V>
 	GEOSIMD_INLINE_OPT constexpr auto distance_squared(basic_point<V> a, basic_point<V> b)
 	{
-		return V::norm_squared(a - b);
+		return V::distance_squared(a, b);
 	}
 }
 
