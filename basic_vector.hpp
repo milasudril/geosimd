@@ -4,6 +4,8 @@
 #include "./vector_spaces.hpp"
 #include "./vectorops_mixin.hpp"
 
+#include <utility>
+
 namespace geosimd
 {
 	template<vector_space V>
@@ -16,8 +18,7 @@ namespace geosimd
 
 		friend class vectorops_mixin<vector_type>;
 
-		// TODO: This should use zero(empty<scalar_type>{}) to initialize m_value
-		GEOSIMD_INLINE_OPT constexpr basic_vector():m_value{}{}
+		GEOSIMD_INLINE_OPT constexpr basic_vector():m_value{make_origin()}{}
 
 		template<class ... Args>
 		requires std::conjunction_v<std::is_same<scalar_type, Args>...>
@@ -54,6 +55,26 @@ namespace geosimd
 
 	private:
 		storage_type m_value;
+
+		template<size_t ... Is>
+		GEOSIMD_INLINE_OPT static constexpr auto make_origin(std::index_sequence<Is...>)
+		{
+			return storage_type
+			{
+				(static_cast<void>(Is), zero(empty<scalar_type>{}))...,
+				zero(empty<scalar_type>{})
+			};
+		}
+
+		GEOSIMD_INLINE_OPT static constexpr auto make_origin()
+		{
+			if constexpr(has_size<storage_type>)
+			{
+				return make_origin(std::make_index_sequence<storage_type::size() - 1>());
+			}
+			else
+			{ return zero(empty<storage_type>{}); }
+		}
 	};
 
 	template<normed_space V>
