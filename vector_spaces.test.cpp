@@ -20,6 +20,7 @@ namespace geosimd_test
 	static_assert(geosimd::affine_space<writable_address_space>);
 	static_assert(geosimd::metric_space<writable_address_space>);
 	static_assert(geosimd::normed_space<writable_address_space>);
+	static_assert(geosimd::point<std::byte*, intptr_t, intptr_t>);
 
 	struct number_line
 	{

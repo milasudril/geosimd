@@ -14,7 +14,7 @@ namespace geosimd_test
 	};
 
 	static_assert(geosimd::vector_space<my_vector_space_3d>);
-	static_assert(geosimd::vector<geosimd::basic_vector<my_vector_space_3d>, int>);
+	static_assert(geosimd::vector<geosimd::basic_vector<my_vector_space_3d>>);
 	static_assert(geosimd::inner_product_space<my_vector_space_3d>);
 	static_assert(geosimd::is_hilbert_space_v<my_vector_space_3d>);
 
@@ -26,7 +26,7 @@ namespace geosimd_test
 	};
 
 	static_assert(geosimd::vector_space<my_vector_space_1d>);
-	static_assert(geosimd::vector<geosimd::basic_vector<my_vector_space_1d>, int>);
+	static_assert(geosimd::vector<geosimd::basic_vector<my_vector_space_1d>>);
 	static_assert(!geosimd::inner_product_space<my_vector_space_1d>);
 	static_assert(!geosimd::is_hilbert_space_v<my_vector_space_1d>);
 }

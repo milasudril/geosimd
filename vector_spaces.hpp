@@ -30,7 +30,7 @@ namespace geosimd
 		|| is_complex_v<T, float>
 		|| is_complex_v<T, double>;
 
-	template<class T, class ScalarType>
+	template<class T, class ScalarType = typename T::scalar_type>
 	concept vector = std::equality_comparable<T> && scalar<ScalarType> && requires(T a, T b, ScalarType c)
 	{
 		{a + b} -> std::same_as<T>;
@@ -49,7 +49,7 @@ namespace geosimd
 	template<class T>
 	concept vector_space = vector<typename T::vector_type, typename T::scalar_type>;
 
-	template<class T, class VectorType, class ScalarType>
+	template<class T, class VectorType = typename T::vector_type, class ScalarType = typename T::scalar_type>
 	concept point = std::equality_comparable<T>
 		&& vector<VectorType, ScalarType>
 		&& requires(T p1, T p2, VectorType v)
