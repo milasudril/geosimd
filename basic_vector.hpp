@@ -93,6 +93,19 @@ namespace geosimd
 	{
 		return V::norm_squared(a.get());
 	}
+
+	template<vector_space V>
+	GEOSIMD_INLINE_OPT constexpr auto mean(basic_vector<V> a, basic_vector<V> b)
+	{
+		return (a + b)/static_cast<typename V::scalar_type>(2);
+	}
+
+	template<vector_space V>
+	requires std::is_floating_point<typename V::scalar_type>
+	GEOSIMD_INLINE_OPT constexpr auto lerp(basic_point<V> a, basic_point<V> b, typename V::scalar_type t)
+	{
+		return t*b + (one<typename V::scalar_type>() - t)*a;
+	}
 }
 
 #endif

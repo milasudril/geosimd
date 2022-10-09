@@ -140,6 +140,24 @@ namespace geosimd
 	{
 		return basic_point<V>{};
 	}
+
+	template<affine_space V>
+	GEOSIMD_INLINE_OPT constexpr auto get_radius_vector(basic_point<V> a)
+	{
+		return a - origin();
+	}
+
+	template<affine_space V>
+	GEOSIMD_INLINE_OPT constexpr auto midpoint(basic_point<V> a, basic_point<V> b)
+	{
+		return mean(get_radius_vector(a), get_radius_vector(b)) + origin();
+	}
+
+	template<affine_space V>
+	GEOSIMD_INLINE_OPT constexpr auto lerp(basic_point<V> a, basic_point<V> b, typename V::scalar_type t)
+	{
+		return lerp(get_radius_vector(a), get_radius_vector(b), t) + origin();
+	}
 }
 
 #endif

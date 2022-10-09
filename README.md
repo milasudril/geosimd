@@ -106,7 +106,7 @@ struct euclidian_3space :
 	geosimd::metric_normed_space_mixin<geosimd::vec4f32_t,
 		geosimd::hilbert_space_mixin<geosimd::vec4f32_t>>
 {
-	using V::enable_homogenous_coordinates_t = void;
+	using enable_homogenous_coordinates_t = void;
 };
 
 using e3_point = geosimd::basic_point<euclidian_3space>;
