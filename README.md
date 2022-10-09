@@ -33,8 +33,8 @@ struct writable_address_space
 {
 	using vector_type = intptr_t;
 	using scalar_type = intptr_t;
-	using point_type = std::byte*
-}
+	using point_type = std::byte*;
+};
 ```
 
 Since it is possible to compute the distance between two pointers, `writable_address_space` is also a metric space. It is also possible to create similar mappings for the `std::chrono` library.
