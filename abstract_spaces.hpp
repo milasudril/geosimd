@@ -43,7 +43,7 @@ namespace geosimd
 	};
 
 	template<class VectorType>
-	concept has_subscript_operator = requires(VectorType a)
+	concept subscriptable = requires(VectorType a)
 	{
 		{ a[std::declval<size_t>()] };
 	};

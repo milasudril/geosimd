@@ -42,7 +42,7 @@ namespace geosimd
 
 		GEOSIMD_INLINE_OPT constexpr scalar_type operator[](size_t n) const
 		{
-			if constexpr(has_subscript_operator<storage_type>)
+			if constexpr(subscriptable<storage_type>)
 			{ return m_value[n]; }
 			else
 			{ return m_value; }
