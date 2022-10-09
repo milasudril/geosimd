@@ -68,6 +68,33 @@ struct your_vector_space : public geosimd::hilbert_space_mixin<VectorType, Scala
 
 In addition to adding a norm, this will add `using`-aliases for `VectorType` and `ScalarType`. In addition to that, `norm_squared` is defined. This is because is common to use the square of the norm rather than the norm itself, and using `norm_squared` may be required to eliminate the computation of the square root.
 
+It is also possible to customize the distance function in a metric space. By default, the absolute value of the difference between two points is used. If `abs` cannot be used on the associated `vector`, or another distance function is desired, it has to be specified by the vector space struct:
+
+```c++
+struct your_vector_space
+{
+	// Other definitions
+
+	static auto distance(point_type a, point_type b)
+	{
+	// Compute the distance between a and b
+	}
+
+	// More definitions
+};
+```
+
+Often, the norm of the difference between two point is used as the distance function. This behaviour can be enabled by inheriting from `metric_normed_space_mixin` class template:
+
+```c++
+template<class PointType, normed_space V>
+struct your_vector_space : public geosimd::metric_normed_space_mixin<PointType, V>
+{
+};
+```
+
+`your_vector_space` is now a metric normed space, with PointType added to the normed space `V`. For the same reason as `hilbert_space_mixin` adds `normed_squared`, `metric_normed_space_mixin` adds the `distance_squared` function.
+
 A note on performance
 ---------------------
 While efforts has been made to force the compiler to optimize away abstractions also without any optimizations turned on, it is still recommended to enable all optimizations when using this library. This means that the following options are recommended
