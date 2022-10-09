@@ -2,7 +2,7 @@
 
 #include "./vec_t.hpp"
 
-#include "./vector_spaces.hpp"
+#include "./abstract_spaces.hpp"
 
 #include "testfwk/testfwk.hpp"
 

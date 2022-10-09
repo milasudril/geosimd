@@ -1,6 +1,6 @@
-//@	{"target":{"name":"vector_spaces.test"}}
+//@	{"target":{"name":"abstract_spaces.test"}}
 
-#include "./vector_spaces.hpp"
+#include "./abstract_spaces.hpp"
 
 #include "testfwk/testfwk.hpp"
 

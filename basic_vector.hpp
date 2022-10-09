@@ -1,7 +1,7 @@
 #ifndef GEOSIMD_BASICVECTOR_HPP
 #define GEOSIMD_BASICVECTOR_HPP
 
-#include "./vector_spaces.hpp"
+#include "./abstract_spaces.hpp"
 #include "./vectorops_mixin.hpp"
 
 #include <utility>

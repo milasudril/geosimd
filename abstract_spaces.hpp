@@ -1,5 +1,5 @@
-#ifndef GEOSIMD_VECTORSPACES_HPP
-#define GEOSIMD_VECTORSPACES_HPP
+#ifndef GEOSIMD_ABSTRACTSPACES_HPP
+#define GEOSIMD_ABSTRACTSPACES_HPP
 
 #include <cstddef>
 #include <concepts>
