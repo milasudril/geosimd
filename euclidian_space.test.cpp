@@ -41,4 +41,6 @@ TESTCASE(geosimd_euclidian_space_point_props)
 	constexpr auto mid = midpoint(a, b);
 	static_assert(mid == loc{0.0f, 2.5f, 2.0f});
 	static_assert(mid[3] == 1.0f);
+
+	static_assert(lerp(loc{1.0f, 2.0f, 4.0f}, loc{2.0f, 4.0f, 8.0f}, 0.25f) == loc{1.25f, 2.5f, 5.0f});
 }

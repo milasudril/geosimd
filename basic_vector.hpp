@@ -106,7 +106,7 @@ namespace geosimd
 	requires std::floating_point<typename V::scalar_type>
 	GEOSIMD_INLINE_OPT constexpr auto lerp(basic_vector<V> a, basic_vector<V> b, typename V::scalar_type t)
 	{
-		return t*b + (one<typename V::scalar_type>() - t)*a;
+		return t*b + (one(empty<typename V::scalar_type>{}) - t)*a;
 	}
 }
 
