@@ -95,21 +95,6 @@ namespace geosimd
 	concept inner_product_space = vector_space<T>
 		&& supports_inner_product<typename T::vector_type, typename T::scalar_type>;
 
-	template<class PointType, normed_space V>
-	struct metric_normed_space: public V
-	{
-		using point_type = PointType;
-		using vector_space = V;
-		using vector_type = vector_space::vector_type;
-		using scalar_type = vector_space::scalar_type;
-
-		static constexpr auto distance(point_type a, point_type b)
-		{ return vector_space::norm(a - b); }
-
-		static constexpr auto distance_squared(point_type a, point_type b)
-		{ return vector_space::norm_squared(a - b); }
-	};
-
 	template<class V>
 	concept has_homogenous_coordinates = requires(V){ typename V::enable_homogenous_coordinates_t; };
 

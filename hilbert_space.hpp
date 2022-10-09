@@ -1,5 +1,5 @@
-#ifndef GEOSIMD_HILBERTSPACE_HPP
-#define GEOSIMD_HILBERTSPACE_HPP
+#ifndef GEOSIMD_HILBERT_SPACE_HPP
+#define GEOSIMD_HILBERT_SPACE_HPP
 
 #include "./abstract_spaces.hpp"
 
