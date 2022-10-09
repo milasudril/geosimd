@@ -1,114 +1,61 @@
-//@	{"targets":[{"name":"angle.hpp","type":"include"}]}
-
 #ifndef GEOSIMD_ANGLE_HPP
 #define GEOSIMD_ANGLE_HPP
 
-#include "constants.hpp"
+#include "./inline.hpp"
+#include "./adl_factories.hpp"
 
-namespace GeoSIMD
+#include <cmath>
+#include <numbers>
+#include <limits>
+#include <cstdint>
+
+namespace geosimd
+{
+	struct rad{};
+
+	struct turns{};
+
+	class angle
 	{
-	template<class T>
-	class Angle
+	public:
+		static constexpr auto full_turn =
+			static_cast<uint64_t>(std::numeric_limits<uint32_t>::max()) + one(empty<uint64_t>{});
+
+		GEOSIMD_INLINE_OPT explicit constexpr angle(uint32_t value) : m_value{value}
+		{}
+
+		GEOSIMD_INLINE_OPT explicit constexpr angle(float value, turns):
+			m_value{static_cast<uint32_t>(static_cast<uint64_t>((value + 0.5f)*full_turn + 0.5f)) + 0x80000000}
+		{}
+
+		GEOSIMD_INLINE_OPT constexpr angle& operator+=(angle a)
 		{
-		public:
-			explicit constexpr Angle(T value) noexcept:m_value(value)
-				{}
-          
-			constexpr Angle& operator+=(Angle a) noexcept
-				{
-				m_value+=a.m_value;
-				return *this;
-				}
+			m_value += a.m_value;
+			return *this;
+		}
 
-			constexpr Angle& operator-=(Angle a) noexcept
-				{
-				m_value-=a.m_value;
-				return *this;
-				}
+		GEOSIMD_INLINE_OPT constexpr angle& operator-=(angle a)
+		{
+			m_value -= a.m_value;
+			return *this;
+		}
 
-			constexpr Angle& operator*=(T c) noexcept
-				{
-				m_value*=c;
-				return *this;
-				}
+		GEOSIMD_INLINE_OPT constexpr auto get() const
+		{
+			return m_value;
+		}
 
-			constexpr Angle& operator/=(T c) noexcept
-				{
-				m_value/=c;
-				return *this;
-				}
+		GEOSIMD_INLINE_OPT constexpr auto in_turns() const
+		{
+			return static_cast<float>(m_value)/static_cast<float>(full_turn);
+		}
 
-			constexpr bool operator==(const Angle& b) const noexcept
-				{return m_value==b.m_value;}
+		bool operator==(angle const&) const = default;
+		bool operator!=(angle const&) const = default;
 
-			constexpr Angle<T> operator-() const noexcept
-				{return Angle<T>(-m_value);}
-
-			explicit constexpr operator double() const noexcept
-				{return static_cast<double>(m_value);}
-
-			explicit constexpr operator float() const noexcept
-				{return static_cast<float>(m_value);}
-				
-		
-		private:
-			T m_value;
-        };
-
-	constexpr Angle<float> operator""_radf(long double val) noexcept
-		{return Angle<float>(val);}
-
-	constexpr Angle<float> operator""_degf(long double val) noexcept
-		{return Angle<float>(pi<float>()*val/180.0f);}
-
-	constexpr Angle<float> operator""_rf(long double val) noexcept
-		{return Angle<float>(2.0f*pi<float>()*val);}
-
-	constexpr Angle<double> operator""_rad(long double val) noexcept
-		{return Angle<double>(val);}
-
-	constexpr Angle<double> operator""_deg(long double val) noexcept
-		{return Angle<double>(pi<double>()*val/180.0f);}
-
-	constexpr Angle<double> operator""_r(long double val) noexcept
-		{return Angle<double>(2.0f*pi<double>()*val);}
-
-	template<class T>
-	constexpr T operator/(Angle<T> u,Angle<T> v) noexcept
-		{return static_cast<T>(u)/static_cast<T>(v);}
-
-	template<class T>
-	constexpr Angle<T> operator+(Angle<T> u,Angle<T> v) noexcept
-		{return u+=v;}
-
-	template<class T>
-	constexpr Angle<T> operator-(Angle<T> u,Angle<T> v) noexcept
-		{return u-=v;}
-
-	template<class T>
-	constexpr Angle<T> operator/(Angle<T> u,T c) noexcept
-		{return u/=c;}
-
-	template<class T>
-	constexpr Angle<T> operator*(Angle<T> u,T c) noexcept
-		{return u*=c;}
-
-	template<class U,class T>
-	constexpr U sin(Angle<T> x)
-		{return std::sin(static_cast<U>(x));}
-
-	template<class U,class T>
-	constexpr U cos(Angle<T> x)
-		{return std::cos(static_cast<U>(x));}
-
-	template<class U,class T>
-	constexpr U tan(Angle<T> x)
-		{return std::tan(static_cast<U>(x));}
-
-	static_assert(sin<float>(30.0_degf)==0.5f,"Sine is broken");
-	static_assert(std::abs(cos<float>(60.0_degf) - 0.5f)<1.0e-7f,"Cosine is broken");
-	static_assert(sin<float>(45.0_degf)==cos<float>(45.0_degf),"hmm");
-	static_assert(tan<float>(45.0_degf)==1.0f,"Tangent is broken");
-	}
+	private:
+		uint32_t m_value;
+	};
+}
 
 #endif
