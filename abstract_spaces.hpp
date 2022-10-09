@@ -1,6 +1,8 @@
 #ifndef GEOSIMD_ABSTRACTSPACES_HPP
 #define GEOSIMD_ABSTRACTSPACES_HPP
 
+#include "./adl_factories.hpp"
+
 #include <cstddef>
 #include <concepts>
 #include <cstdint>
@@ -10,17 +12,6 @@
 
 namespace geosimd
 {
-	template<class T>
-	using empty = std::type_identity<T>;
-
-	template<class T>
-	constexpr T zero(empty<T>)
-	{ return T{}; }
-
-	template<class T>
-	constexpr T one(empty<T>)
-	{ return static_cast<T>(1); }
-
 	template<class T, class U>
 	constexpr auto is_complex_v = std::is_same_v<T, std::complex<U>>;
 
