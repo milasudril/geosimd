@@ -12,7 +12,7 @@ namespace geosimd
 	class basic_point
 	{
 	public:
-		using vector_type = typename V::vector_type;
+		using vector_type = basic_vector<V>;
 		using scalar_type = typename V::scalar_type;
 		using storage_type = typename V::point_type;
 

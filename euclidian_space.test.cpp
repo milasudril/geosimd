@@ -14,13 +14,13 @@ TESTCASE(geosimd_euclidian_space_subset)
 TESTCASE(geosimd_euclidian_space_point_props)
 {
 	using loc = geosimd::location<float, 3>;
-//	using vec = geosimd::displacement<float, 3>;
+	using vec = geosimd::displacement<float, 3>;
 	static_assert(loc::size() == 3);
 
 	constexpr loc a{1.0f, 4.0f, 5.0f};
 	constexpr loc b{-1.0f, 1.0f, -1.0f};
-//	constexpr auto c = a - b;
-// c has wrong type	static_assert(c == vec{2.0f, 3.0f, 6.0f});
+	constexpr auto c = a - b;
+	static_assert(c == vec{2.0f, 3.0f, 6.0f});
 
 	constexpr auto distance_ab = distance(a, b);
 	constexpr auto distance_ba = distance(b, a);

@@ -22,6 +22,8 @@ namespace geosimd
 
 		GEOSIMD_INLINE_OPT constexpr basic_vector():m_value{make_origin()}{}
 
+		GEOSIMD_INLINE_OPT constexpr explicit basic_vector(storage_type val):m_value{val}{}
+
 		template<class ... Args>
 		requires std::conjunction_v<std::is_same<scalar_type, Args>...>
 			&& (!has_homogenous_coordinates<V>)
