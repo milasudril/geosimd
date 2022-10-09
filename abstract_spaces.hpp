@@ -42,6 +42,18 @@ namespace geosimd
 		{zero(std::declval<empty<T>>())} -> std::same_as<T>;
 	};
 
+	template<class VectorType>
+	concept has_subscript_operator = requires(VectorType a)
+	{
+		{ a[std::declval<size_t>()] };
+	};
+
+	template<class VectorType>
+	concept has_size = requires(VectorType a)
+	{
+		{ std::size(a) } -> std::same_as<size_t>;
+	};
+
 	template<class T>
 	concept vector_space = vector<typename T::vector_type, typename T::scalar_type>;
 
@@ -97,18 +109,5 @@ namespace geosimd
 
 	template<class V>
 	concept has_homogenous_coordinates = requires(V){ typename V::enable_homogenous_coordinates_t; };
-
-	template<class VectorType>
-	concept has_subscript_operator = requires(VectorType a)
-	{
-		{ a[std::declval<size_t>()] };
-	};
-
-	template<class VectorType>
-	concept has_size = requires(VectorType a)
-	{
-		{ std::size(a) } -> std::same_as<size_t>;
-	};
-
 }
 #endif
