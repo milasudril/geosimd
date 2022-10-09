@@ -71,4 +71,6 @@ TESTCASE(geosimd_basic_point_1d)
 	geosimd::basic_point<geosimd_test::my_vector_space_1d> const b{std::data(values) + 3};
 
 	EXPECT_EQ(distance(a, b), 3);
+
+	EXPECT_EQ(geosimd::origin<geosimd_test::my_vector_space_1d>().get(), nullptr);
 }

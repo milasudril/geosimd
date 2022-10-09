@@ -134,6 +134,12 @@ namespace geosimd
 	{
 		return V::distance_squared(a.get(), b.get());
 	}
+
+	template<affine_space V>
+	GEOSIMD_INLINE_OPT constexpr auto origin()
+	{
+		return basic_point<V>{};
+	}
 }
 
 #endif
