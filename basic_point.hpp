@@ -75,13 +75,13 @@ namespace geosimd
 
 		GEOSIMD_INLINE_OPT constexpr basic_point& operator+=(vector_type other)
 		{
-			m_value += other;
+			m_value += other.get();
 			return *this;
 		}
 
 		GEOSIMD_INLINE_OPT constexpr basic_point& operator-=(vector_type other)
 		{
-			m_value -= other;
+			m_value -= other.get();
 			return *this;
 		}
 
@@ -162,13 +162,13 @@ namespace geosimd
 	template<affine_space V>
 	GEOSIMD_INLINE_OPT constexpr auto midpoint(basic_point<V> a, basic_point<V> b)
 	{
-		return mean(get_radius_vector(a), get_radius_vector(b)) + origin<V>();
+		return origin<V>() + mean(get_radius_vector(a), get_radius_vector(b));
 	}
 
 	template<affine_space V>
 	GEOSIMD_INLINE_OPT constexpr auto lerp(basic_point<V> a, basic_point<V> b, typename V::scalar_type t)
 	{
-		return lerp(get_radius_vector(a), get_radius_vector(b), t) + origin<V>();
+		return origin<V>() + lerp(get_radius_vector(a), get_radius_vector(b), t);
 	}
 }
 

@@ -26,4 +26,19 @@ TESTCASE(geosimd_euclidian_space_point_props)
 	constexpr auto distance_ba = distance(b, a);
 	static_assert(distance_ab == distance_ba);
 	static_assert(distance_ab == 7.0f);
+	static_assert(distance_ab == norm(c));
+
+	static_assert(x(a) == 1.0f);
+	static_assert(y(a) == 4.0f);
+	static_assert(z(a) == 5.0f);
+
+	constexpr auto bpc = b + c;
+	static_assert(bpc == a);
+
+	constexpr auto bmc = b - c;
+	static_assert(bmc == loc{-3.0f, -2.0f, -7.0f});
+
+	constexpr auto mid = midpoint(a, b);
+	static_assert(mid == loc{0.0f, 2.5f, 2.0f});
+	static_assert(mid[3] == 1.0f);
 }
