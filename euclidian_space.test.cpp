@@ -14,7 +14,9 @@ TESTCASE(geosimd_euclidian_space_subset)
 TESTCASE(geosimd_euclidian_space_point_props)
 {
 	using loc = geosimd::location<float, 3>;
+	static_assert(geosimd::point<loc>);
 	using vec = geosimd::displacement<float, 3>;
+	static_assert(geosimd::vector<vec>);
 	static_assert(loc::size() == 3);
 
 	constexpr loc a{1.0f, 4.0f, 5.0f};
