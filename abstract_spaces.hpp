@@ -49,7 +49,7 @@ namespace geosimd
 	};
 
 	template<class VectorType>
-	concept has_size = requires(VectorType a)
+	concept supports_size = requires(VectorType a)
 	{
 		{ std::size(a) } -> std::same_as<size_t>;
 	};

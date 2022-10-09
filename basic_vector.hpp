@@ -45,7 +45,7 @@ namespace geosimd
 
 		GEOSIMD_INLINE_OPT constexpr size_t size() const
 		{
-			if constexpr(has_size<storage_type>)
+			if constexpr(supports_size<storage_type>)
 			{ return std::size(m_value) - static_cast<size_t>(has_homogenous_coordinates<V>); }
 			else
 			{ return 1; }
@@ -69,7 +69,7 @@ namespace geosimd
 
 		GEOSIMD_INLINE_OPT static constexpr auto make_origin()
 		{
-			if constexpr(has_size<storage_type>)
+			if constexpr(supports_size<storage_type>)
 			{
 				return make_origin(std::make_index_sequence<storage_type::size() - 1>());
 			}
