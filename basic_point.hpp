@@ -47,10 +47,22 @@ namespace geosimd
 			{ return m_value; }
 		}
 
+		template<class = void>
+		requires(!supports_static_constexpr_size<storage_type>)
 		GEOSIMD_INLINE_OPT constexpr size_t size() const
 		{
 			if constexpr(supports_size<storage_type>)
 			{ return std::size(m_value) - static_cast<size_t>(has_homogenous_coordinates<V>); }
+			else
+			{ return 1; }
+		}
+
+		template<class = void>
+		requires(supports_static_constexpr_size<storage_type>)
+		GEOSIMD_INLINE_OPT static constexpr size_t size()
+		{
+			if constexpr(supports_size<storage_type>)
+			{ return storage_type::size() - static_cast<size_t>(has_homogenous_coordinates<V>); }
 			else
 			{ return 1; }
 		}
@@ -144,19 +156,19 @@ namespace geosimd
 	template<affine_space V>
 	GEOSIMD_INLINE_OPT constexpr auto get_radius_vector(basic_point<V> a)
 	{
-		return a - origin();
+		return a - origin<V>();
 	}
 
 	template<affine_space V>
 	GEOSIMD_INLINE_OPT constexpr auto midpoint(basic_point<V> a, basic_point<V> b)
 	{
-		return mean(get_radius_vector(a), get_radius_vector(b)) + origin();
+		return mean(get_radius_vector(a), get_radius_vector(b)) + origin<V>();
 	}
 
 	template<affine_space V>
 	GEOSIMD_INLINE_OPT constexpr auto lerp(basic_point<V> a, basic_point<V> b, typename V::scalar_type t)
 	{
-		return lerp(get_radius_vector(a), get_radius_vector(b), t) + origin();
+		return lerp(get_radius_vector(a), get_radius_vector(b), t) + origin<V>();
 	}
 }
 
