@@ -2,6 +2,7 @@
 #define GEOSIMD_ABSTRACTSPACES_HPP
 
 #include "./adl_factories.hpp"
+#include "./default_norm.hpp"
 
 #include <cstddef>
 #include <concepts>
@@ -61,35 +62,6 @@ namespace geosimd
 		&& point<typename T::point_type, typename T::vector_type, typename T::scalar_type>;
 
 	template<class T>
-	concept supports_abs = requires(T a)
-	{
-		{ abs(a) } -> std::totally_ordered;
-	} || requires(T a)
-	{
-		{ std::abs(a) } -> std::totally_ordered;
-	};
-
-	template<supports_abs T>
-	constexpr auto distance(T a, T b)
-	{
-		using std::abs;
-		return abs(a - b);
-	}
-
-	template<std::totally_ordered T>
-	requires (!supports_abs<T>)
-	constexpr auto distance(T a, T b)
-	{
-		return a < b ? (b - a) : (a - b);
-	}
-
-	template<class T>
-	concept supports_distance = requires(T a, T b)
-	{
-		{ distance(a, b) } -> std::totally_ordered;
-	};
-
-	template<class T>
 	concept overrides_distance = affine_space<T>
 		&& requires(T)
 	{
@@ -99,19 +71,6 @@ namespace geosimd
 
 	template<class T>
 	concept metric_space = affine_space<T> && (supports_distance<typename T::point_type> || overrides_distance<T>);
-
-	template<supports_abs T>
-	constexpr auto norm(T val)
-	{
-		using std::abs;
-		return abs(val);
-	}
-
-	template<class T>
-	concept supports_norm = requires(T a)
-	{
-		{ norm(a) } -> std::totally_ordered;
-	};
 
 	template<class T>
 	concept overrides_norm = vector_space<T>
