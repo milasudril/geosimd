@@ -42,31 +42,6 @@ namespace geosimd
 		{zero(std::declval<empty<T>>())} -> std::same_as<T>;
 	};
 
-	template<class VectorType>
-	concept subscriptable = requires(VectorType a)
-	{
-		{ a[std::declval<size_t>()] };
-	};
-
-	template<class VectorType>
-	concept supports_size = requires(VectorType a)
-	{
-		{ std::size(a) } -> std::same_as<size_t>;
-	};
-
-	template<class VectorType>
-	concept supports_constexpr_size = supports_size<VectorType>
-		&& requires(VectorType a)
-	{
-		{ std::bool_constant<(std::size(VectorType{}), true)>() } -> std::same_as<std::true_type>;
-	};
-
-	template<class VectorType>
-	concept supports_static_constexpr_size = requires(VectorType a)
-	{
-		{ std::bool_constant<(VectorType::size(), true)>() } -> std::same_as<std::true_type>;
-	};
-
 	template<class T>
 	concept vector_space = vector<typename T::vector_type, typename T::scalar_type>;
 

@@ -1,7 +1,6 @@
 #ifndef GEOSIMD_BASICPOINT_HPP
 #define GEOSIMD_BASICPOINT_HPP
 
-#include "./abstract_spaces.hpp"
 #include "./vectorops_mixin.hpp"
 #include "./basic_vector.hpp"
 

@@ -4,6 +4,7 @@
 #include "./abstract_spaces.hpp"
 #include "./vectorops_mixin.hpp"
 #include "./hilbert_space.hpp"
+#include "./container_props.hpp"
 
 #include <utility>
 
