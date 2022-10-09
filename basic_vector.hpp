@@ -3,6 +3,7 @@
 
 #include "./abstract_spaces.hpp"
 #include "./vectorops_mixin.hpp"
+#include "./hilbert_space.hpp"
 
 #include <utility>
 
@@ -87,7 +88,7 @@ namespace geosimd
 	}
 
 	template<vector_space V>
-	requires is_hilbert_space_v<V>
+	requires hilbert_space<V>
 	GEOSIMD_INLINE_OPT constexpr auto norm_squared(basic_vector<V> a)
 	{
 		return V::norm_squared(a.get());

@@ -95,30 +95,6 @@ namespace geosimd
 	concept inner_product_space = vector_space<T>
 		&& supports_inner_product<typename T::vector_type, typename T::scalar_type>;
 
-	template<class VectorType, class ScalarType = typename VectorType::scalar_type>
-	requires supports_inner_product<VectorType, ScalarType>
-	struct hilbert_space
-	{
-		using vector_type = VectorType;
-		using scalar_type = ScalarType;
-
-		static constexpr auto norm(vector_type v)
-		{
-			return std::sqrt(norm_squared(v));
-		}
-
-		static constexpr auto norm_squared(vector_type v)
-		{
-			return inner_product(v);
-		}
-	};
-
-	template<class V>
-	concept implements_hilbert_space = std::is_base_of_v<hilbert_space<typename V::vector_type, typename V::scalar_type>, V>;
-
-	template<vector_space V>
-	constexpr inline auto is_hilbert_space_v = implements_hilbert_space<V>;
-
 	template<class PointType, normed_space V>
 	struct metric_normed_space: public V
 	{

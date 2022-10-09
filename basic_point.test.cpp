@@ -8,14 +8,14 @@
 
 namespace geosimd_test
 {
-	struct my_vector_space_3d:public geosimd::metric_normed_space<geosimd::vec4i32_t, geosimd::hilbert_space<geosimd::vec4i32_t>>
+	struct my_vector_space_3d:public geosimd::metric_normed_space<geosimd::vec4i32_t, geosimd::hilbert_space_mixin<geosimd::vec4i32_t>>
 	{
 		using enable_homogenous_coordinates_t = void;
 	};
 
 	static_assert(geosimd::affine_space<my_vector_space_3d>);
 	static_assert(geosimd::point<geosimd::basic_point<my_vector_space_3d>>);
-	static_assert(geosimd::is_hilbert_space_v<my_vector_space_3d>);
+	static_assert(geosimd::hilbert_space<my_vector_space_3d>);
 	static_assert(geosimd::has_homogenous_coordinates<my_vector_space_3d>);
 
 	struct my_vector_space_1d
