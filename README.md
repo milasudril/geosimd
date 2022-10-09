@@ -26,6 +26,19 @@ Storage types for vectors are found in `vector_storage.hpp`. It uses `vector_lim
 
 The main abstraction over SIMD operations is `vec_t`. In addition to arithmetic operations, `vec_t` defines the Hermitian `inner_product`, as well as vector complex conjugate. In order to save code, arithmetic operations are provided through the `arithmetic_mixin` class template.
 
+The two most fundamental classes in the application domain are `basic_vector` and `basic_point`. These are class templates that accepts a suitable vector space. `basic_point` requires the vector space to be an affine space. The requirements on different kinds of vector spaces are specified in `abstract_spaces.hpp`. Basically, a vector space is implemented as a struct, containing using aliases and static member functions. The minimal requirement on a vector space, is that it specifies the vector type, and the scalar type. An affine space, must also specify the point type. An example of an affine space, that would work with both `basic_point` and `basic_vector` is
+
+```c++
+struct writable_address_space
+{
+	using vector_type = intptr_t;
+	using scalar_type = intptr_t;
+	using point_type = std::byte*
+}
+```
+
+Since it is possible to compute the distance between two pointers, `writable_address_space` is also a metric space. It is also possible to create similar mappings for the `std::chrono` library.
+
 A note on performance
 ---------------------
 While efforts has been made to force the compiler to optimize away abstractions also without any optimizations turned on, it is still recommended to enable all optimizations when using this library. This means that the following options are recommended
