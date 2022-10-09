@@ -39,6 +39,8 @@ struct writable_address_space
 
 Since it is possible to compute the distance between two pointers, `writable_address_space` is also a metric space. It is also possible to create similar mappings for the `std::chrono` library.
 
+In computer graphics it is common to use homogenous coordinates. This requires that points and vectors has an extra coordinate that should be 1 for points and 0 for vectors. To enable this behaviour, there has to be a type called `enable_homogenous_coordinates_t` in the vector space struct.
+
 If there is an associated norm, a vector space is called normed. If no norm is specified, the vector space is normed if there is a function to compute the norm of `vector_type`, visible through ADL. If there is a function called `norm`, it will be used. For som types it is possible to compute the absolute value. If no `norm` function is found `abs` will be used as a substitute. If the vector space defines a custom norm, that one will override the norm found by ADL. To specify a custom norm, add a function called `norm` accepting a `vector_type` to the vector space:
 
 ```c++
@@ -55,7 +57,7 @@ struct your_vector_space
 };
 ```
 
-For a norm to be valid, the return value hase to satisfy the `std::totally_ordered` requirement.
+For a norm to be valid, the return value has to satisfy the `std::totally_ordered` requirement.
 
 A commonly used family of vector spaces are Hilbert spaces. A Hilbert space defines its norm as the square root of the inner product of a vector with itself. Hilbert space behaviour is enabled by inheriting from the `hilbert_space_mixin` class template.
 
@@ -84,6 +86,8 @@ struct your_vector_space
 };
 ```
 
+Notice that the return value must satisfy the `std::totally_ordered` requirement.
+
 Often, the norm of the difference between two point is used as the distance function. This behaviour can be enabled by inheriting from `metric_normed_space_mixin` class template:
 
 ```c++
@@ -94,6 +98,29 @@ struct your_vector_space : public geosimd::metric_normed_space_mixin<PointType, 
 ```
 
 `your_vector_space` is now a metric normed space, with PointType added to the normed space `V`. For the same reason as `hilbert_space_mixin` adds `normed_squared`, `metric_normed_space_mixin` adds the `distance_squared` function.
+
+By combining `metric_normed_space_mixin` with a suitable Hilbert space as `normed_space`, and adding `enable_homogenous_coordinates_t`, a model of the 3-dimensional Euclidan space can be described:
+
+```c++
+struct euclidian_3space :
+	geosimd::metric_normed_space_mixin<geosimd::vec4f32_t,
+		geosimd::hilbert_space_mixin<geosimd::vec4f32_t>>
+{
+	using V::enable_homogenous_coordinates_t = void;
+};
+
+using e3_point = geosimd::basic_point<euclidian_3space>;
+using e3_vector = geosimd::basic_vector<euclidian_3space>;
+
+constexpr auto dot(e3_vector a, e3_vector b)
+{ return inner_product(a, b); }
+
+//...
+
+```
+
+
+
 
 A note on performance
 ---------------------
