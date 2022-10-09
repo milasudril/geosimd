@@ -39,6 +39,35 @@ struct writable_address_space
 
 Since it is possible to compute the distance between two pointers, `writable_address_space` is also a metric space. It is also possible to create similar mappings for the `std::chrono` library.
 
+If there is an associated norm, a vector space is called normed. If no norm is specified, the vector space is normed if there is a function to compute the norm of `vector_type`, visible through ADL. If there is a function called `norm`, it will be used. For som types it is possible to compute the absolute value. If no `norm` function is found `abs` will be used as a substitute. If the vector space defines a custom norm, that one will override the norm found by ADL. To specify a custom norm, add a function called `norm` accepting a `vector_type` to the vector space:
+
+```c++
+struct your_vector_space
+{
+	// Other definitions
+
+	static auto norm(vector_type x)
+	{
+	// compute the norm of x
+	}
+
+	// More definitions
+};
+```
+
+For a norm to be valid, the return value hase to satisfy the `std::totally_ordered` requirement.
+
+A commonly used family of vector spaces are Hilbert spaces. A Hilbert space defines its norm as the square root of the inner product of a vector with itself. Hilbert space behaviour is enabled by inheriting from the `hilbert_space_mixin` class template.
+
+```c++
+template<class VectorType, class ScalarType>
+struct your_vector_space : public geosimd::hilbert_space_mixin<VectorType, ScalarType>
+{
+};
+```
+
+In addition to adding a norm, this will add `using`-aliases for `VectorType` and `ScalarType`. In addition to that, `norm_squared` is defined. This is because is common to use the square of the norm rather than the norm itself, and using `norm_squared` may be required to eliminate the computation of the square root.
+
 A note on performance
 ---------------------
 While efforts has been made to force the compiler to optimize away abstractions also without any optimizations turned on, it is still recommended to enable all optimizations when using this library. This means that the following options are recommended
