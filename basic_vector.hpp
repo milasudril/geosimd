@@ -87,8 +87,7 @@ namespace geosimd
 		{ return norm(a.get()); }
 	}
 
-	template<vector_space V>
-	requires hilbert_space<V>
+	template<hilbert_space V>
 	GEOSIMD_INLINE_OPT constexpr auto norm_squared(basic_vector<V> a)
 	{
 		return V::norm_squared(a.get());
