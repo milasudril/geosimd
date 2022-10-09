@@ -100,7 +100,7 @@ namespace geosimd
 
 		GEOSIMD_INLINE_OPT static constexpr auto make_origin()
 		{
-			if constexpr(supports_size<storage_type>)
+			if constexpr(supports_static_constexpr_size<storage_type>)
 			{
 				return make_origin(std::make_index_sequence<storage_type::size() - 1>());
 			}

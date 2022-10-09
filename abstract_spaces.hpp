@@ -6,10 +6,10 @@
 
 #include <cstddef>
 #include <concepts>
+#include <type_traits>
+#include <iterator>
 #include <cstdint>
 #include <complex>
-#include <cmath>
-#include <cstdlib>
 
 namespace geosimd
 {
@@ -52,6 +52,19 @@ namespace geosimd
 	concept supports_size = requires(VectorType a)
 	{
 		{ std::size(a) } -> std::same_as<size_t>;
+	};
+
+	template<class VectorType>
+	concept supports_constexpr_size = supports_size<VectorType>
+		&& requires(VectorType a)
+	{
+		{ std::bool_constant<(std::size(VectorType{}), true)>() } -> std::same_as<std::true_type>;
+	};
+
+	template<class VectorType>
+	concept supports_static_constexpr_size = requires(VectorType a)
+	{
+		{ std::bool_constant<(VectorType::size(), true)>() } -> std::same_as<std::true_type>;
 	};
 
 	template<class T>
