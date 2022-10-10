@@ -78,9 +78,9 @@ TESTCASE(geosimd_angle_sine_cosine)
 		{
 			auto val = static_cast<double>(k)/24.0;
 			auto const angle = geosimd::angle{geosimd::turns{val}};
-			fprintf(stderr, "%zu\n", l);
 			EXPECT_EQ(cos(angle), std_vals[l].first);
 			EXPECT_EQ(sin(angle), std_vals[l].second);
+			EXPECT_LE(cos(angle)*cos(angle) + sin(angle)*sin(angle), 1.0f);
 			++l;
 		}
 	}
