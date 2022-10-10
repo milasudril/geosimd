@@ -8,12 +8,34 @@
 #include <numbers>
 #include <limits>
 #include <cstdint>
+#include <string>
 
 namespace geosimd
 {
-	struct rad{};
+	struct turns
+	{
+		constexpr auto operator<=>(turns const&) const = default;
+		float value;
+	};
 
-	struct turns{};
+	inline auto to_string(turns x)
+	{
+		return std::to_string(x.value).append(" τ");
+	}
+
+	struct rad
+	{
+		constexpr auto operator<=>(rad const&) const = default;
+		rad() = default;
+		GEOSIMD_INLINE_OPT explicit constexpr rad(turns x):value{2.0f*std::numbers::pi_v<float>*x.value}{}
+		GEOSIMD_INLINE_OPT explicit constexpr operator turns() const { return turns{0.5f*value/std::numbers::pi_v<float>}; }
+		float value;
+	};
+
+	inline auto to_string(rad x)
+	{
+		return std::to_string(x.value).append(" rad");
+	}
 
 	class angle
 	{
@@ -24,9 +46,11 @@ namespace geosimd
 		GEOSIMD_INLINE_OPT explicit constexpr angle(uint32_t value) : m_value{value}
 		{}
 
-		GEOSIMD_INLINE_OPT explicit constexpr angle(float value, turns):
-			m_value{static_cast<uint32_t>(static_cast<int64_t>(value * full_turn))}
+		GEOSIMD_INLINE_OPT explicit constexpr angle(turns x):
+			m_value{static_cast<uint32_t>(static_cast<int64_t>(x.value * full_turn))}
 		{}
+
+		GEOSIMD_INLINE_OPT explicit constexpr angle(rad x):angle{static_cast<turns>(x)}{}
 
 		GEOSIMD_INLINE_OPT constexpr angle& operator+=(angle a)
 		{
@@ -45,17 +69,56 @@ namespace geosimd
 			return m_value;
 		}
 
-		GEOSIMD_INLINE_OPT constexpr auto in_turns() const
-		{
-			return static_cast<float>(m_value)/static_cast<float>(full_turn);
-		}
-
 		bool operator==(angle const&) const = default;
 		bool operator!=(angle const&) const = default;
 
 	private:
 		uint32_t m_value;
 	};
+
+	GEOSIMD_INLINE_OPT constexpr auto to_turns(angle x)
+	{
+		return turns{static_cast<float>(x.get())/static_cast<float>(angle::full_turn)};
+	}
+
+	GEOSIMD_INLINE_OPT constexpr auto to_rad(angle x)
+	{
+		return rad{to_turns(x)};
+	}
+
+	constexpr auto sin(angle x)
+	{
+		switch(x.get())
+		{
+			case 0:
+				return 0.0f;
+			case 0x4000'0000:
+				return 1.0f;
+			case 0x8000'0000:
+				return 0.0f;
+			case 0xc000'0000:
+				return -1.0f;
+			default:
+				return std::sin(to_rad(x).value);
+		}
+	}
+
+	constexpr auto cos(angle x)
+	{
+		switch(x.get())
+		{
+			case 0:
+				return 1.0f;
+			case 0x4000'0000:
+				return 0.0f;
+			case 0x8000'0000:
+				return -1.0f;
+			case 0xc000'0000:
+				return 0.0f;
+			default:
+				return std::cos(to_rad(x).value);
+		}
+	}
 }
 
 #endif
