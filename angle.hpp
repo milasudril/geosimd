@@ -15,7 +15,7 @@ namespace geosimd
 	struct turns
 	{
 		constexpr auto operator<=>(turns const&) const = default;
-		float value;
+		double value;
 	};
 
 	inline auto to_string(turns x)
@@ -26,10 +26,11 @@ namespace geosimd
 	struct rad
 	{
 		constexpr auto operator<=>(rad const&) const = default;
-		rad() = default;
-		GEOSIMD_INLINE_OPT explicit constexpr rad(turns x):value{2.0f*std::numbers::pi_v<float>*x.value}{}
-		GEOSIMD_INLINE_OPT explicit constexpr operator turns() const { return turns{0.5f*value/std::numbers::pi_v<float>}; }
-		float value;
+		constexpr rad() = default;
+		constexpr explicit rad(double x):value{x}{}
+		GEOSIMD_INLINE_OPT explicit constexpr rad(turns x):value{2.0f*std::numbers::pi_v<double>*x.value}{}
+		GEOSIMD_INLINE_OPT explicit constexpr operator turns() const { return turns{0.5*value/std::numbers::pi_v<double>}; }
+		double value;
 	};
 
 	inline auto to_string(rad x)
@@ -78,7 +79,7 @@ namespace geosimd
 
 	GEOSIMD_INLINE_OPT constexpr auto to_turns(angle x)
 	{
-		return turns{static_cast<float>(x.get())/static_cast<float>(angle::full_turn)};
+		return turns{static_cast<double>(x.get())/static_cast<double>(angle::full_turn)};
 	}
 
 	GEOSIMD_INLINE_OPT constexpr auto to_rad(angle x)
@@ -99,7 +100,7 @@ namespace geosimd
 			case 0xc000'0000:
 				return -1.0f;
 			default:
-				return std::sin(to_rad(x).value);
+				return static_cast<float>(std::sin(to_rad(x).value));
 		}
 	}
 
@@ -116,7 +117,7 @@ namespace geosimd
 			case 0xc000'0000:
 				return 0.0f;
 			default:
-				return std::cos(to_rad(x).value);
+				return static_cast<float>(std::cos(to_rad(x).value));
 		}
 	}
 }
