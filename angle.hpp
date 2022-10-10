@@ -25,7 +25,7 @@ namespace geosimd
 		{}
 
 		GEOSIMD_INLINE_OPT explicit constexpr angle(float value, turns):
-			m_value{static_cast<uint32_t>(static_cast<uint64_t>(std::fmod(value * full_turn, full_turn) ))}
+			m_value{static_cast<uint32_t>(static_cast<int64_t>(value * full_turn))}
 		{}
 
 		GEOSIMD_INLINE_OPT constexpr angle& operator+=(angle a)
