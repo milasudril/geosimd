@@ -27,7 +27,7 @@ namespace geosimd
 	{
 		constexpr auto operator<=>(rad const&) const = default;
 		constexpr rad() = default;
-		constexpr explicit rad(double x):value{x}{}
+		GEOSIMD_INLINE_OPT constexpr explicit rad(double x):value{x}{}
 		GEOSIMD_INLINE_OPT explicit constexpr rad(turns x):value{2.0f*std::numbers::pi_v<double>*x.value}{}
 		GEOSIMD_INLINE_OPT explicit constexpr operator turns() const { return turns{0.5*value/std::numbers::pi_v<double>}; }
 		double value;
