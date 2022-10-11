@@ -5,6 +5,7 @@
 #include "./basic_vector.hpp"
 
 #include <utility>
+#include <string>
 
 namespace geosimd
 {
@@ -169,6 +170,13 @@ namespace geosimd
 	GEOSIMD_INLINE_OPT constexpr auto lerp(basic_point<V> a, basic_point<V> b, typename V::scalar_type t)
 	{
 		return origin<V>() + lerp(get_radius_vector(a), get_radius_vector(b), t);
+	}
+
+	template<affine_space V>
+	auto to_string(basic_point<V> a)
+	{
+		using std::to_string;
+		return to_string(a.get());
 	}
 }
 

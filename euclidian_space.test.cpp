@@ -46,3 +46,13 @@ TESTCASE(geosimd_euclidian_space_point_props)
 
 	static_assert(lerp(loc{1.0f, 2.0f, 4.0f}, loc{2.0f, 4.0f, 8.0f}, 0.25f) == loc{1.25f, 2.5f, 5.0f});
 }
+
+TESTCASE(geosimd_euclidian_space_to_string)
+{
+	using loc = geosimd::location<float, 3>;
+	using vec = geosimd::displacement<float, 3>;
+	auto const str_vec = to_string(vec{2.0f, 3.0f, 6.0f});
+	auto const str_point = to_string(loc{1.0f, 4.0f, 5.0f});
+	EXPECT_EQ(str_vec, "(2.000000, 3.000000, 6.000000)");
+	EXPECT_EQ(str_point, "(1.000000, 4.000000, 5.000000)");
+}

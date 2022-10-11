@@ -108,6 +108,13 @@ namespace geosimd
 	{
 		return t*b + (one(empty<typename V::scalar_type>{}) - t)*a;
 	}
+
+	template<vector_space V>
+	auto to_string(basic_vector<V> a)
+	{
+		using std::to_string;
+		return to_string(a.get());
+	}
 }
 
 #endif
