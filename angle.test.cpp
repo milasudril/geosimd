@@ -35,6 +35,17 @@ TESTCASE(geosimd_angle_from_rad)
 	EXPECT_EQ(to_rad(x), geosimd::rad{std::numbers::pi_v<double>});
 }
 
+TESTCASE(geosimd_angle_add_subtract)
+{
+	constexpr geosimd::angle a{geosimd::turns{-0.25f}};
+	constexpr geosimd::angle b{geosimd::turns{0.5f}};
+
+	EXPECT_EQ((a + b).get(), 0x40000000);
+	EXPECT_EQ((b - a).get(), 0xc0000000);
+	EXPECT_EQ((b + geosimd::turns{0.25f}).get(), 0xc0000000);
+	EXPECT_EQ((b - geosimd::turns{0.25f}).get(), 0x40000000);
+}
+
 TESTCASE(geosimd_angle_sine_cosine)
 {
 	constexpr geosimd::angle a{geosimd::turns{-0.25f}};

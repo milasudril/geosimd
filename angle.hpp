@@ -65,6 +65,18 @@ namespace geosimd
 			return *this;
 		}
 
+		template<class T>
+		GEOSIMD_INLINE_OPT constexpr angle& operator+=(T x)
+		{
+			return (*this) += angle{x};
+		}
+
+		template<class T>
+		GEOSIMD_INLINE_OPT constexpr angle& operator-=(T x)
+		{
+			return (*this) -= angle{x};
+		}
+
 		GEOSIMD_INLINE_OPT constexpr auto get() const
 		{
 			return m_value;
@@ -85,6 +97,28 @@ namespace geosimd
 	GEOSIMD_INLINE_OPT constexpr auto to_rad(angle x)
 	{
 		return rad{to_turns(x)};
+	}
+
+	GEOSIMD_INLINE_OPT constexpr auto operator+(angle a, angle b)
+	{
+		return a += b;
+	}
+
+	GEOSIMD_INLINE_OPT constexpr auto operator-(angle a, angle b)
+	{
+		return a -= b;
+	}
+
+	template<class T>
+	GEOSIMD_INLINE_OPT constexpr auto operator+(angle a, T b)
+	{
+		return a += b;
+	}
+
+	template<class T>
+	GEOSIMD_INLINE_OPT constexpr auto operator-(angle a, T b)
+	{
+		return a -= b;
 	}
 
 	constexpr auto sin(angle x)
