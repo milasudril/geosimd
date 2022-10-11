@@ -175,8 +175,13 @@ namespace geosimd
 	template<affine_space V>
 	auto to_string(basic_point<V> a)
 	{
-		using std::to_string;
-		return to_string(a.get());
+		if constexpr(has_homogenous_coordinates<V>)
+		{ return to_string(a.get(), std::integral_constant<size_t, 1>{}); }
+		else
+		{
+			using std::string;
+			return to_string(a.get());
+		}
 	}
 }
 

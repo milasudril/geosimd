@@ -65,16 +65,18 @@ namespace geosimd
 			.append("i");
 	}
 
-	template<class T, size_t N>
-	std::string to_string(vec_t<T, N> val)
+	template<class T, size_t N, size_t Trim = 0>
+	std::string to_string(vec_t<T, N> val, std::integral_constant<size_t, Trim> = std::integral_constant<size_t, Trim>{})
 	{
-		static_assert(N != 0);
+		static_assert(N > Trim);
+		static constexpr auto length = N - Trim;
+		static_assert(length != 0);
 		std::string ret{"("};
-		for(size_t k = 0; k != N - 1; ++k)
+		for(size_t k = 0; k != length - 1; ++k)
 		{
 			ret.append(to_string(val[k])).append(", ");
 		}
-		ret.append(to_string(val[N - 1])).append(")");
+		ret.append(to_string(val[length - 1])).append(")");
 		return ret;
 	}
 
