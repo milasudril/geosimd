@@ -1,32 +1,23 @@
-GeoSIMD
-=======
-This is a header-only library that contains functions using SIMD for 3D geometry. Features
+# GeoSIMD
 
- * Strict distinction between Points, Vectors, and Directions
- * Different types for translations and rotations
- * A special type for angles
+This is a header-only library whose main focus is to model Euclidian geometry with SIMD. The library contains abstractions for
 
-These abstractions are implemented with ZOAP in mind.
+ * Vectors
+ * Points
+ * Angles
 
-Directions
-----------
-A Direction is a Vector with unit length. Directions can only be transformed by rotations, but share most of their behaviors with Vectors.
+While efforts has been made to force the compiler to optimize away abstractions also without any optimizations turned on (debugging an optimize build is a real pain), it is still recommended to enable all optimizations when using this library. This means that the following options are recommended
 
-Vectors
--------
-Vectors are translation invariant. They can be rotated and scaled. The latter transformation is not yet implemented. Vectors can be added, subtracted, and multiplied by a scalar. It is also possible to use dot product, and cross product on them.
+`-O3 -ffast-math -ftree-vectorize`
 
-Points
-------
-Points in space. Any transformation can be applied to a point. It is possible to add Vectors to points, and to subtract Points. The latter will produce a Vector. It is not possible to add two points. However, it *is* possible to compute their centroid.
 
-Library structure
------------------
-Storage types for vectors are found in `vector_storage.hpp`. It uses `vector_limits.hpp` to determine whether or not a type is suitable for native vectorization. If not support is emulated through an `emulated_vector`. There is support for complex vectors. This works by using std::complex together with a vector type. Thus, a complex vector will consist of a real vector, and an imaginary vector.
+## Vectors and Points
 
-The main abstraction over SIMD operations is `vec_t`. In addition to arithmetic operations, `vec_t` defines the Hermitian `inner_product`, as well as vector complex conjugate. In order to save code, arithmetic operations are provided through the `arithmetic_mixin` class template.
+A point can be defined as a 0-dimensional object with a distinct location in some space. It is possible to take the difference between two poins A and B. Doing so, results in a vector from A to B. Vectors can be added, and multiplied by a factor called a scalar. Furthermore, points and vectors can be added, which results in a different point. Since these concepts are interesting on their own, and also that C++ has types that describes points (such as pointers), and vectors (regular signed integers), these are described as `concepts`, see `abstract_spaces.hpp`.
 
-The two most fundamental classes in the application domain are `basic_vector` and `basic_point`. These are class templates that accepts a suitable vector space. `basic_point` requires the vector space to be an affine space. The requirements on different kinds of vector spaces are specified in `abstract_spaces.hpp`. Basically, a vector space is implemented as a struct, containing using aliases and static member functions. The minimal requirement on a vector space, is that it specifies the vector type, and the scalar type. An affine space, must also specify the point type. An example of an affine space, that would work with both `basic_point` and `basic_vector` is
+Storage types for vectors (and also points), of a compile-time known dimensionality, are found in `vector_storage.hpp`. It uses `vector_limits.hpp` to determine whether or not a type is suitable for native vectorization. If not support is emulated through an `emulated_vector`. There is support for complex vectors. This works by using std::complex together with a vector type. Thus, a complex vector will consist of a real vector, and an imaginary vector. The main abstraction over SIMD operations is `vec_t`. In addition to arithmetic operations, `vec_t` defines the Hermitian `inner_product`, as well as vector complex conjugate.
+
+Vectors and points are modelled by `basic_vector` and `basic_point`, respectively. These are class templates that accepts a suitable vector space. `basic_point` requires the vector space to be an affine space. The requirements on different kinds of vector spaces are specified in `abstract_spaces.hpp`. Basically, a vector space is implemented as a struct, containing using aliases and static member functions. The minimal requirement on a vector space, is that it specifies the vector type, and the scalar type. An affine space, must also specify the point type. An example of an affine space, that would work with both `basic_point` and `basic_vector` is
 
 ```c++
 struct writable_address_space
@@ -39,7 +30,10 @@ struct writable_address_space
 
 Since it is possible to compute the distance between two pointers, `writable_address_space` is also a metric space. It is also possible to create similar mappings for the `std::chrono` library.
 
-In computer graphics it is common to use homogenous coordinates. This requires that points and vectors has an extra coordinate that should be 1 for points and 0 for vectors. To enable this behaviour, there has to be a type called `enable_homogenous_coordinates_t` in the vector space struct.
+The Euclidian N-space is defined in `euclidian_sapce.hpp`. The Euclidian N-space is a metric normed space, with the norm defined as in a Hilbert space. Points are called `location`s and vectors are called `displacement`s. The implementation of the Euclidian N-space found in this library uses homogenous coordinates, which means that if the observable dimensionality is N, N+1 elements are allocated for each object. For example a, for a 3-dimensional quantity, 4 elements are used, the last being 0 for a vector, and 1 for a point.
+
+
+### More about vector spaces
 
 If there is an associated norm, a vector space is called normed. If no norm is specified, the vector space is normed if there is a function to compute the norm of `vector_type`, visible through ADL. If there is a function called `norm`, it will be used. For som types it is possible to compute the absolute value. If no `norm` function is found `abs` will be used as a substitute. If the vector space defines a custom norm, that one will override the norm found by ADL. To specify a custom norm, add a function called `norm` accepting a `vector_type` to the vector space:
 
@@ -99,31 +93,4 @@ struct your_vector_space : public geosimd::metric_normed_space_mixin<PointType, 
 
 `your_vector_space` is now a metric normed space, with PointType added to the normed space `V`. For the same reason as `hilbert_space_mixin` adds `normed_squared`, `metric_normed_space_mixin` adds the `distance_squared` function.
 
-By combining `metric_normed_space_mixin` with a suitable Hilbert space as `normed_space`, and adding `enable_homogenous_coordinates_t`, a model of the 3-dimensional Euclidan space can be described:
-
-```c++
-struct euclidian_3space :
-	geosimd::metric_normed_space_mixin<geosimd::vec4f32_t,
-		geosimd::hilbert_space_mixin<geosimd::vec4f32_t>>
-{
-	using enable_homogenous_coordinates_t = void;
-};
-
-using e3_point = geosimd::basic_point<euclidian_3space>;
-using e3_vector = geosimd::basic_vector<euclidian_3space>;
-
-constexpr auto dot(e3_vector a, e3_vector b)
-{ return inner_product(a, b); }
-
-//...
-
-```
-
-
-
-
-A note on performance
----------------------
-While efforts has been made to force the compiler to optimize away abstractions also without any optimizations turned on, it is still recommended to enable all optimizations when using this library. This means that the following options are recommended
-
-`-O3 -ffast-math -ftree-vectorize`
+In computer graphics it is common to use homogenous coordinates. This requires that points and vectors has an extra coordinate that should be 1 for points and 0 for vectors. To enable this behaviour, there has to be a type called `enable_homogenous_coordinates_t` in the vector space struct.
