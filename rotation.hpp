@@ -5,7 +5,6 @@
 
 #include "angle.hpp"
 #include "mat4.hpp"
-#include "axis.hpp"
 #include "quaternion.hpp"
 
 namespace GeoSIMD
