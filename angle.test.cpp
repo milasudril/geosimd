@@ -108,3 +108,10 @@ TESTCASE(geosimd_rotation_angle_sine_cosine)
 		}
 	}
 }
+
+TESTCASE(geosimd_turn_angle_scale)
+{
+	constexpr geosimd::turn_angle x{geosimd::turns{0.25}};
+	constexpr auto y = 4.0*x;
+	EXPECT_EQ(y.get(), 0x1'0000'0000ll);
+}
