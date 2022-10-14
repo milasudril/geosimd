@@ -3,6 +3,7 @@
 
 #include "./inline.hpp"
 #include "./adl_factories.hpp"
+#include "./vectorops_mixin.hpp"
 
 #include <cmath>
 #include <numbers>
@@ -38,9 +39,12 @@ namespace geosimd
 		return std::to_string(x.value).append(" rad");
 	}
 
-	class turn_angle
+	class turn_angle:public vectorops_mixin<turn_angle>
 	{
 		public:
+			using scalar_type = double;
+			friend class vectorops_mixin<turn_angle>;
+
 			static constexpr auto full_turn =
 				static_cast<int64_t>(std::numeric_limits<uint32_t>::max()) + one(empty<int64_t>{});
 
@@ -59,7 +63,7 @@ namespace geosimd
 			GEOSIMD_INLINE_OPT constexpr auto get() const 
 			{ return m_value; }
 
-			constexpr auto operator<=>(turn_angle const&) const = default;
+//			constexpr auto operator<=>(turn_angle const&) const = default;
 
 		private:
 			int64_t m_value;

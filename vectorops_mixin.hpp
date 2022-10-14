@@ -2,6 +2,7 @@
 #define GEOSIMD_VECTORPS_MIXIN_HPP
 
 #include "./inline.hpp"
+#include "./container_props.hpp"
 
 #include <cstddef>
 #include <iterator>
@@ -64,14 +65,19 @@ namespace geosimd
 
 		GEOSIMD_FLATTEN constexpr bool operator==(Derived other) const
 		{
-			using scalar_type = typename Derived::scalar_type;
-			auto const diff = static_cast<Derived const&>(*this) - other;
-			for(size_t k = 0; k != std::size(diff); ++k)
+			if constexpr(subscriptable<Derived>)
 			{
-				if(diff[k] != scalar_type{})
-				{ return false; }
+				using scalar_type = typename Derived::scalar_type;
+				auto const diff = static_cast<Derived const&>(*this) - other;
+				for(size_t k = 0; k != std::size(diff); ++k)
+				{
+					if(diff[k] != scalar_type{})
+					{ return false; }
+				}
+				return true;
 			}
-			return true;
+			else
+			{return static_cast<Derived const&>(*this).m_value == other.m_value;}
 		}
 
 		GEOSIMD_INLINE_OPT constexpr bool operator!=(Derived other) const
