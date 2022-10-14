@@ -42,7 +42,7 @@ namespace geosimd
 	{
 	public:
 		static constexpr auto full_turn =
-			static_cast<uint64_t>(std::numeric_limits<uint32_t>::max()) + one(empty<uint64_t>{});
+			static_cast<int64_t>(std::numeric_limits<uint32_t>::max()) + one(empty<int64_t>{});
 
 		GEOSIMD_INLINE_OPT explicit constexpr rotation_angle(uint32_t value) : m_value{value}
 		{}
