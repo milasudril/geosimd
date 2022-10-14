@@ -73,17 +73,15 @@ namespace geosimd
 			rotation_angle{static_cast<turns>(x)}
 		{}
 
-		template<class T>
-		GEOSIMD_INLINE_OPT constexpr rotation_angle& operator+=(T x)
+		GEOSIMD_INLINE_OPT constexpr rotation_angle& operator+=(turn_angle x)
 		{
-			m_value += rotation_angle{x}.m_value;
+			m_value += static_cast<uint32_t>(x.get());
 			return *this;
 		}
 
-		template<class T>
-		GEOSIMD_INLINE_OPT constexpr rotation_angle& operator-=(T x)
+		GEOSIMD_INLINE_OPT constexpr rotation_angle& operator-=(turn_angle x)
 		{
-			m_value -= rotation_angle{x}.m_value;
+			m_value -= static_cast<uint32_t>(x.get());
 			return *this;
 		}
 
@@ -109,14 +107,12 @@ namespace geosimd
 		return rad{to_turns(x)};
 	}
 
-	template<class T>
-	GEOSIMD_INLINE_OPT constexpr auto operator+(rotation_angle a, T b)
+	GEOSIMD_INLINE_OPT constexpr auto operator+(rotation_angle a, turn_angle b)
 	{
 		return a += b;
 	}
 
-	template<class T>
-	GEOSIMD_INLINE_OPT constexpr auto operator-(rotation_angle a, T b)
+	GEOSIMD_INLINE_OPT constexpr auto operator-(rotation_angle a, turn_angle b)
 	{
 		return a -= b;
 	}

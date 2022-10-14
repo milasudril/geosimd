@@ -22,10 +22,10 @@ TESTCASE(geosimd_rotation_angle_from_turns)
 	EXPECT_EQ(g.get(), 0x00000000);
 	EXPECT_EQ(h.get(), 0x00000000);
 
-	EXPECT_EQ(to_turns(a), geosimd::turns{0.75f} );
-	EXPECT_EQ(to_turns(b), geosimd::turns{0.0f }  );
-	EXPECT_EQ(to_turns(c), geosimd::turns{0.25f} );
-	EXPECT_EQ(to_turns(d), geosimd::turns{0.5f });
+	EXPECT_EQ(to_turns(a), geosimd::turns{0.75} );
+	EXPECT_EQ(to_turns(b), geosimd::turns{0.0 }  );
+	EXPECT_EQ(to_turns(c), geosimd::turns{0.25} );
+	EXPECT_EQ(to_turns(d), geosimd::turns{0.5 });
 }
 
 TESTCASE(geosimd_rotation_angle_from_rad)
@@ -37,11 +37,14 @@ TESTCASE(geosimd_rotation_angle_from_rad)
 
 TESTCASE(geosimd_rotation_angle_add_subtract)
 {
-	constexpr geosimd::rotation_angle a{geosimd::turns{-0.25f}};
-	constexpr geosimd::rotation_angle b{geosimd::turns{0.5f}};
+	constexpr geosimd::rotation_angle a{geosimd::turns{-0.25}};
+	constexpr geosimd::rotation_angle b{geosimd::turns{0.5}};
+	constexpr geosimd::turn_angle c{geosimd::turns{-0.25}};
+	constexpr geosimd::turn_angle d{geosimd::turns{0.5}};
 
-	EXPECT_EQ((a + b).get(), 0x40000000);
-	EXPECT_EQ((b - a).get(), 0xc0000000);
+	EXPECT_EQ((a + d).get(), 0x40000000);
+	EXPECT_EQ((b - c).get(), 0xc0000000);
+
 	EXPECT_EQ((b + geosimd::turns{0.25f}).get(), 0xc0000000);
 	EXPECT_EQ((b - geosimd::turns{0.25f}).get(), 0x40000000);
 }
