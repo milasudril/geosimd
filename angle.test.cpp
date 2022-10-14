@@ -47,6 +47,11 @@ TESTCASE(geosimd_rotation_angle_add_subtract)
 
 	EXPECT_EQ((b + geosimd::turns{0.25f}).get(), 0xc0000000);
 	EXPECT_EQ((b - geosimd::turns{0.25f}).get(), 0x40000000);
+
+	constexpr geosimd::rotation_angle almost_full_turn{0xffffffff};
+	constexpr auto no_rot = zero(geosimd::empty<geosimd::rotation_angle>{});
+	EXPECT_EQ(almost_full_turn - no_rot, geosimd::turn_angle{0xffffffff});
+	EXPECT_EQ(no_rot - almost_full_turn, geosimd::turn_angle{-0xffffffffll});
 }
 
 TESTCASE(geosimd_rotation_angle_sine_cosine)
