@@ -78,7 +78,10 @@ namespace geosimd
 	class rotation_angle
 	{
 	public:
-			GEOSIMD_INLINE_OPT constexpr rotation_angle() = default;
+		using scalar_type = double;
+		using vector_type = turn_angle;
+
+		GEOSIMD_INLINE_OPT constexpr rotation_angle() = default;
 
 		GEOSIMD_INLINE_OPT explicit constexpr rotation_angle(uint32_t value) : m_value{value}
 		{}
