@@ -38,6 +38,23 @@ namespace geosimd
 		return std::to_string(x.value).append(" rad");
 	}
 
+	class turn_angle
+	{
+		public:
+			static constexpr auto full_turn =
+				static_cast<int64_t>(std::numeric_limits<uint32_t>::max()) + one(empty<int64_t>{});
+		
+			constexpr turn_angle(turns x):m_value{static_cast<uint32_t>(static_cast<int64_t>(x.value * full_turn))}{}
+
+			constexpr turn_angle(rad x):turn_angle{static_cast<turns>(x)}{}
+
+			constexpr auto value() const 
+			{ return m_value; }
+
+		private:
+			int64_t m_value;
+	};
+
 	class rotation_angle
 	{
 	public:
