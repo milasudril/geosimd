@@ -38,43 +38,43 @@ namespace geosimd
 		return std::to_string(x.value).append(" rad");
 	}
 
-	class angle
+	class rotation_angle
 	{
 	public:
 		static constexpr auto full_turn =
 			static_cast<uint64_t>(std::numeric_limits<uint32_t>::max()) + one(empty<uint64_t>{});
 
-		GEOSIMD_INLINE_OPT explicit constexpr angle(uint32_t value) : m_value{value}
+		GEOSIMD_INLINE_OPT explicit constexpr rotation_angle(uint32_t value) : m_value{value}
 		{}
 
-		GEOSIMD_INLINE_OPT explicit constexpr angle(turns x):
+		GEOSIMD_INLINE_OPT explicit constexpr rotation_angle(turns x):
 			m_value{static_cast<uint32_t>(static_cast<int64_t>(x.value * full_turn))}
 		{}
 
-		GEOSIMD_INLINE_OPT explicit constexpr angle(rad x):angle{static_cast<turns>(x)}{}
+		GEOSIMD_INLINE_OPT explicit constexpr rotation_angle(rad x):rotation_angle{static_cast<turns>(x)}{}
 
-		GEOSIMD_INLINE_OPT constexpr angle& operator+=(angle a)
+		GEOSIMD_INLINE_OPT constexpr rotation_angle& operator+=(rotation_angle a)
 		{
 			m_value += a.m_value;
 			return *this;
 		}
 
-		GEOSIMD_INLINE_OPT constexpr angle& operator-=(angle a)
+		GEOSIMD_INLINE_OPT constexpr rotation_angle& operator-=(rotation_angle a)
 		{
 			m_value -= a.m_value;
 			return *this;
 		}
 
 		template<class T>
-		GEOSIMD_INLINE_OPT constexpr angle& operator+=(T x)
+		GEOSIMD_INLINE_OPT constexpr rotation_angle& operator+=(T x)
 		{
-			return (*this) += angle{x};
+			return (*this) += rotation_angle{x};
 		}
 
 		template<class T>
-		GEOSIMD_INLINE_OPT constexpr angle& operator-=(T x)
+		GEOSIMD_INLINE_OPT constexpr rotation_angle& operator-=(T x)
 		{
-			return (*this) -= angle{x};
+			return (*this) -= rotation_angle{x};
 		}
 
 		GEOSIMD_INLINE_OPT constexpr auto get() const
@@ -82,46 +82,46 @@ namespace geosimd
 			return m_value;
 		}
 
-		bool operator==(angle const&) const = default;
-		bool operator!=(angle const&) const = default;
+		bool operator==(rotation_angle const&) const = default;
+		bool operator!=(rotation_angle const&) const = default;
 
 	private:
 		uint32_t m_value;
 	};
 
-	GEOSIMD_INLINE_OPT constexpr auto to_turns(angle x)
+	GEOSIMD_INLINE_OPT constexpr auto to_turns(rotation_angle x)
 	{
-		return turns{static_cast<double>(x.get())/static_cast<double>(angle::full_turn)};
+		return turns{static_cast<double>(x.get())/static_cast<double>(rotation_angle::full_turn)};
 	}
 
-	GEOSIMD_INLINE_OPT constexpr auto to_rad(angle x)
+	GEOSIMD_INLINE_OPT constexpr auto to_rad(rotation_angle x)
 	{
 		return rad{to_turns(x)};
 	}
 
-	GEOSIMD_INLINE_OPT constexpr auto operator+(angle a, angle b)
+	GEOSIMD_INLINE_OPT constexpr auto operator+(rotation_angle a, rotation_angle b)
 	{
 		return a += b;
 	}
 
-	GEOSIMD_INLINE_OPT constexpr auto operator-(angle a, angle b)
+	GEOSIMD_INLINE_OPT constexpr auto operator-(rotation_angle a, rotation_angle b)
 	{
 		return a -= b;
 	}
 
 	template<class T>
-	GEOSIMD_INLINE_OPT constexpr auto operator+(angle a, T b)
+	GEOSIMD_INLINE_OPT constexpr auto operator+(rotation_angle a, T b)
 	{
 		return a += b;
 	}
 
 	template<class T>
-	GEOSIMD_INLINE_OPT constexpr auto operator-(angle a, T b)
+	GEOSIMD_INLINE_OPT constexpr auto operator-(rotation_angle a, T b)
 	{
 		return a -= b;
 	}
 
-	constexpr auto sin(angle x)
+	constexpr auto sin(rotation_angle x)
 	{
 		switch(x.get())
 		{
@@ -138,7 +138,7 @@ namespace geosimd
 		}
 	}
 
-	constexpr auto cos(angle x)
+	constexpr auto cos(rotation_angle x)
 	{
 		switch(x.get())
 		{
