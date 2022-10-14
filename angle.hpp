@@ -44,11 +44,15 @@ namespace geosimd
 			static constexpr auto full_turn =
 				static_cast<int64_t>(std::numeric_limits<uint32_t>::max()) + one(empty<int64_t>{});
 		
-			constexpr turn_angle(turns x):m_value{static_cast<uint32_t>(static_cast<int64_t>(x.value * full_turn))}{}
+			GEOSIMD_INLINE_OPT constexpr turn_angle(turns x):
+				m_value{static_cast<uint32_t>(static_cast<int64_t>(x.value * full_turn))}
+			{}
 
-			constexpr turn_angle(rad x):turn_angle{static_cast<turns>(x)}{}
+			GEOSIMD_INLINE_OPT constexpr turn_angle(rad x):
+				turn_angle{static_cast<turns>(x)}
+			{}
 
-			constexpr auto value() const 
+			GEOSIMD_INLINE_OPT constexpr auto get() const 
 			{ return m_value; }
 
 		private:
@@ -65,10 +69,12 @@ namespace geosimd
 		{}
 
 		GEOSIMD_INLINE_OPT explicit constexpr rotation_angle(turns x):
-			m_value{static_cast<uint32_t>(static_cast<int64_t>(x.value * full_turn))}
+			m_value{static_cast<uint32_t>(turn_angle{x}.get())}
 		{}
 
-		GEOSIMD_INLINE_OPT explicit constexpr rotation_angle(rad x):rotation_angle{static_cast<turns>(x)}{}
+		GEOSIMD_INLINE_OPT explicit constexpr rotation_angle(rad x):
+			rotation_angle{static_cast<turns>(x)}
+		{}
 
 		template<class T>
 		GEOSIMD_INLINE_OPT constexpr rotation_angle& operator+=(T x)
