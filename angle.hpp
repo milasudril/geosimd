@@ -62,9 +62,6 @@ namespace geosimd
 	class rotation_angle
 	{
 	public:
-		static constexpr auto full_turn =
-			static_cast<int64_t>(std::numeric_limits<uint32_t>::max()) + one(empty<int64_t>{});
-
 		GEOSIMD_INLINE_OPT explicit constexpr rotation_angle(uint32_t value) : m_value{value}
 		{}
 
@@ -104,7 +101,7 @@ namespace geosimd
 
 	GEOSIMD_INLINE_OPT constexpr auto to_turns(rotation_angle x)
 	{
-		return turns{static_cast<double>(x.get())/static_cast<double>(rotation_angle::full_turn)};
+		return turns{static_cast<double>(x.get())/static_cast<double>(turn_angle::full_turn)};
 	}
 
 	GEOSIMD_INLINE_OPT constexpr auto to_rad(rotation_angle x)
