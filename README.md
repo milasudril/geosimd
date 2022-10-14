@@ -94,3 +94,9 @@ struct your_vector_space : public geosimd::metric_normed_space_mixin<PointType, 
 `your_vector_space` is now a metric normed space, with PointType added to the normed space `V`. For the same reason as `hilbert_space_mixin` adds `normed_squared`, `metric_normed_space_mixin` adds the `distance_squared` function.
 
 In computer graphics it is common to use homogenous coordinates. This requires that points and vectors has an extra coordinate that should be 1 for points and 0 for vectors. To enable this behaviour, there has to be a type called `enable_homogenous_coordinates_t` in the vector space struct.
+
+## Angles
+
+GeoSIMD features two models for an angle. A `rotation_angle` is inteded to be used as a representation of the total rotation of an object (mod 2 pi). A `turn_angle` can be used to increment or decrement a `rotation_angle`. The difference between two `rotation_angle`s results in a `turn_angle`. Furthermore `turn_angles` can be multiplied by a scalar. Thus, a `turn_angle` is the vector between two points of type `rotation_angle`.
+
+Angles are represented as a binary angle, where one full turn equals 2^32. To make it easy to rotate an object with same precision infinitely, a `rotation_angle` is represented by an `uint32_t`. A `turn_angle` is stored as an `int64_t`, and thus it can store multiple turns.
