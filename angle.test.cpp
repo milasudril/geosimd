@@ -1,8 +1,11 @@
 //@	{"target":{"name":"angle.test.cpp"}}
 
 #include "./angle.hpp"
+#include "./abstract_spaces.hpp"
 
 #include "testfwk/testfwk.hpp"
+
+static_assert(geosimd::vector<geosimd::turn_angle, double>);
 
 TESTCASE(geosimd_rotation_angle_from_turns)
 {
