@@ -11,40 +11,37 @@
 namespace geosimd
 {
 	template<class Derived>
-	struct vectorops_mixin
+	class vectorops_mixin
 	{
-		GEOSIMD_FULL_INLINE constexpr Derived& operator+=(Derived other)
+	protected:
+		struct magic{};
+	public:
+		GEOSIMD_FULL_INLINE friend constexpr auto& operator+=(Derived& a, Derived b)
 		{
-			auto& derived = static_cast<Derived&>(*this);
-			derived.m_value += other.m_value;
-			return derived;
+			a.get(magic{}) += b.get();
+			return a;
 		}
 
-		GEOSIMD_FULL_INLINE constexpr Derived& operator-=(Derived other)
+		GEOSIMD_FULL_INLINE friend constexpr auto& operator-=(Derived& a, Derived b)
 		{
-			auto& derived = static_cast<Derived&>(*this);
-			derived.m_value -= other.m_value;
-			return derived;
+			a.get(magic{}) -= b.get();
+			return a;
 		}
 
 		GEOSIMD_FULL_INLINE constexpr Derived operator-() const
 		{
 			auto& derived = static_cast<Derived const&>(*this);
-			return Derived{-derived.m_value};
+			return Derived{-derived.get()};
 		}
 
 		GEOSIMD_FULL_INLINE constexpr Derived operator+() const
-		{
-			auto& derived = static_cast<Derived const&>(*this);
-			return derived;
-		}
+		{ return static_cast<Derived const&>(*this); }
 
 		template<class T = Derived>
-		GEOSIMD_FULL_INLINE constexpr Derived& operator*=(typename T::scalar_type other)
+		GEOSIMD_FULL_INLINE friend constexpr auto& operator*=(Derived& a, typename T::scalar_type b)
 		{
-			auto& derived = static_cast<Derived&>(*this);
-			derived.m_value *= other;
-			return derived;
+			a.get(magic{}) *= b;
+			return a;
 		}
 
 		template<class T = Derived>
@@ -56,19 +53,18 @@ namespace geosimd
 		{ return b *= a; }
 
 		template<class T = Derived>
-		GEOSIMD_FULL_INLINE constexpr Derived& operator/=(typename T::scalar_type other)
+		GEOSIMD_FULL_INLINE friend constexpr Derived& operator/=(Derived& a, typename T::scalar_type b)
 		{
-			auto& derived = static_cast<Derived&>(*this);
-			derived.m_value /= other;
-			return derived;
+			a.get(magic{}) /= b;
+			return a;
 		}
 
-		GEOSIMD_FLATTEN constexpr bool operator==(Derived other) const
+		GEOSIMD_FLATTEN friend constexpr bool operator==(Derived a, Derived b)
 		{
 			if constexpr(subscriptable<Derived>)
 			{
 				using scalar_type = typename Derived::scalar_type;
-				auto const diff = static_cast<Derived const&>(*this) - other;
+				auto const diff = a - b;
 				for(size_t k = 0; k != std::size(diff); ++k)
 				{
 					if(diff[k] != scalar_type{})
@@ -77,30 +73,28 @@ namespace geosimd
 				return true;
 			}
 			else
-			{return static_cast<Derived const&>(*this).m_value == other.m_value;}
+			{return a.get() == b.get();}
 		}
 
-		GEOSIMD_INLINE_OPT constexpr bool operator!=(Derived other) const
+		GEOSIMD_INLINE_OPT friend constexpr bool operator!=(Derived a, Derived b)
 		{
-			return !(*this == other);
+			return !(a == b);
 		}
 
 		template<class T = Derived>
 		requires requires(T) { typename Derived::enable_hadamard_product_t; }
-		GEOSIMD_FULL_INLINE constexpr Derived& operator*=(Derived other)
+		GEOSIMD_FULL_INLINE friend constexpr Derived& operator*=(Derived& a, Derived b)
 		{
-			auto& derived = static_cast<Derived&>(*this);
-			derived.m_value *= other.m_value;
-			return derived;
+			a.get(magic{}) *= b.get();
+			return a;
 		}
 
 		template<class T = Derived>
 		requires requires(T) { typename T::enable_hadamard_product_t; }
-		GEOSIMD_FULL_INLINE constexpr Derived& operator/=(Derived other)
+		GEOSIMD_FULL_INLINE friend constexpr Derived& operator/=(Derived& a, Derived b)
 		{
-			auto& derived = static_cast<Derived&>(*this);
-			derived.m_value /= other.m_value;
-			return derived;
+			a.get(magic{}) /= b.get();
+			return a;
 		}
 
 		GEOSIMD_FULL_INLINE friend constexpr auto operator*(Derived a, Derived b)

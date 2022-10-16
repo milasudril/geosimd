@@ -13,12 +13,11 @@ namespace geosimd
 	template<vector_space V>
 	class basic_vector:public vectorops_mixin<basic_vector<V>>
 	{
+		using vectorops_magic = typename vectorops_mixin<basic_vector<V>>::magic;
 	public:
 		using scalar_type = typename V::scalar_type;
 		using storage_type = typename V::vector_type;
 		using vector_type = basic_vector<V>;
-
-		friend class vectorops_mixin<vector_type>;
 
 		GEOSIMD_INLINE_OPT constexpr basic_vector():m_value{make_origin()}{}
 
@@ -55,6 +54,9 @@ namespace geosimd
 		}
 
 		GEOSIMD_INLINE_OPT constexpr auto get() const
+		{ return m_value; }
+
+		GEOSIMD_INLINE_OPT constexpr auto& get(vectorops_magic) 
 		{ return m_value; }
 
 	private:

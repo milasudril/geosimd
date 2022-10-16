@@ -9,10 +9,9 @@ namespace geosimd
 	template<class T, size_t N>
 	class vec_t:public vectorops_mixin<vec_t<T, N>>
 	{
+		using vectorops_magic = typename vectorops_mixin<vec_t<T, N>>::magic;
 	public:
 		using enable_hadamard_product_t = void;
-
-		friend class vectorops_mixin<vec_t<T, N>>;
 
 		using scalar_type = T;
 
@@ -37,7 +36,7 @@ namespace geosimd
 		GEOSIMD_INLINE_OPT constexpr auto get() const
 		{ return m_value; }
 
-		GEOSIMD_INLINE_OPT constexpr auto& get()
+		GEOSIMD_INLINE_OPT constexpr auto& get(vectorops_magic)
 		{ return m_value; }
 
 	private:
@@ -86,8 +85,8 @@ namespace geosimd
 	template<class T, size_t N>
 	class vec_t<std::complex<T>, N>:public vectorops_mixin<vec_t<std::complex<T>, N>>
 	{
+		using vectorops_magic = typename vectorops_mixin<vec_t<std::complex<T>, N>>::magic;
 	public:
-		friend class vectorops_mixin<vec_t<std::complex<T>, N>>;
 		using enable_hadamard_product_t= void;
 
 		using scalar_type = std::complex<T>;
@@ -113,7 +112,7 @@ namespace geosimd
 		GEOSIMD_INLINE_OPT constexpr auto get() const
 		{ return m_value; }
 
-		GEOSIMD_INLINE_OPT constexpr auto& get()
+		GEOSIMD_INLINE_OPT constexpr auto& get(vectorops_magic)
 		{ return m_value; }
 
 		constexpr auto real() const

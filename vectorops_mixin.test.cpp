@@ -10,6 +10,8 @@ namespace geosimd_test
 {
 	struct vectorops_mixin_tester:geosimd::vectorops_mixin<vectorops_mixin_tester>
 	{
+		using vectorops_magic = geosimd::vectorops_mixin<vectorops_mixin_tester>::magic;
+
 		using scalar_type = int;
 
 		using enable_hadamard_product_t = void;
@@ -29,6 +31,10 @@ namespace geosimd_test
 		static constexpr size_t size() { return 4; }
 
 		auto operator[](size_t n) const { return m_value[n]; }
+
+		auto& get(vectorops_magic) { return m_value; }
+
+		auto get() const { return m_value; }
 
 	};
 

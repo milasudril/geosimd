@@ -41,32 +41,33 @@ namespace geosimd
 
 	class turn_angle:public vectorops_mixin<turn_angle>
 	{
-		public:
-			using scalar_type = double;
-			friend class vectorops_mixin<turn_angle>;
+		using vectorops_magic=vectorops_mixin<turn_angle>::magic;
+	public:
+		using scalar_type = double;
 
-			static constexpr auto full_turn =
-				static_cast<int64_t>(std::numeric_limits<uint32_t>::max()) + one(empty<int64_t>{});
+		static constexpr auto full_turn =
+			static_cast<int64_t>(std::numeric_limits<uint32_t>::max()) + one(empty<int64_t>{});
 
-			GEOSIMD_INLINE_OPT constexpr turn_angle() = default;
+		GEOSIMD_INLINE_OPT constexpr turn_angle() = default;
 
-			GEOSIMD_INLINE_OPT constexpr explicit turn_angle(int64_t x):m_value{x}{}
-		
-			GEOSIMD_INLINE_OPT constexpr turn_angle(turns x):
-				m_value{static_cast<uint32_t>(static_cast<int64_t>(x.value * full_turn))}
-			{}
+		GEOSIMD_INLINE_OPT constexpr explicit turn_angle(int64_t x):m_value{x}{}
+	
+		GEOSIMD_INLINE_OPT constexpr turn_angle(turns x):
+			m_value{static_cast<uint32_t>(static_cast<int64_t>(x.value * full_turn))}
+		{}
 
-			GEOSIMD_INLINE_OPT constexpr turn_angle(rad x):
-				turn_angle{static_cast<turns>(x)}
-			{}
+		GEOSIMD_INLINE_OPT constexpr turn_angle(rad x):
+			turn_angle{static_cast<turns>(x)}
+		{}
 
-			GEOSIMD_INLINE_OPT constexpr auto get() const 
-			{ return m_value; }
+		GEOSIMD_INLINE_OPT constexpr auto get() const 
+		{ return m_value; }
 
-//			constexpr auto operator<=>(turn_angle const&) const = default;
+		GEOSIMD_INLINE_OPT constexpr auto& get(vectorops_magic)
+		{ return m_value; }
 
-		private:
-			int64_t m_value;
+	private:
+		int64_t m_value;
 	};
 
 	inline auto to_string(turn_angle x)
