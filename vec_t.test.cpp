@@ -9,6 +9,7 @@
 static_assert(std::is_trivial_v<geosimd::vec4i32_t>);
 static_assert(geosimd::vector<geosimd::vec4i32_t>);
 static_assert(geosimd::uses_vectorops_mixin_v<geosimd::vec4i32_t>);
+static_assert(!std::totally_ordered<geosimd::vec4i32_t>);
 
 static_assert(std::is_trivially_copyable_v<geosimd::vec_t<std::complex<int32_t>, 4>>);
 static_assert(geosimd::vector<geosimd::vec_t<std::complex<int32_t>, 4>>);

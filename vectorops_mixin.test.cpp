@@ -42,6 +42,8 @@ namespace geosimd_test
 
 	static_assert(geosimd::uses_vectorops_mixin_v<vectorops_mixin_tester>);
 
+	static_assert(!std::totally_ordered<vectorops_mixin_tester>);
+
 	std::string to_string(vectorops_mixin_tester val)
 	{
 		auto N = std::size(val);

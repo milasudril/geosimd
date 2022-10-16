@@ -6,6 +6,7 @@
 #include "testfwk/testfwk.hpp"
 
 static_assert(geosimd::vector<geosimd::turn_angle>);
+static_assert(std::totally_ordered<geosimd::turn_angle>);
 static_assert(geosimd::point<geosimd::rotation_angle>);
 
 TESTCASE(geosimd_rotation_angle_from_turns)

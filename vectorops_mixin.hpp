@@ -77,9 +77,27 @@ namespace geosimd
 		}
 
 		GEOSIMD_INLINE_OPT friend constexpr bool operator!=(Derived a, Derived b)
-		{
-			return !(a == b);
-		}
+		{ return !(a == b); }
+
+		template<class T = Derived>
+		requires std::totally_ordered<std::decay_t<decltype(std::declval<T>().get())>>
+		GEOSIMD_INLINE_OPT friend constexpr bool operator<(Derived a, Derived b)
+		{ return a.get() < b.get(); }
+
+		template<class T = Derived>
+		requires std::totally_ordered<std::decay_t<decltype(std::declval<T>().get())>>
+		GEOSIMD_INLINE_OPT friend constexpr bool operator>(Derived a, Derived b)
+		{	return b < a;	}
+
+		template<class T = Derived>
+		requires std::totally_ordered<std::decay_t<decltype(std::declval<T>().get())>>
+		GEOSIMD_INLINE_OPT friend constexpr bool operator<=(Derived a, Derived b)
+		{ return !(a > b); }
+
+		template<class T = Derived>
+		requires std::totally_ordered<std::decay_t<decltype(std::declval<T>().get())>>
+		GEOSIMD_INLINE_OPT friend constexpr bool operator>=(Derived a, Derived b)
+		{ return !(a < b);	}
 
 		template<class T = Derived>
 		requires requires(T) { typename Derived::enable_hadamard_product_t; }
