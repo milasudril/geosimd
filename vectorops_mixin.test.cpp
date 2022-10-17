@@ -151,3 +151,49 @@ TESTCASE(geosimd_vectorops_mixin_unary_plus)
 	auto const b = +a;
 	EXPECT_EQ(b, a);
 }
+
+namespace geosimd_test
+{
+	struct vectorops_mixin_tester_ordered:geosimd::vectorops_mixin<vectorops_mixin_tester_ordered>
+	{
+		using scalar_type = int;
+		int value;
+
+		constexpr int get() const { return value; }
+
+		constexpr vectorops_mixin_tester_ordered() = default;
+
+		constexpr explicit vectorops_mixin_tester_ordered(int v):
+			value{v}
+		{}
+	};
+}
+
+TESTCASE(geosimd_vectorops_mixin_comparisons)
+{
+	constexpr geosimd_test::vectorops_mixin_tester_ordered a{1};
+	constexpr geosimd_test::vectorops_mixin_tester_ordered b{2};
+	constexpr geosimd_test::vectorops_mixin_tester_ordered c{3};
+	constexpr geosimd_test::vectorops_mixin_tester_ordered d{1};
+	constexpr geosimd_test::vectorops_mixin_tester_ordered e{2};
+	constexpr geosimd_test::vectorops_mixin_tester_ordered f{3};
+
+	static_assert(a < b);
+	static_assert(a < c);
+	static_assert(b < c);
+	static_assert(a <= b);
+	static_assert(a <= c);
+	static_assert(b <= c);
+	static_assert(b > a);
+	static_assert(c > a);
+	static_assert(c > b);
+	static_assert(b >= a);
+	static_assert(c >= a);
+	static_assert(c >= b);
+	static_assert(a != b);
+	static_assert(a != c);
+	static_assert(b != c);
+	static_assert(a == d);
+	static_assert(b == e);
+	static_assert(c == f);
+}
