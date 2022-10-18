@@ -3,6 +3,7 @@
 
 #include "./abstract_spaces.hpp"
 #include "./vectorops_mixin.hpp"
+#include "./basic_vector.hpp"
 
 namespace geosimd
 {

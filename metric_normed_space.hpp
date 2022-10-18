@@ -20,11 +20,12 @@ namespace geosimd
 		{ return vector_space::norm_squared(a - b); }
 	};
 
-	template<class V, class W>
+	template<class V>
 	concept metric_normed_space
 		=  metric_space<V>
-		&& normed_space<W>
-		&& std::is_base_of_v<metric_normed_space_mixin<typename V::point_type, W>, V>;
+		&& normed_space<V>
+		&& std::is_base_of_v<
+			metric_normed_space_mixin<typename V::point_type, typename V::normed_space>, V>;
 }
 
 #endif

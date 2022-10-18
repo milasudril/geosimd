@@ -1,23 +1,18 @@
-//@	{"targets":[{"name":"line.hpp","type":"include"}]}
-
 #ifndef GEOSIMD_LINE_HPP
 #define GEOSIMD_LINE_HPP
 
-#include "point.hpp"
-#include "direction.hpp"
+#include "./metric_normed_space.hpp"
+#include "./unit_vector.hpp"
+#include "./basic_point.hpp"
 
-namespace GeoSIMD
+namespace geosimd
+{
+	template<metric_normed_space V>
+	struct line
 	{
-	template<class T>
-	struct Line
-		{
-		explicit constexpr Line(Point<T> origin,Direction<T> direction):
-			m_origin(origin),m_direction(direction)
-			{}
-
-		Point<T> m_origin;
-		Direction<T> m_direction;
-		};
-	}
+		basic_point<V> origin;
+		unit_vector<V> direction;
+	};
+}
 
 #endif
