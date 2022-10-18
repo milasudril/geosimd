@@ -9,7 +9,7 @@
 namespace geosimd
 {
 	template<class T, class U>
-	constexpr auto is_complex_v = std::is_same_v<T, std::complex<U>>;
+	constexpr inline auto is_complex_v = std::is_same_v<T, std::complex<U>>;
 
 	template<class T>
 	concept scalar = (std::is_arithmetic_v<T> && std::is_signed_v<T>)

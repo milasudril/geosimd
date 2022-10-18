@@ -2,12 +2,14 @@
 #define GEOSIMD_UNITVECTOR_HPP
 
 #include "./abstract_spaces.hpp"
+#include "./vectorops_mixin.hpp"
 
 namespace geosimd
 {
 	template<normed_space V>
-	class unit_vector
+	class unit_vector:public vectorops_mixin<unit_vector<V>>
 	{
+		using vectorops_magic = typename vectorops_mixin<unit_vector<V>>::magic;
 	public:
 		using vector_type = basic_vector<V>;
 		using scalar_type = vector_type::scalar_type;
@@ -35,6 +37,8 @@ namespace geosimd
 		auto get() const
 		{ return m_value; }
 
+		void get(vectorops_magic) = delete;
+
 		GEOSIMD_INLINE_OPT friend constexpr auto operator*(scalar_type c, unit_vector v)
 		{
 			return c*v.m_value;
@@ -43,6 +47,11 @@ namespace geosimd
 		GEOSIMD_INLINE_OPT friend constexpr auto operator*(unit_vector v, scalar_type c)
 		{
 			return v.m_value*c;
+		}
+
+		GEOSIMD_INLINE_OPT friend constexpr auto operator/(unit_vector v, scalar_type c)
+		{
+			return v.m_value/c;
 		}
 
 	private:

@@ -56,3 +56,12 @@ TESTCASE(geosimd_euclidian_space_to_string)
 	EXPECT_EQ(str_vec, "(2.000000, 3.000000, 6.000000)");
 	EXPECT_EQ(str_point, "(1.000000, 4.000000, 5.000000)");
 }
+
+TESTCASE(geosimd_euclidian_space_direction)
+{
+	using vec = geosimd::displacement<float, 3>;
+	geosimd::direction dir{vec{1.0f, 0.0f, 0.0f}};
+	auto const x = 2.0f*dir;
+	static_assert(std::is_same_v<decltype(x), vec const>);
+	EXPECT_EQ(x, (vec{2.0f, 0.0f, 0.0f}));
+}
