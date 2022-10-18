@@ -6,6 +6,7 @@
 #include "./hilbert_space.hpp"
 #include "./basic_point.hpp"
 #include "./basic_vector.hpp"
+#include "./unit_vector.hpp"
 
 namespace geosimd
 {
@@ -21,6 +22,9 @@ namespace geosimd
 
 	template<class T, size_t N>
 	using displacement = basic_vector<euclidian_space<T, N>>;
+
+	template<class T, size_t N>
+	using direction = unit_vector<euclidian_space<T, N>>;
 
 	template<class T, size_t N>
 	constexpr auto x(location<T, N> loc)
