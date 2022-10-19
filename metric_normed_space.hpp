@@ -12,6 +12,7 @@ namespace geosimd
 		using vector_space = V;
 		using vector_type = vector_space::vector_type;
 		using scalar_type = vector_space::scalar_type;
+		using normed_space = V;
 
 		static constexpr auto distance(point_type a, point_type b)
 		{ return vector_space::norm(a - b); }
