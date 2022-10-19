@@ -95,6 +95,10 @@ struct your_vector_space : public geosimd::metric_normed_space_mixin<PointType, 
 
 In computer graphics it is common to use homogenous coordinates. This requires that points and vectors has an extra coordinate that should be 1 for points and 0 for vectors. To enable this behaviour, there has to be a type called `enable_homogenous_coordinates_t` in the vector space struct.
 
+## Unit "vectors"
+
+In a normed space, there are unit "vectors". Unit "vectors" are not fully vectors. They only support multiplication by a scalare, which result in a proper vector. This means that a unit "vector" always has unit length.
+
 ## Angles
 
 GeoSIMD features two models for an angle. A `rotation_angle` is inteded to be used as a representation of the total rotation of an object (mod 2 pi). A `turn_angle` can be used to increment or decrement a `rotation_angle`. The difference between two `rotation_angle`s results in a `turn_angle`. Furthermore `turn_angles` can be multiplied by a scalar. Thus, a `turn_angle` is the vector between two points of type `rotation_angle`.
