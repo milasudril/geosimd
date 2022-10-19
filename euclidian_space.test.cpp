@@ -9,6 +9,7 @@ TESTCASE(geosimd_euclidian_space_subset)
 	using my_vector_space = geosimd::euclidian_space<float, 3>;
 	static_assert(geosimd::hilbert_space<my_vector_space>);
 	static_assert(geosimd::metric_normed_space<my_vector_space>);
+	static_assert(!geosimd::vector<geosimd::direction<float, 3>>);
 }
 
 TESTCASE(geosimd_euclidian_space_point_props)

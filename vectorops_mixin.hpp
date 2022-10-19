@@ -16,12 +16,16 @@ namespace geosimd
 	protected:
 		struct magic{};
 	public:
+		template<class T = Derived>
+		requires requires(T a){ {a.get(magic{})}; }
 		GEOSIMD_FULL_INLINE friend constexpr auto& operator+=(Derived& a, Derived b)
 		{
 			a.get(magic{}) += b.get();
 			return a;
 		}
 
+		template<class T = Derived>
+		requires requires(T a){ {a.get(magic{})}; }
 		GEOSIMD_FULL_INLINE friend constexpr auto& operator-=(Derived& a, Derived b)
 		{
 			a.get(magic{}) -= b.get();
@@ -38,6 +42,7 @@ namespace geosimd
 		{ return static_cast<Derived const&>(*this); }
 
 		template<class T = Derived>
+		requires requires(T a){ {a.get(magic{})}; }
 		GEOSIMD_FULL_INLINE friend constexpr auto& operator*=(Derived& a, typename T::scalar_type b)
 		{
 			a.get(magic{}) *= b;
@@ -125,9 +130,13 @@ namespace geosimd
 		GEOSIMD_FULL_INLINE friend constexpr auto operator/(Derived a, typename T::scalar_type b)
 		{ return a /= b; }
 
+		template<class T = Derived>
+		requires requires(T a, T b){ {a +=b }; }
 		GEOSIMD_FULL_INLINE friend constexpr auto operator+(Derived a, Derived b)
 		{ return a += b; }
 
+		template<class T = Derived>
+		requires requires(T a, T b){ {a -=b }; }
 		GEOSIMD_FULL_INLINE friend constexpr auto operator-(Derived a, Derived b)
 		{ return a -= b; }
 	};
