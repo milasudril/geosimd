@@ -65,4 +65,6 @@ TESTCASE(geosimd_euclidian_space_direction)
 	auto const x = 2.0f*dir;
 	static_assert(std::is_same_v<decltype(x), vec const>);
 	EXPECT_EQ(x, (vec{2.0f, 0.0f, 0.0f}));
+	auto const dir_str = to_string(dir);
+	EXPECT_EQ(dir_str, "(1.000000, 0.000000, 0.000000)");
 }

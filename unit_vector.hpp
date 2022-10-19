@@ -58,6 +58,13 @@ namespace geosimd
 	private:
 		vector_type m_value;
 	};
+
+	template<normed_space V>
+	inline auto to_string(unit_vector<V> val)
+	{
+		using std::to_string;
+		return to_string(val.get());
+	}
 }
 
 #endif
