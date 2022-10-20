@@ -56,7 +56,7 @@ namespace geosimd
 		GEOSIMD_INLINE_OPT constexpr auto get() const
 		{ return m_value; }
 
-		GEOSIMD_INLINE_OPT constexpr auto& get(vectorops_magic) 
+		GEOSIMD_INLINE_OPT constexpr auto& get(vectorops_magic)
 		{ return m_value; }
 
 	private:
@@ -96,6 +96,12 @@ namespace geosimd
 	GEOSIMD_INLINE_OPT constexpr auto norm_squared(basic_vector<V> a)
 	{
 		return V::norm_squared(a.get());
+	}
+
+	template<inner_product_space V>
+	GEOSIMD_INLINE_OPT constexpr auto inner_product(basic_vector<V> a, basic_vector<V> b)
+	{
+		return inner_product(a.get(), b.get());
 	}
 
 	template<vector_space V>
