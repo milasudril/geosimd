@@ -14,6 +14,12 @@ namespace geosimd
 		basic_point<V> p2;
 	};
 
+	template<affine_space V>
+	constexpr auto point_at(line<V> const& line, typename V::scalar_type param)
+	{
+		return lerp(line.p1, line.p2, param);
+	}
+
 	template<class T>
 	struct line_intersection
 	{
