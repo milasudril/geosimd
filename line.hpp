@@ -35,10 +35,10 @@ namespace geosimd
 		auto const d_b = b.p2 - b.p1;
 		auto const d_o = a.p1 - b.p1;
 
-		auto const a11 = inner_product(d_a, d_a);
+		auto const a11 = inner_product(d_a);
 		auto const a12 = -inner_product(d_a, d_b);
 		auto const a21 = -a12;
-		auto const a22 = -inner_product(d_b, d_b);
+		auto const a22 = -inner_product(d_b);
 
 		auto const rhs_a = -inner_product(d_a, d_o);
 		auto const rhs_b = -inner_product(d_b, d_o);

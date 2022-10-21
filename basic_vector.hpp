@@ -104,6 +104,12 @@ namespace geosimd
 		return inner_product(a.get(), b.get());
 	}
 
+	template<inner_product_space V>
+	GEOSIMD_INLINE_OPT constexpr auto inner_product(basic_vector<V> a)
+	{
+		return inner_product(a.get());
+	}
+
 	template<vector_space V>
 	GEOSIMD_INLINE_OPT constexpr auto mean(basic_vector<V> a, basic_vector<V> b)
 	{
