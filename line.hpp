@@ -28,6 +28,7 @@ namespace geosimd
 	};
 
 	template<hilbert_space V>
+	requires(std::is_floating_point_v<typename V::scalar_type>)
 	constexpr auto intersection(line<V> const& a, line<V> const& b)
 	{
 		auto const d_a = a.p2 - a.p1;
