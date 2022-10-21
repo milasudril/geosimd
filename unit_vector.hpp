@@ -65,6 +65,18 @@ namespace geosimd
 		using std::to_string;
 		return to_string(val.get());
 	}
+
+	template<inner_product_space V>
+	GEOSIMD_INLINE_OPT constexpr auto inner_product(basic_vector<V> a, unit_vector<V> b)
+	{
+		return inner_product(a, b.get());
+	}
+
+	template<inner_product_space V>
+	GEOSIMD_INLINE_OPT constexpr auto inner_product(unit_vector<V> a, unit_vector<V> b)
+	{
+		return inner_product(a.get(), b.get());
+	}
 }
 
 #endif
