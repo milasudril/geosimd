@@ -7,13 +7,6 @@
 
 namespace geosimd
 {
-	template<affine_space V>
-	struct line
-	{
-		basic_point<V> p1;
-		basic_point<V> p2;
-	};
-
 	template<class T>
 	requires(std::is_floating_point_v<T>)
 	class line_parameter
@@ -24,6 +17,19 @@ namespace geosimd
 
 	private:
 		T m_value;
+	};
+
+	template<affine_space V>
+	struct line
+	{
+		basic_point<V> p1;
+		basic_point<V> p2;
+
+		GEOSIMD_INLINE_OPT static constexpr auto valid(line_parameter<typename V::scalar_type>)
+		{ return true; }
+
+		GEOSIMD_INLINE_OPT static constexpr auto clamp(line_parameter<typename V::scalar_type> val)
+		{ return val; }
 	};
 
 	template<class T>
@@ -100,6 +106,12 @@ namespace geosimd
 	{
 		basic_point<V> origin;
 		basic_point<V> target;
+
+		GEOSIMD_INLINE_OPT static constexpr auto valid(line_parameter<typename V::scalar_type> val)
+		{ return val.get() >= zero(empty<typename V::scalar_type>{}); }
+
+		GEOSIMD_INLINE_OPT static constexpr auto clamp(line_parameter<typename V::scalar_type> val)
+		{ return line_parameter{std::max(val, zero(empty<typename V::scalar_type>{}))}; }
 	};
 
 	template<affine_space V>
@@ -137,34 +149,34 @@ namespace geosimd
 	constexpr auto get_closest_points(ray<V> const& a, ray<V> const& b)
 	{
 		auto const intersect = intersection(extension(a), extension(b));
-		constexpr auto z = zero(empty<typename V::scalar_type>{});
-		if(intersect.a >= z && intersect.b >= z)
+		if(ray<V>::valid(intersect.a))
 		{
-			auto const loc_a = point_at(a, intersect.a);
-			auto const loc_b = point_at(b, intersect.b);
-			return point_pair{loc_a, loc_b};
+			if(ray<V>::valid(intersect.b))
+			{
+				auto const loc_a = point_at(a, intersect.a);
+				auto const loc_b = point_at(b, intersect.b);
+				return point_pair{loc_a, loc_b};
+			}
+			else
+			{
+				auto const proj = ray<V>::clamp(project(extension(a), b.origin));
+				auto const loc_a = point_at(extension(a), proj);
+				return point_pair{loc_a, b.origin};
+			}
 		}
-
-		if(intersect.a >= z && intersect.b < z)
+		else
 		{
-			auto const proj = max(project(extension(a), b.origin), z);
-			auto const loc_a = point_at(extension(a), b.origin);
-			return point_pair{loc_a, b.origin};
+			if(ray<V>::valid(intersect.b))
+			{
+				auto const proj = ray<V>::clamp(project(extension(b), a.origin));
+				auto const loc_b = point_at(extension(b), proj);
+				return point_pair{a.origin, loc_b};
+			}
+			else
+			{
+				return point_pair{a.origin, b.origin};
+			}
 		}
-
-		if(intersect.b >= z && intersect.a < z)
-		{
-			auto const proj = max(project(extension(b), a.origin), z);
-			auto const loc_b = point_at(extension(b), a.origin);
-			return point_pair{a.origin, loc_b};
-		}
-
-		if(intersect.b < z && intersect.a < z)
-		{
-			return point_pair{a.origin, b.origin};
-		}
-
-		__builtin_unreachable();
 	}
 }
 
