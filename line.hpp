@@ -14,17 +14,38 @@ namespace geosimd
 		basic_point<V> p2;
 	};
 
-	template<affine_space V>
-	constexpr auto point_at(line<V> const& line, typename V::scalar_type param)
+	template<class T>
+	requires(std::is_floating_point_v<T>)
+	class line_parameter
 	{
-		return lerp(line.p1, line.p2, param);
+	public:
+		GEOSIMD_INLINE_OPT constexpr explicit line_parameter(T val):m_value{val}{}
+		GEOSIMD_INLINE_OPT constexpr auto get() const { return m_value; }
+
+	private:
+		T m_value;
+	};
+
+	template<affine_space V>
+	constexpr auto point_at(line<V> const& line,
+		line_parameter<typename V::scalar_type> param)
+	{
+		return lerp(line.p1, line.p2, param.get());
+	}
+
+	template<hilbert_space V>
+	constexpr auto project(line<V> const& line, basic_point<V> loc)
+	{
+		auto const d = line.p2 - line.p1;
+		auto const r = loc - line.p1;
+		return line_parameter{inner_product(r, d)/inner_product(d)};
 	}
 
 	template<class T>
 	struct line_intersection
 	{
-		T a;
-		T b;
+		line_parameter<T> a;
+		line_parameter<T> b;
 	};
 
 	template<hilbert_space V>
@@ -44,8 +65,8 @@ namespace geosimd
 		auto const rhs_b = -inner_product(d_b, d_o);
 
 		auto const denom = a11*a22 - a12*a21;
-		auto const s =  (a22*rhs_a - a12*rhs_b)/denom;
-		auto const t = -(a21*rhs_a - a11*rhs_b)/denom;
+		auto const s =  line_parameter{(a22*rhs_a - a12*rhs_b)/denom};
+		auto const t = line_parameter{-(a21*rhs_a - a11*rhs_b)/denom};
 		return line_intersection{s, t};
 
 	}

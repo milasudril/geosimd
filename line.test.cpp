@@ -22,8 +22,8 @@ TESTCASE(geodimd_line_line_intersection)
 	constexpr geosimd::line line_b{loc{0.0f, 0.0f, 0.0f}, loc{2.0f, 1.0f, 0.0f}};
 
 	constexpr auto intersect_ab = intersection(line_a, line_b);
-	EXPECT_EQ(intersect_ab.a, 2.0f/3.0f);
-	EXPECT_EQ(intersect_ab.b, 1.0f/3.0f);
+	EXPECT_EQ(intersect_ab.a.get(), 2.0f/3.0f);
+	EXPECT_EQ(intersect_ab.b.get(), 1.0f/3.0f);
 
 	constexpr auto p1 = point_at(line_a, intersect_ab.a);
 	EXPECT_LT(distance(p1, loc{2.0f/3.0f, 1.0f/3.0f, 0.0f}), 1e-7f);
@@ -33,6 +33,6 @@ TESTCASE(geodimd_line_line_intersection)
 	EXPECT_LT(std::abs(distance(p1, p2) - min_distance(line_a, line_b).first), 1e-7);
 
 	constexpr auto intersect_ba = intersection(line_b, line_a);
-	EXPECT_EQ(intersect_ba.b, 2.0f/3.0f);
-	EXPECT_EQ(intersect_ba.a, 1.0f/3.0f);
+	EXPECT_EQ(intersect_ba.b.get(), 2.0f/3.0f);
+	EXPECT_EQ(intersect_ba.a.get(), 1.0f/3.0f);
 }
