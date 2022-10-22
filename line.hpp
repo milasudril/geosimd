@@ -54,8 +54,8 @@ namespace geosimd
 	constexpr auto min_distance_squared(line<V> const& a, line<V> const& b)
 	{
 		auto const intersect = intersection(a, b);
-		auto const loc_a = a.p1 + intersect.a*(a.p2 - a.p1);
-		auto const loc_b = b.p1 + intersect.b*(b.p2 - b.p1);
+		auto const loc_a = point_at(a, intersect.a);
+		auto const loc_b = point_at(b, intersect.b);
 		return std::pair{distance_squared(loc_a, loc_a), midpoint(loc_a, loc_b)};
 	}
 
