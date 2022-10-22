@@ -33,15 +33,6 @@ namespace geosimd
 		return line_parameter{std::max(a.get(), b)};
 	}
 
-
-	template<affine_space V>
-	struct closest_points
-	{
-		basic_point<V> a;
-		basic_point<V> b;
-	};
-
-
 	template<affine_space V>
 	GEOSIMD_INLINE_OPT constexpr auto point_at(line<V> const& line,
 		line_parameter<typename V::scalar_type> param)
@@ -61,7 +52,7 @@ namespace geosimd
 	constexpr auto get_closest_points(line<V> const& line, basic_point<V> loc)
 	{
 		auto const proj = project(line, loc);
-		return closest_points{point_at(line, proj), loc};
+		return point_pair{point_at(line, proj), loc};
 	}
 
 
@@ -101,20 +92,7 @@ namespace geosimd
 		auto const intersect = intersection(a, b);
 		auto const loc_a = point_at(a, intersect.a);
 		auto const loc_b = point_at(b, intersect.b);
-		return closest_points{loc_a, loc_b};
-	}
-
-	template<hilbert_space V>
-	constexpr auto min_distance_squared(line<V> const& a, line<V> const& b)
-	{
-		auto const points = get_closest_points(a, b);
-		return distance_squared(points.a, points.b);
-	}
-
-	template<hilbert_space V>
-	constexpr auto min_distance(line<V> const& a, line<V> const& b)
-	{
-		return std::sqrt(min_distance_squared(a, b));
+		return point_pair{loc_a, loc_b};
 	}
 
 	template<affine_space V>
@@ -143,7 +121,7 @@ namespace geosimd
 		{
 			auto const loc_a = point_at(a, intersect.a);
 			auto const loc_b = point_at(b, intersect.b);
-			return closest_points{loc_a, loc_b};
+			return point_pair{loc_a, loc_b};
 		}
 
 		return get_closest_points(a, b.origin);
@@ -158,31 +136,30 @@ namespace geosimd
 		{
 			auto const loc_a = point_at(a, intersect.a);
 			auto const loc_b = point_at(b, intersect.b);
-			return closest_points{loc_a, loc_b};
+			return point_pair{loc_a, loc_b};
 		}
 
 		if(intersect.a >= z && intersect.b < z)
 		{
 			auto const proj = max(project(extension(a), b.origin), z);
 			auto const loc_a = point_at(extension(a), b.origin);
-			return closest_points{loc_a, b.origin};
+			return point_pair{loc_a, b.origin};
 		}
 
 		if(intersect.b >= z && intersect.a < z)
 		{
 			auto const proj = max(project(extension(b), a.origin), z);
 			auto const loc_b = point_at(extension(b), a.origin);
-			return closest_points{a.origin, loc_b};
+			return point_pair{a.origin, loc_b};
 		}
 
 		if(intersect.b < z && intersect.a < z)
 		{
-			return closest_points{a.origin, b.origin};
+			return point_pair{a.origin, b.origin};
 		}
 
 		__builtin_unreachable();
 	}
-
 }
 
 #endif

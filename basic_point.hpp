@@ -183,6 +183,23 @@ namespace geosimd
 			return to_string(a.get());
 		}
 	}
+
+	template<affine_space V>
+	struct point_pair
+	{
+		basic_point<V> a;
+		basic_point<V> b;
+
+		GEOSIMD_INLINE_OPT constexpr auto get_distance() const
+		{
+			return distance(a, b);
+		}
+
+		GEOSIMD_INLINE_OPT constexpr auto get_distance_squared() const
+		{
+			return distance_squared(a, b);
+		}
+	};
 }
 
 #endif
