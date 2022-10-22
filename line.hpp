@@ -27,6 +27,14 @@ namespace geosimd
 	};
 
 	template<affine_space V>
+	struct closest_points
+	{
+		basic_point<V> a;
+		basic_point<V> b;
+	};
+
+
+	template<affine_space V>
 	GEOSIMD_INLINE_OPT constexpr auto point_at(line<V> const& line,
 		line_parameter<typename V::scalar_type> param)
 	{
@@ -40,6 +48,14 @@ namespace geosimd
 		auto const r = loc - line.p1;
 		return line_parameter{inner_product(r, d)/inner_product(d)};
 	}
+
+	template<hilbert_space V>
+	constexpr auto get_closest_points(line<V> const& line, basic_point<V> loc)
+	{
+		auto const proj = project(line, loc);
+		return closest_points{point_at(line, proj), loc};
+	}
+
 
 	template<class T>
 	struct line_intersection
@@ -72,19 +88,25 @@ namespace geosimd
 	}
 
 	template<hilbert_space V>
-	constexpr auto min_distance_squared(line<V> const& a, line<V> const& b)
+	constexpr auto get_closest_points(line<V> const& a, line<V> const& b)
 	{
 		auto const intersect = intersection(a, b);
 		auto const loc_a = point_at(a, intersect.a);
 		auto const loc_b = point_at(b, intersect.b);
-		return std::pair{distance_squared(loc_a, loc_a), midpoint(loc_a, loc_b)};
+		return closest_points{loc_a, loc_b};
+	}
+
+	template<hilbert_space V>
+	constexpr auto min_distance_squared(line<V> const& a, line<V> const& b)
+	{
+		auto const points = get_closest_points(a, b);
+		return distance_squared(points.a, points.b);
 	}
 
 	template<hilbert_space V>
 	constexpr auto min_distance(line<V> const& a, line<V> const& b)
 	{
-		auto const d = min_distance_squared(a, b);
-		return std::pair{std::sqrt(d.first), d.second};
+		return std::sqrt(min_distance_squared(a, b));
 	}
 
 	template<affine_space V>
@@ -106,28 +128,19 @@ namespace geosimd
 	}
 
 	template<hilbert_space V>
-	constexpr auto min_distance_squared(line<V> const& a, ray<V> const b)
+	constexpr auto get_closest_points(line<V> const& a, ray<V> const b)
 	{
 		auto const intersect = intersection(a, extension(b));
 		if(intersect.b >= zero(empty<typename V::scalar_type>{}))
 		{
 			auto const loc_a = point_at(a, intersect.a);
 			auto const loc_b = point_at(b, intersect.b);
-			return std::pair{distance_squared(loc_a, loc_a), midpoint(loc_a, loc_b)};
+			return closest_points{loc_a, loc_b};
 		}
 
-		auto const proj = project(a, b.origin);
-		auto const loc_a = point_at(a, proj);
-		auto const loc_b = b.origin;
-		return std::pair{distance_squared(loc_a, loc_b), midpoint(loc_a, loc_b)};
+		return get_closest_points(a, b.origin);
 	}
 
-	template<hilbert_space V>
-	constexpr auto min_distance(line<V> const& a, ray<V> const& b)
-	{
-		auto const d = min_distance_squared(a, b);
-		return std::pair{std::sqrt(d.first), d.second};
-	}
 }
 
 #endif
