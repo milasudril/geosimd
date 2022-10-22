@@ -26,6 +26,14 @@ namespace geosimd
 		T m_value;
 	};
 
+	template<class T>
+	requires(std::is_floating_point_v<T>)
+	line_parameter<T> max(line_parameter<T> a, T b)
+	{
+		return line_parameter{std::max(a.get(), b)};
+	}
+
+
 	template<affine_space V>
 	struct closest_points
 	{
@@ -139,6 +147,40 @@ namespace geosimd
 		}
 
 		return get_closest_points(a, b.origin);
+	}
+
+	template<hilbert_space V>
+	constexpr auto get_closest_points(ray<V> const& a, ray<V> const& b)
+	{
+		auto const intersect = intersection(extension(a), extension(b));
+		constexpr auto z = zero(empty<typename V::scalar_type>{});
+		if(intersect.a >= z && intersect.b >= z)
+		{
+			auto const loc_a = point_at(a, intersect.a);
+			auto const loc_b = point_at(b, intersect.b);
+			return closest_points{loc_a, loc_b};
+		}
+
+		if(intersect.a >= z && intersect.b < z)
+		{
+			auto const proj = max(project(extension(a), b.origin), z);
+			auto const loc_a = point_at(extension(a), b.origin);
+			return closest_points{loc_a, b.origin};
+		}
+
+		if(intersect.b >= z && intersect.a < z)
+		{
+			auto const proj = max(project(extension(b), a.origin), z);
+			auto const loc_b = point_at(extension(b), a.origin);
+			return closest_points{a.origin, loc_b};
+		}
+
+		if(intersect.b < z && intersect.a < z)
+		{
+			return closest_points{a.origin, b.origin};
+		}
+
+		__builtin_unreachable();
 	}
 
 }
