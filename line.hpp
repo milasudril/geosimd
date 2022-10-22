@@ -27,7 +27,7 @@ namespace geosimd
 	};
 
 	template<affine_space V>
-	constexpr auto point_at(line<V> const& line,
+	GEOSIMD_INLINE_OPT constexpr auto point_at(line<V> const& line,
 		line_parameter<typename V::scalar_type> param)
 	{
 		return lerp(line.p1, line.p2, param.get());
@@ -87,6 +87,47 @@ namespace geosimd
 		return std::pair{std::sqrt(d.first), d.second};
 	}
 
+	template<affine_space V>
+	struct ray
+	{
+		basic_point<V> origin;
+		basic_point<V> target;
+	};
+
+	template<affine_space V>
+	auto extension(ray<V> const& v)
+	{ return line{v.origin, v.target}; }
+
+	template<affine_space V>
+	GEOSIMD_INLINE_OPT constexpr auto point_at(ray<V> const& ray,
+		line_parameter<typename V::scalar_type> param)
+	{
+		return lerp(ray.origin, ray.target, param.get());
+	}
+
+	template<hilbert_space V>
+	constexpr auto min_distance_squared(line<V> const& a, ray<V> const b)
+	{
+		auto const intersect = intersection(a, extension(b));
+		if(intersect.b >= zero(empty<typename V::scalar_type>{}))
+		{
+			auto const loc_a = point_at(a, intersect.a);
+			auto const loc_b = point_at(b, intersect.b);
+			return std::pair{distance_squared(loc_a, loc_a), midpoint(loc_a, loc_b)};
+		}
+
+		auto const proj = project(a, b.origin);
+		auto const loc_a = point_at(a, proj);
+		auto const loc_b = b.origin;
+		return std::pair{distance_squared(loc_a, loc_b), midpoint(loc_a, loc_b)};
+	}
+
+	template<hilbert_space V>
+	constexpr auto min_distance(line<V> const& a, ray<V> const& b)
+	{
+		auto const d = min_distance_squared(a, b);
+		return std::pair{std::sqrt(d.first), d.second};
+	}
 }
 
 #endif
