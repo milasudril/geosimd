@@ -61,7 +61,7 @@ TESTCASE(geosimd_ray_ray_intersection)
 
 	constexpr geosimd::ray ray_ref{loc{0.0f, 0.0f, 0.0f}, loc{1.0f, 0.0f, 0.0f}};
 
-	constexpr geosimd::ray ray_a{loc{0.0f, 1.0f, 0.0f}, loc{1.0f, 2.0f, 0.0f}};
+	constexpr geosimd::ray ray_a{loc{-2.0f, 1.0f, 0.0f}, loc{-3.0f, 2.0f, 0.0f}};
 	constexpr auto res_a = get_closest_points(ray_ref, ray_a);
 	EXPECT_EQ(res_a.a, ray_ref.origin);
 	EXPECT_EQ(res_a.b, ray_a.origin);
@@ -71,14 +71,22 @@ TESTCASE(geosimd_ray_ray_intersection)
 	EXPECT_EQ(res_b.a, (loc{1.0f, 0.0f, 0.0f}));
 	EXPECT_EQ(res_b.b, ray_b.origin);
 
-	constexpr auto res_c = get_closest_points(ray_b, ray_ref);
-	EXPECT_EQ(res_c.a, ray_b.origin);
-	EXPECT_EQ(res_c.b, (loc{1.0f, 0.0f, 0.0f}));
+	constexpr auto res_b2 = get_closest_points(ray_b, ray_ref);
+	EXPECT_EQ(res_b2.a, ray_b.origin);
+	EXPECT_EQ(res_b2.b, (loc{1.0f, 0.0f, 0.0f}));
 
-	constexpr geosimd::ray ray_c{loc{0.0f, -1.0f, 0.0f}, loc{2.0f, 1.0f, 0.0f}};
-	constexpr auto res_d = get_closest_points(ray_ref, ray_c);
+	constexpr geosimd::ray ray_c{loc{-3.0f, 1.0f, 0.0f}, loc{-2.0f, 2.0f, 0.0f}};
+	constexpr auto res_c = get_closest_points(ray_ref, ray_c);
+	EXPECT_EQ(res_c.a, ray_ref.origin);
+	EXPECT_EQ(res_c.b, (loc{-2.0f, 2.0f, 0.0f}));
+
+	constexpr geosimd::ray ray_d{loc{0.0f, -1.0f, 0.0f}, loc{2.0f, 1.0f, 0.0f}};
+	constexpr auto res_d = get_closest_points(ray_ref, ray_d);
 	EXPECT_EQ(res_d.a, (loc{1.0f, 0.0f, 0.0f}));
 	EXPECT_EQ(res_d.b, (loc{1.0f, 0.0f, 0.0f}));
 
-
+	constexpr geosimd::ray ray_e{loc{-1.0f, 1.0f, 0.0f}, loc{0.0f, 2.0f, 0.0f}};
+	constexpr auto res_e = get_closest_points(ray_ref, ray_e);
+	EXPECT_EQ(res_e.a, ray_ref.origin);
+	EXPECT_EQ(res_e.b, ray_e.origin);
 }

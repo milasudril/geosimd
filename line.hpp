@@ -168,7 +168,23 @@ namespace geosimd
 			}
 			else
 			{
-				return point_pair{a.origin, b.origin};
+				auto const proj_a_on_b = project(extension(b), a.origin);
+				if(ray<V>::valid(proj_a_on_b))
+				{
+					return point_pair{a.origin, point_at(extension(b), proj_a_on_b)};
+				}
+				else
+				{
+					auto const proj_b_on_a = project(extension(a), b.origin);
+					if(ray<V>::valid(proj_b_on_a))
+					{
+						return point_pair{point_at(extension(a), proj_b_on_a), b.origin};
+					}
+					else
+					{
+						return point_pair{a.origin, b.origin};
+					}
+				}
 			}
 		}
 	}
