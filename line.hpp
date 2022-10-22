@@ -153,7 +153,7 @@ namespace geosimd
 			}
 			else
 			{
-				auto const proj = ray<V>::clamp(project(extension(a), b.origin));
+				auto const proj = project(extension(a), b.origin);
 				auto const loc_a = point_at(extension(a), proj);
 				return point_pair{loc_a, b.origin};
 			}
@@ -162,7 +162,7 @@ namespace geosimd
 		{
 			if(ray<V>::valid(intersect.b))
 			{
-				auto const proj = ray<V>::clamp(project(extension(b), a.origin));
+				auto const proj = project(extension(b), a.origin);
 				auto const loc_b = point_at(extension(b), proj);
 				return point_pair{a.origin, loc_b};
 			}
