@@ -111,11 +111,11 @@ namespace geosimd
 		{ return val.get() >= zero(empty<typename V::scalar_type>{}); }
 
 		GEOSIMD_INLINE_OPT static constexpr auto clamp(line_parameter<typename V::scalar_type> val)
-		{ return line_parameter{std::max(val, zero(empty<typename V::scalar_type>{}))}; }
+		{ return line_parameter{std::max(val.get(), zero(empty<typename V::scalar_type>{}))}; }
 	};
 
 	template<affine_space V>
-	auto extension(ray<V> const& v)
+	GEOSIMD_INLINE_OPT constexpr auto extension(ray<V> const& v)
 	{ return line{v.origin, v.target}; }
 
 	template<affine_space V>
@@ -137,12 +137,6 @@ namespace geosimd
 		}
 
 		return get_closest_points(a, b.origin);
-	}
-
-	template<hilbert_space V>
-	GEOSIMD_INLINE_OPT auto get_closest_points(ray<V> const b, line<V> const& a)
-	{
-		return get_closest_points(b, a);
 	}
 
 	template<hilbert_space V>
