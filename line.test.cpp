@@ -37,3 +37,20 @@ TESTCASE(geodimd_line_line_intersection)
 	EXPECT_EQ(intersect_ba.b.get(), 2.0f/3.0f);
 	EXPECT_EQ(intersect_ba.a.get(), 1.0f/3.0f);
 }
+
+TESTCASE(geosimd_line_ray_intersection)
+{
+	using loc = geosimd::location<float, 3>;
+
+	constexpr geosimd::line line{loc{0.0f, 0.0f, 0.0f}, loc{1.0f, 0.0f, 0.0f}};
+	constexpr geosimd::ray ray_a{loc{1.0f, 1.0f, 0.0f}, loc{1.0f, 2.0f, 0.0f}};
+
+	auto const res_a = get_closest_points(line, ray_a);
+	EXPECT_EQ(res_a.a, (loc{1.0f, 0.0f, 0.0f}));
+	EXPECT_EQ(res_a.b, ray_a.origin);
+
+	constexpr geosimd::ray ray_b{loc{-1.0f, -1.0f, 0.0f}, loc{1.0f, 1.0f, 0.0f}};
+	auto const res_b = get_closest_points(line, ray_b);
+	EXPECT_EQ(res_b.a, (loc{0.0f, 0.0f, 0.0f}));
+	EXPECT_EQ(res_b.b, (loc{0.0f, 0.0f, 0.0f}));
+}
