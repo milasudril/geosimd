@@ -30,7 +30,7 @@ TESTCASE(geodimd_line_line_intersection)
 
 	constexpr auto p2 = point_at(line_b, intersect_ab.b);
 	EXPECT_LT(distance(p1, p2), 1e-7f);
-	EXPECT_EQ(distance(p1, p2), min_distance(line_a, line_b));
+	EXPECT_LT(std::abs(distance(p1, p2) - min_distance(line_a, line_b).first), 1e-7);
 
 	constexpr auto intersect_ba = intersection(line_b, line_a);
 	EXPECT_EQ(intersect_ba.b, 2.0f/3.0f);

@@ -54,14 +54,18 @@ namespace geosimd
 	constexpr auto min_distance_squared(line<V> const& a, line<V> const& b)
 	{
 		auto const intersect = intersection(a, b);
-		return distance_squared(a.p1 + intersect.a*(a.p2 - a.p1), b.p1 + intersect.b*(b.p2 - b.p1));
+		auto const loc_a = a.p1 + intersect.a*(a.p2 - a.p1);
+		auto const loc_b = b.p1 + intersect.b*(b.p2 - b.p1);
+		return std::pair{distance_squared(loc_a, loc_a), midpoint(loc_a, loc_b)};
 	}
 
 	template<hilbert_space V>
 	constexpr auto min_distance(line<V> const& a, line<V> const& b)
 	{
-		return std::sqrt(min_distance_squared(a, b));
+		auto const d = min_distance_squared(a, b);
+		return std::pair{std::sqrt(d.first), d.second};
 	}
+
 }
 
 #endif
