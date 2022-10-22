@@ -128,6 +128,12 @@ namespace geosimd
 	}
 
 	template<hilbert_space V>
+	GEOSIMD_INLINE_OPT auto get_closest_points(ray<V> const b, line<V> const& a)
+	{
+		return get_closest_points(b, a);
+	}
+
+	template<hilbert_space V>
 	constexpr auto get_closest_points(ray<V> const& a, ray<V> const& b)
 	{
 		auto const intersect = intersection(extension(a), extension(b));
