@@ -49,6 +49,19 @@ namespace geosimd
 		return line_intersection{s, t};
 
 	}
+
+	template<hilbert_space V>
+	constexpr auto min_distance_squared(line<V> const& a, line<V> const& b)
+	{
+		auto const intersect = intersection(a, b);
+		return distance_squared(a.p1 + intersect.a*(a.p2 - a.p1), b.p1 + intersect.b*(b.p2 - b.p1));
+	}
+
+	template<hilbert_space V>
+	constexpr auto min_distance(line<V> const& a, line<V> const& b)
+	{
+		return std::sqrt(min_distance_squared(a, b));
+	}
 }
 
 #endif
