@@ -219,7 +219,7 @@ namespace geosimd
 	template<hilbert_space V>
 	GEOSIMD_INLINE_OPT constexpr auto length_squared(line_segment<V> const& val)
 	{
-		return length_squared(val.p1, val.p2);
+		return distance_squared(val.p1, val.p2);
 	}
 }
 
