@@ -188,6 +188,39 @@ namespace geosimd
 			}
 		}
 	}
+
+	template<affine_space V>
+	struct line_segment
+	{
+		basic_point<V> p1;
+		basic_point<V> p2;
+
+		GEOSIMD_INLINE_OPT static constexpr auto valid(line_parameter<typename V::scalar_type> val)
+		{
+			return val.get() >= zero(empty<typename V::scalar_type>{})
+				&& val.get() <= one(empty<typename V::scalar_type>{});
+		}
+
+		GEOSIMD_INLINE_OPT static constexpr auto clamp(line_parameter<typename V::scalar_type> val)
+		{
+			return line_parameter{std::clamp(val.get(),
+				zero(empty<typename V::scalar_type>{}),
+				one(empty<typename V::scalar_type>{})
+			)};
+		}
+	};
+
+	template<metric_space V>
+	GEOSIMD_INLINE_OPT constexpr auto length(line_segment<V> const& val)
+	{
+		return distance(val.p1, val.p2);
+	}
+
+	template<hilbert_space V>
+	GEOSIMD_INLINE_OPT constexpr auto length_squared(line_segment<V> const& val)
+	{
+		return length_squared(val.p1, val.p2);
+	}
 }
 
 #endif
