@@ -46,7 +46,7 @@ namespace geosimd
 		return lerp(line.p1, line.p2, param.get());
 	}
 
-	template<hilbert_space V>
+	template<inner_product_space V>
 	constexpr auto project(line<V> const& line, basic_point<V> loc)
 	{
 		auto const d = line.p2 - line.p1;
