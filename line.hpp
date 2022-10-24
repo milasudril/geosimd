@@ -101,6 +101,7 @@ namespace geosimd
 		return point_pair{loc_a, loc_b};
 	}
 
+
 	template<affine_space V>
 	struct ray
 	{
@@ -188,6 +189,7 @@ namespace geosimd
 			}
 		}
 	}
+
 
 	template<affine_space V>
 	struct line_segment
