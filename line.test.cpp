@@ -43,10 +43,10 @@ TESTCASE(geosimd_line_ray_intersection)
 	using loc = geosimd::location<float, 3>;
 
 	constexpr geosimd::line line{loc{0.0f, 0.0f, 0.0f}, loc{1.0f, 0.0f, 0.0f}};
-	constexpr geosimd::ray ray_a{loc{1.0f, 1.0f, 0.0f}, loc{1.0f, 2.0f, 0.0f}};
+	constexpr geosimd::ray ray_a{loc{2.0f, 1.0f, 0.0f}, loc{3.0f, 2.0f, 0.0f}};
 
 	constexpr auto res_a = get_closest_points(line, ray_a);
-	EXPECT_EQ(res_a.a, (loc{1.0f, 0.0f, 0.0f}));
+	EXPECT_EQ(res_a.a, (loc{2.0f, 0.0f, 0.0f}));
 	EXPECT_EQ(res_a.b, ray_a.origin);
 
 	constexpr geosimd::ray ray_b{loc{-1.0f, -1.0f, 0.0f}, loc{1.0f, 1.0f, 0.0f}};

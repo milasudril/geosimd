@@ -130,8 +130,8 @@ namespace geosimd
 	constexpr auto get_closest_points(line<V> const& a, ray<V> const b)
 	{
 		auto const intersect = intersection(a, extension(b));
-		auto const loc_a = point_at(a, intersect.a);
 		auto const loc_b = point_at(b, ray<V>::clamp(intersect.b));
+		auto const loc_a = point_at(a, project(a, loc_b));
 		return point_pair{loc_a, loc_b};
 	}
 
