@@ -111,3 +111,60 @@ TESTCASE(geosimd_ray_ray_intersection)
 		EXPECT_EQ(res_ba.b, (loc{0.0f, 1.0f, 0.0f}));
 	}
 }
+
+TESTCASE(geosimd_line_segment_line_segment_intersection)
+{
+	using loc = geosimd::location<float, 3>;
+
+	{
+		constexpr geosimd::line_segment line_segment_a{loc{-1.0f, -1.0f, 0.0f}, loc{1.0f, 1.0f, 0.0f}};
+		constexpr geosimd::line_segment line_segment_b{loc{1.0f, -1.0f, 0.0f}, loc{-1.0f, 1.0f, 0.0f}};
+
+		auto const res_ab = get_closest_points(line_segment_a, line_segment_b);
+		EXPECT_EQ(res_ab.a, (loc{0.0f, 0.0f, 0.0f}));
+		EXPECT_EQ(res_ab.b, (loc{0.0f, 0.0f, 0.0f}));
+
+		auto const res_ba = get_closest_points(line_segment_b, line_segment_a);
+		EXPECT_EQ(res_ba.a, (loc{0.0f, 0.0f, 0.0f}));
+		EXPECT_EQ(res_ba.b, (loc{0.0f, 0.0f, 0.0f}));
+	}
+	fputs("------\n",stderr);
+	{
+		constexpr geosimd::line_segment line_segment_a{loc{-2.0f, 0.0f, 0.0f}, loc{8.0f, 0.0f, 0.0f}};
+		constexpr geosimd::line_segment line_segment_b{loc{0.0f, -1.0f, 0.0f}, loc{-4.0f, -5.0f, 0.0f}};
+
+		auto const res_ab = get_closest_points(line_segment_a, line_segment_b);
+		EXPECT_EQ(res_ab.a, (loc{0.0f, 0.0f, 0.0f}));
+		EXPECT_EQ(res_ab.b, (loc{0.0f, -1.0f, 0.0f}));
+
+		auto const res_ba = get_closest_points(line_segment_b, line_segment_a);
+		EXPECT_EQ(res_ba.a, (loc{0.0f, -1.0f, 0.0f}))
+		EXPECT_EQ(res_ba.b, (loc{0.0f, 0.0f, 0.0f}));
+	}
+	fputs("------\n",stderr);
+	{
+		constexpr geosimd::line_segment line_segment_a{loc{0.0f, 0.0f, 0.0f}, loc{8.0f, 0.0f, 0.0f}};
+		constexpr geosimd::line_segment line_segment_b{loc{1.0f, 2.0f, 0.0f}, loc{7.0f, 8.0f, 0.0f}};
+
+		auto const res_ab = get_closest_points(line_segment_a, line_segment_b);
+		EXPECT_EQ(res_ab.a, (loc{1.0f, 0.0f, 0.0f}));
+		EXPECT_EQ(res_ab.b, (loc{1.0f, 2.0f, 0.0f}));
+
+		auto const res_ba = get_closest_points(line_segment_b, line_segment_a);
+		EXPECT_EQ(res_ba.a, (loc{1.0f, 2.0f, 0.0f}));
+		EXPECT_EQ(res_ba.b, (loc{1.0f, 0.0f, 0.0f}));
+	}
+	fputs("------\n",stderr);
+	{
+		constexpr geosimd::line_segment line_segment_a{loc{0.0f, 1.0f, 0.0f}, loc{8.0f, 8.0f, 0.0f}};
+		constexpr geosimd::line_segment line_segment_b{loc{0.0f, -1.0f, 0.0f}, loc{8.0f, -8.0f, 0.0f}};
+
+		auto const res_ab = get_closest_points(line_segment_a, line_segment_b);
+		EXPECT_EQ(res_ab.a, (loc{0.0f, 1.0f, 0.0f}));
+		EXPECT_EQ(res_ab.b, (loc{0.0f, -1.0f, 0.0f}));
+
+		auto const res_ba = get_closest_points(line_segment_b, line_segment_a);
+		EXPECT_EQ(res_ba.a, (loc{0.0f, -1.0f, 0.0f}));
+		EXPECT_EQ(res_ba.b, (loc{0.0f, 1.0f, 0.0f}));
+	}
+}

@@ -77,7 +77,7 @@ namespace geosimd
 		auto const d_b = b.p2 - b.p1;
 		auto const d_o = a.p1 - b.p1;
 
-		auto const a11 = inner_product(d_a);
+		auto const a11 =  inner_product(d_a);
 		auto const a12 = -inner_product(d_a, d_b);
 		auto const a21 = -a12;
 		auto const a22 = -inner_product(d_b);
@@ -86,7 +86,7 @@ namespace geosimd
 		auto const rhs_b = -inner_product(d_b, d_o);
 
 		auto const denom = a11*a22 - a12*a21;
-		auto const s =  line_parameter{(a22*rhs_a - a12*rhs_b)/denom};
+		auto const s = line_parameter{ (a22*rhs_a - a12*rhs_b)/denom};
 		auto const t = line_parameter{-(a21*rhs_a - a11*rhs_b)/denom};
 		return line_intersection{s, t};
 
@@ -217,6 +217,104 @@ namespace geosimd
 	GEOSIMD_INLINE_OPT constexpr auto length_squared(line_segment<V> const& val)
 	{
 		return distance_squared(val.p1, val.p2);
+	}
+
+	template<affine_space V>
+	GEOSIMD_INLINE_OPT constexpr auto extension(line_segment<V> const& v)
+	{ return line{v.p1, v.p2}; }
+
+	template<affine_space V>
+	GEOSIMD_INLINE_OPT constexpr auto point_at(line_segment<V> const& l,
+		line_parameter<typename V::scalar_type> param)
+	{
+		return lerp(l.p1, l.p2, param.get());
+	}
+
+	template<hilbert_space V>
+	constexpr auto get_closest_points(line_segment<V> const& a, line_segment<V> const& b)
+	{
+		auto const intersect = intersection(extension(a), extension(b));
+		if(line_segment<V>::valid(intersect.a)) [[unlikely]]
+		{
+			if(line_segment<V>::valid(intersect.b)) [[unlikely]]
+			{
+				fputs("11\n", stderr); fflush(stderr);
+				auto const loc_a = point_at(a, intersect.a);
+				auto const loc_b = point_at(b, intersect.b);
+				return point_pair{loc_a, loc_b};
+			}
+			else
+			{
+				fputs("10\n", stderr); fflush(stderr);
+				auto const loc_b = point_at(extension(b), line_segment<V>::clamp(intersect.b));
+				auto const proj = project(extension(a), loc_b);
+				auto const loc_a = point_at(extension(a), proj);
+				return point_pair{loc_a, loc_b};
+			}
+		}
+		else
+		{
+			if(line_segment<V>::valid(intersect.b)) [[unlikely]]
+			{
+				fputs("01\n", stderr); fflush(stderr);
+				auto const loc_a = point_at(extension(a), line_segment<V>::clamp(intersect.a));
+				auto const proj = project(extension(b), loc_a);
+				auto const loc_b = point_at(extension(b), proj);
+				return point_pair{loc_a, loc_b};
+			}
+			else
+			{
+				auto const loc_a = point_at(extension(a), line_segment<V>::clamp(intersect.a));
+				auto const proj_a_on_b = project(extension(b), loc_a);
+				if(line_segment<V>::valid(proj_a_on_b))
+				{
+					fputs("001\n", stderr); fflush(stderr);
+					return point_pair{loc_a, point_at(extension(b), proj_a_on_b)};
+				}
+				else
+				{
+					auto const loc_b = point_at(extension(b), line_segment<V>::clamp(intersect.b));
+					auto const proj_b_on_a = project(extension(a), loc_b);
+					if(line_segment<V>::valid(proj_b_on_a))
+					{
+						fputs("0001\n", stderr); fflush(stderr);
+						return point_pair{point_at(extension(a), proj_b_on_a), loc_b};
+					}
+					else
+					{
+						fputs("0000\n", stderr); fflush(stderr);
+						return point_pair{loc_a, loc_b};
+					}
+				}
+			}
+		}
+
+#if 0
+		else
+		{
+
+			else
+			{
+				auto const proj_a_on_b = project(extension(b), a.origin);
+				if(ray<V>::valid(proj_a_on_b))
+				{
+					return point_pair{a.origin, point_at(extension(b), proj_a_on_b)};
+				}
+				else
+				{
+					auto const proj_b_on_a = project(extension(a), b.origin);
+					if(ray<V>::valid(proj_b_on_a))
+					{
+						return point_pair{point_at(extension(a), proj_b_on_a), b.origin};
+					}
+					else
+					{
+						return point_pair{a.origin, b.origin};
+					}
+				}
+			}
+		}
+#endif
 	}
 }
 
