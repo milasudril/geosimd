@@ -207,6 +207,12 @@ namespace geosimd
 		}
 	};
 
+	template<affine_space V>
+	GEOSIMD_INLINE_OPT constexpr auto flip(line_segment<V> const& a)
+	{
+		return line_segment{a.p2, a.p1};
+	}
+
 	template<metric_space V>
 	GEOSIMD_INLINE_OPT constexpr auto length(line_segment<V> const& val)
 	{
@@ -238,14 +244,12 @@ namespace geosimd
 		{
 			if(line_segment<V>::valid(intersect.b)) [[unlikely]]
 			{
-				fputs("11\n", stderr); fflush(stderr);
 				auto const loc_a = point_at(a, intersect.a);
 				auto const loc_b = point_at(b, intersect.b);
 				return point_pair{loc_a, loc_b};
 			}
 			else
 			{
-				fputs("10\n", stderr); fflush(stderr);
 				auto const loc_b = point_at(extension(b), line_segment<V>::clamp(intersect.b));
 				auto const proj = project(extension(a), loc_b);
 				auto const loc_a = point_at(extension(a), proj);
@@ -256,7 +260,6 @@ namespace geosimd
 		{
 			if(line_segment<V>::valid(intersect.b)) [[unlikely]]
 			{
-				fputs("01\n", stderr); fflush(stderr);
 				auto const loc_a = point_at(extension(a), line_segment<V>::clamp(intersect.a));
 				auto const proj = project(extension(b), loc_a);
 				auto const loc_b = point_at(extension(b), proj);
@@ -268,7 +271,6 @@ namespace geosimd
 				auto const proj_a_on_b = project(extension(b), loc_a);
 				if(line_segment<V>::valid(proj_a_on_b))
 				{
-					fputs("001\n", stderr); fflush(stderr);
 					return point_pair{loc_a, point_at(extension(b), proj_a_on_b)};
 				}
 				else
@@ -277,44 +279,15 @@ namespace geosimd
 					auto const proj_b_on_a = project(extension(a), loc_b);
 					if(line_segment<V>::valid(proj_b_on_a))
 					{
-						fputs("0001\n", stderr); fflush(stderr);
 						return point_pair{point_at(extension(a), proj_b_on_a), loc_b};
 					}
 					else
 					{
-						fputs("0000\n", stderr); fflush(stderr);
 						return point_pair{loc_a, loc_b};
 					}
 				}
 			}
 		}
-
-#if 0
-		else
-		{
-
-			else
-			{
-				auto const proj_a_on_b = project(extension(b), a.origin);
-				if(ray<V>::valid(proj_a_on_b))
-				{
-					return point_pair{a.origin, point_at(extension(b), proj_a_on_b)};
-				}
-				else
-				{
-					auto const proj_b_on_a = project(extension(a), b.origin);
-					if(ray<V>::valid(proj_b_on_a))
-					{
-						return point_pair{point_at(extension(a), proj_b_on_a), b.origin};
-					}
-					else
-					{
-						return point_pair{a.origin, b.origin};
-					}
-				}
-			}
-		}
-#endif
 	}
 }
 
