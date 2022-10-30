@@ -89,7 +89,7 @@ namespace geosimd
 			return m_cols[index];
 		}
 
-		GEOSIMD_INLINE_OPT constexpr mat_4x4& assign(int index, column_type val)
+		GEOSIMD_INLINE_OPT constexpr mat_4x4& assign(size_t index, column_type val)
 		{
 			m_cols[index] = val;
 			return *this;
