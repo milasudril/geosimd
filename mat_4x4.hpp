@@ -4,6 +4,8 @@
 #include "./vec_t.hpp"
 #include "./adl_factories.hpp"
 
+#include <span>
+
 namespace geosimd
 {
 	namespace mat_4x4_detail
@@ -72,9 +74,9 @@ namespace geosimd
 		{
 		}
 
-		GEOSIMD_INLINE_OPT constexpr auto const* data() const
+		GEOSIMD_INLINE_OPT constexpr auto column_major_elements() const
 		{
-			return m_cols[0].data();
+			return std::span{m_cols[0].data(), 16};
 		}
 
 		GEOSIMD_INLINE_OPT constexpr auto const& columns() const
@@ -82,12 +84,12 @@ namespace geosimd
 			return m_cols;
 		}
 
-		GEOSIMD_INLINE_OPT constexpr column_type col(int index) const
+		GEOSIMD_INLINE_OPT constexpr column_type col(size_t index) const
 		{
 			return m_cols[index];
 		}
 
-		GEOSIMD_INLINE_OPT constexpr mat_4x4& col(int index, column_type val)
+		GEOSIMD_INLINE_OPT constexpr mat_4x4& assign(int index, column_type val)
 		{
 			m_cols[index] = val;
 			return *this;

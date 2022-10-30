@@ -27,6 +27,18 @@ namespace geosimd
 
 		GEOSIMD_INLINE_OPT static constexpr size_t size() { return N; }
 
+		GEOSIMD_INLINE_OPT constexpr T* data() { return &m_value[0]; }
+
+		GEOSIMD_INLINE_OPT constexpr T const* data() const { return &m_value[0]; }
+
+		GEOSIMD_INLINE_OPT constexpr auto begin() const { return data(); }
+
+		GEOSIMD_INLINE_OPT constexpr auto begin() { return data(); }
+
+		GEOSIMD_INLINE_OPT constexpr auto end() const { return data() + N; }
+
+		GEOSIMD_INLINE_OPT constexpr auto end() { return data() + N; }
+
 		GEOSIMD_INLINE_OPT constexpr T& operator[](size_t n)
 		{ return m_value[n]; }
 

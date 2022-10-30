@@ -69,3 +69,41 @@ TESTCASE(geosimd_mat44_one)
 	auto const f = A*e;
 	EXPECT_EQ(f, e);
 }
+
+TESTCASE(geosimd_mat44_data)
+{
+	auto const A = gen_matrix();
+	auto const elems = A.column_major_elements();
+	REQUIRE_EQ(std::size(elems), 16);
+	EXPECT_EQ(static_cast<void const*>(&A), static_cast<void const*>(std::data(elems)));
+	for(int k = 0; k != 4; ++k)
+	{
+		for(int l = 0; l != 4; ++l)
+		{
+			EXPECT_EQ(elems[4*k + l], k + 4*l);
+		}
+	}
+}
+
+TESTCASE(geosimd_mat44_columns)
+{
+	auto const A = gen_matrix();
+	auto const& cols = A.columns();
+	EXPECT_EQ(std::size(cols), 4);
+	for(int k = 0; k != static_cast<int>(std::size(cols)); ++k)
+	{
+		auto const expected = 4*geosimd::vec_t<int, 4>{0, 1, 2, 3} + geosimd::vec_t<int, 4>{k, k, k, k};
+		EXPECT_EQ(cols[k], expected);
+	}
+}
+
+
+TESTCASE(geosimd_mat44_col)
+{
+	auto const A = gen_matrix();
+	for(int k = 0; k != 4; ++k)
+	{
+		auto const expected = 4*geosimd::vec_t<int, 4>{0, 1, 2, 3} + geosimd::vec_t<int, 4>{k, k, k, k};
+		EXPECT_EQ(A.col(k), expected);
+	}
+}
