@@ -227,7 +227,6 @@ namespace geosimd
 		for(size_t k = 0; k != 4; ++k)
 		{
 			ret.append(to_string(tmp.col(k))).append("\n");
-
 		}
 		ret.append("]");
 		return ret;
