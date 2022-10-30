@@ -190,7 +190,7 @@ namespace geosimd
 	}
 
 	template<class T>
-	GEOSIMD_INLINE_OPT constexpr auto transposed(mat_4x4<T> const& A)
+	GEOSIMD_INLINE_OPT constexpr mat_4x4<T> transposed(mat_4x4<T> const& A)
 	{
 		auto temp = A;
 		return temp.transpose();
@@ -217,6 +217,20 @@ namespace geosimd
 			column_type{nul, nul, a, nul},
 			column_type{nul, nul, nul, a}
 		};
+	}
+
+	template<class T>
+	GEOSIMD_FLATTEN constexpr auto to_string(mat_4x4<T> const& mat)
+	{
+		auto const tmp = transposed(mat);
+		std::string ret{"["};
+		for(size_t k = 0; k != 4; ++k)
+		{
+			ret.append(to_string(tmp.col(k))).append("\n");
+
+		}
+		ret.append("]");
+		return ret;
 	}
 }
 #endif

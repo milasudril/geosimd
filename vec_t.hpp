@@ -199,6 +199,21 @@ namespace geosimd
 		return ret;
 	}
 
+	template<class T>
+	constexpr std::array<vec_t<T, 4>, 4> transposed(std::array<vec_t<T, 4>, 4> const& input)
+	{
+		auto const upper_left =	shuffle(input[0], input[1],  0, 4, 1, 5);
+		auto const lower_left =	shuffle(input[0], input[1],  2, 6, 3, 7);
+		auto const upper_right = shuffle(input[2], input[3], 0, 4, 1, 5);
+		auto const lower_right = shuffle(input[2], input[3], 2, 6, 3, 7);
+
+		return std::array<vec_t<T, 4>, 4>{
+			shuffle(upper_left, upper_right, 0, 1, 4, 5),
+			shuffle(upper_left, upper_right, 2, 3, 6, 7),
+			shuffle(lower_left, lower_right, 0, 1, 4, 5),
+			shuffle(lower_left, lower_right, 2, 3, 6, 7)};
+	}
+
 	using vec4f32_t = vec_t<float, 4>;
 	using vec4i32_t = vec_t<int32_t, 4>;
 	using vec2i64_t = vec_t<int64_t, 2>;
