@@ -7,6 +7,21 @@
 
 static_assert(geosimd::vector<geosimd::mat_4x4<int>>);
 
+namespace
+{
+	auto gen_matrix()
+	{
+		using mat44 = geosimd::mat_4x4<int>;
+
+		std::array<mat44::column_type, 4> cols{};
+		for(int k = 0; k != 4; ++k)
+		{
+			cols[k] = 4*geosimd::vec_t<int, 4>{0, 1, 2, 3} + geosimd::vec_t<int, 4>{k, k, k, k};
+		}
+		return mat44{cols};
+	}
+}
+
 TESTCASE(geosimd_mat44_zero)
 {
 	using mat44 = geosimd::mat_4x4<int>;
@@ -16,12 +31,7 @@ TESTCASE(geosimd_mat44_zero)
 	EXPECT_EQ(A.col(2), zero(geosimd::empty<mat44::column_type>{}));
 	EXPECT_EQ(A.col(3), zero(geosimd::empty<mat44::column_type>{}));
 
-	std::array<mat44::column_type, 4> cols{};
-	for(int k = 0; k != 4; ++k)
-	{
-		cols[k] = 4*geosimd::vec_t<int, 4>{0, 1, 2, 3} + geosimd::vec_t<int, 4>{k, k, k, k};
-	}
-	mat44 const B{cols};
+	mat44 const B = gen_matrix();
 
 	auto const C = A + B;
 	EXPECT_EQ(C, B);
@@ -47,12 +57,7 @@ TESTCASE(geosimd_mat44_one)
 	EXPECT_EQ(A.col(2), (vec{0, 0, 1, 0}));
 	EXPECT_EQ(A.col(3), (vec{0, 0, 0, 1}));
 
-	std::array<mat44::column_type, 4> cols{};
-	for(int k = 0; k != 4; ++k)
-	{
-		cols[k] = 4*geosimd::vec_t<int, 4>{0, 1, 2, 3} + geosimd::vec_t<int, 4>{k, k, k, k};
-	}
-	mat44 const B{cols};
+	mat44 const B = gen_matrix();
 
 	auto const C = A*B;
 	EXPECT_EQ(C, B);
