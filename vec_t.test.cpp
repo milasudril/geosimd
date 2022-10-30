@@ -35,6 +35,37 @@ TESTCASE(geosimd_vect_real_shuffle)
 	EXPECT_EQ(d, (geosimd::vec4i32_t{3, 7, 4, 8}));
 }
 
+
+TESTCASE(geosimd_vect_complex_shuffle)
+{
+	geosimd::vec_t<std::complex<int32_t>, 4> const a
+	{
+		geosimd::vec4i32_t{1, 2, 3, 4},
+		geosimd::vec4i32_t{5, 6, 7, 8}
+	};
+
+	geosimd::vec_t<std::complex<int32_t>, 4> const b
+	{
+		geosimd::vec4i32_t{9, 10, 11, 12},
+		geosimd::vec4i32_t{13, 14, 15, 16}
+	};
+
+	auto const c = shuffle(a, b, 0, 4, 1, 5);
+	auto const d = shuffle(a, b, 2, 6, 3, 7);
+
+	EXPECT_EQ(c, (geosimd::vec_t<std::complex<int32_t>, 4>
+		{
+			geosimd::vec4i32_t{1, 9, 2, 10},
+			geosimd::vec4i32_t{5, 13, 6, 14}
+		}));
+
+	EXPECT_EQ(d, (geosimd::vec_t<std::complex<int32_t>, 4>
+		{
+			geosimd::vec4i32_t{3, 11, 4, 12},
+			geosimd::vec4i32_t{7, 15, 8, 16}
+		}));
+}
+
 TESTCASE(geosimd_vect_complex_conj)
 {
 	geosimd::vec_t<std::complex<int32_t>, 4> const a

@@ -149,9 +149,22 @@ namespace geosimd
 		element_type m_value;
 	};
 
+	template<class T, size_t N, class ... Indices>
+	requires (std::conjunction_v<std::is_same<int, Indices>...> && sizeof...(Indices) == N)
+	GEOSIMD_INLINE_OPT constexpr auto shuffle(
+		vec_t<std::complex<T>, N> const& a,
+		vec_t<std::complex<T>, N> const& b,
+		Indices ... vals)
+	{
+		auto const real = shuffle<T, N>(a.real(), b.real(), vals...);
+		auto const imag = shuffle<T, N>(a.imag(), b.imag(), vals...);
+		return vec_t<std::complex<T>, N>{real, imag};
+	}
+
 	template<class T, size_t N>
-	GEOSIMD_FULL_INLINE constexpr auto conj(vec_t<std::complex<T>, N> val)
+	GEOSIMD_INLINE_OPT constexpr auto conj(vec_t<std::complex<T>, N> val)
 	{ return vec_t<std::complex<T>, N>{conj(val.get())}; }
+
 
 	template<class T, size_t N>
 	GEOSIMD_FLATTEN constexpr auto inner_product(vec_t<T, N> a, vec_t<T, N> b)
@@ -165,7 +178,7 @@ namespace geosimd
 	}
 
 	template<class T, size_t N>
-	GEOSIMD_FULL_INLINE constexpr auto inner_product(vec_t<T, N> a)
+	GEOSIMD_INLINE_OPT constexpr auto inner_product(vec_t<T, N> a)
 	{
 		return inner_product(a, a);
 	}

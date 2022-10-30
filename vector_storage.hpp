@@ -51,6 +51,12 @@ namespace geosimd
 	};
 
 	template<class T, size_t N, class ... Indices>
+	requires (!vector_limits::can_vectorize<T>(N))
+	GEOSIMD_INLINE_OPT constexpr auto shuffle(vector_storage<T, N> a,
+		vector_storage<T, N> b,
+		Indices ... vals) = delete;
+
+	template<class T, size_t N, class ... Indices>
 	requires (std::conjunction_v<std::is_same<int, Indices>...>
 		&& sizeof...(Indices) == N
 		&& vector_limits::can_vectorize<T>(N))
