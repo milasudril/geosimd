@@ -28,6 +28,10 @@ TESTCASE(geosimd_mat44_zero)
 
 	auto const E = B*A;
 	EXPECT_EQ(E, A);
+
+	auto const f = geosimd::vec_t<int, 4>{1, 2, 3, 4};
+	auto const g = A*f;
+	EXPECT_EQ(g, zero(geosimd::empty<geosimd::vec_t<int, 4>>{}));
 }
 
 TESTCASE(geosimd_mat44_one)
