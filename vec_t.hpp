@@ -165,16 +165,21 @@ namespace geosimd
 	GEOSIMD_INLINE_OPT constexpr auto conj(vec_t<std::complex<T>, N> val)
 	{ return vec_t<std::complex<T>, N>{conj(val.get())}; }
 
-
 	template<class T, size_t N>
-	GEOSIMD_FLATTEN constexpr auto inner_product(vec_t<T, N> a, vec_t<T, N> b)
+	GEOSIMD_FLATTEN constexpr auto inner_product_raw(vec_t<T, N> a, vec_t<T, N> b)
 	{
-		auto const prod = a * conj(b);
+		auto const prod = a * b;
 		T ret{};
 		for(size_t k = 0; k != N; ++k)
 		{ ret += prod[k]; }
 
 		return ret;
+	}
+
+	template<class T, size_t N>
+	GEOSIMD_FLATTEN constexpr auto inner_product(vec_t<T, N> a, vec_t<T, N> b)
+	{
+		return inner_product_raw(a, conj(b));
 	}
 
 	template<class T, size_t N>
