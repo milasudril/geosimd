@@ -5,6 +5,8 @@
 #include "./basic_point.hpp"
 #include "./hilbert_space.hpp"
 
+#include <cassert>
+
 namespace geosimd
 {
 	template<class T>
@@ -251,7 +253,7 @@ namespace geosimd
 			else
 			{
 				auto const loc_b = point_at(extension(b), line_segment<V>::clamp(intersect.b));
-				auto const proj = project(extension(a), loc_b);
+				auto const proj = line_segment<V>::clamp(project(extension(a), loc_b));
 				auto const loc_a = point_at(extension(a), proj);
 				return point_pair{loc_a, loc_b};
 			}
@@ -261,7 +263,7 @@ namespace geosimd
 			if(line_segment<V>::valid(intersect.b)) [[unlikely]]
 			{
 				auto const loc_a = point_at(extension(a), line_segment<V>::clamp(intersect.a));
-				auto const proj = project(extension(b), loc_a);
+				auto const proj = line_segment<V>::clamp(project(extension(b), loc_a));
 				auto const loc_b = point_at(extension(b), proj);
 				return point_pair{loc_a, loc_b};
 			}
