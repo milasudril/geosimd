@@ -171,10 +171,24 @@ namespace geosimd
 	};
 
 	template<class T>
-	GEOSIMD_INLINE_OPT constexpr auto operator*(typename mat_4x4<T>::scalar_type c, mat_4x4<T>& A)
+	GEOSIMD_INLINE_OPT constexpr auto operator*(typename mat_4x4<T>::scalar_type c, mat_4x4<T> const& A)
 	{
 		auto ret = A;
 		return ret *= c;
+	}
+
+	template<class T>
+	GEOSIMD_INLINE_OPT constexpr auto operator*(mat_4x4<T> const& A, typename mat_4x4<T>::scalar_type c)
+	{
+		auto ret = A;
+		return ret *= c;
+	}
+
+	template<class T>
+	GEOSIMD_INLINE_OPT constexpr auto operator-(mat_4x4<T> const& A)
+	{
+		using scalar_type = typename mat_4x4<T>::scalar_type;
+		return (-one(geosimd::empty<scalar_type>{})) * A;
 	}
 
 	template<class T>
