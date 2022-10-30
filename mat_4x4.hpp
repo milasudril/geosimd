@@ -6,6 +6,44 @@
 
 namespace geosimd
 {
+	namespace mat_4x4_detail
+	{
+		template<class T>
+		GEOSIMD_FLATTEN constexpr std::array<vec_t<T, 4>, 4>
+		transposed(std::array<vec_t<T, 4>, 4> const& input)
+		{
+			auto const upper_left =	shuffle(input[0], input[1],  0, 4, 1, 5);
+			auto const lower_left =	shuffle(input[0], input[1],  2, 6, 3, 7);
+			auto const upper_right = shuffle(input[2], input[3], 0, 4, 1, 5);
+			auto const lower_right = shuffle(input[2], input[3], 2, 6, 3, 7);
+
+			return std::array<vec_t<T, 4>, 4>{
+				shuffle(upper_left, upper_right, 0, 1, 4, 5),
+				shuffle(upper_left, upper_right, 2, 3, 6, 7),
+				shuffle(lower_left, lower_right, 0, 1, 4, 5),
+				shuffle(lower_left, lower_right, 2, 3, 6, 7)};
+		}
+
+		template<class T>
+		using twins = std::pair<T, T>;
+
+		template<class T>
+		GEOSIMD_FLATTEN
+		constexpr vec_t<T, 4>
+		multi_inner_prod_raw(twins<vec_t<T, 4>> a,
+			twins<vec_t<T, 4>> b,
+			twins<vec_t<T, 4>> c,
+			twins<vec_t<T, 4>> d)
+		{
+			std::array<vec_t<T, 4>, 4> elem_prods{
+				a.first * a.second, b.first * b.second, c.first * c.second, d.first * d.second};
+
+			auto sumvecs = transposed(elem_prods);
+			return sumvecs[0] + sumvecs[1] + sumvecs[2] + sumvecs[3];
+		}
+
+	}
+
 	template<class T>
 	class mat_4x4;
 
@@ -75,10 +113,12 @@ namespace geosimd
 
 		GEOSIMD_FLATTEN constexpr mat_4x4& leftmul_by(mat_4x4 const& left)
 		{
+			using mat_4x4_detail::transposed;
 			auto left_transposed = transposed(left);
 			for(auto k = 0; k < 4; ++k)
 			{
-				m_cols[k] = inner_product_raw({left_transposed.m_cols[0], m_cols[k]},
+				using mat_4x4_detail::multi_inner_prod_raw;
+				m_cols[k] = multi_inner_prod_raw<T>({left_transposed.m_cols[0], m_cols[k]},
 					{left_transposed.m_cols[1], m_cols[k]},
 					{left_transposed.m_cols[2], m_cols[k]},
 					{left_transposed.m_cols[3], m_cols[k]});
@@ -88,10 +128,12 @@ namespace geosimd
 
 		GEOSIMD_FLATTEN constexpr mat_4x4& rightmul_by(mat_4x4 const& right)
 		{
+			using mat_4x4_detail::transposed;
 			auto left_transposed = transposed(*this);
 			for(auto k = 0; k < 4; ++k)
 			{
-				m_cols[k] = inner_product_raw({left_transposed.m_cols[0], right.m_cols[k]},
+				using mat_4x4_detail::multi_inner_prod_raw;
+				m_cols[k] = multi_inner_prod_raw<T>({left_transposed.m_cols[0], right.m_cols[k]},
 					{left_transposed.m_cols[1], right.m_cols[k]},
 					{left_transposed.m_cols[2], right.m_cols[k]},
 					{left_transposed.m_cols[3], right.m_cols[k]});
@@ -119,6 +161,7 @@ namespace geosimd
 
 		constexpr mat_4x4& transpose()
 		{
+			using mat_4x4_detail::transposed;
 			m_cols = transposed(m_cols);
 			return *this;
 		}

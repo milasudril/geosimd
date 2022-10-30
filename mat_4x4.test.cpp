@@ -20,7 +20,14 @@ TESTCASE(geosimd_mat44_zero)
 	}
 
 	mat44 const B{cols};
-	fprintf(stderr, "%s\n", to_string(B).c_str());
+	auto const C = A + B;
+	EXPECT_EQ(C, B);
+
+	auto const D = A*B;
+	EXPECT_EQ(D, A);
+
+	auto const E = B*A;
+	EXPECT_EQ(E, A);
 }
 
 TESTCASE(geosimd_mat44_one)
