@@ -51,7 +51,7 @@ namespace geosimd
 		GEOSIMD_INLINE_OPT constexpr turn_angle() = default;
 
 		GEOSIMD_INLINE_OPT constexpr explicit turn_angle(int64_t x):m_value{x}{}
-	
+
 		GEOSIMD_INLINE_OPT constexpr turn_angle(turns x):
 			m_value{static_cast<uint32_t>(static_cast<int64_t>(x.value * full_turn))}
 		{}
@@ -60,11 +60,23 @@ namespace geosimd
 			turn_angle{static_cast<turns>(x)}
 		{}
 
-		GEOSIMD_INLINE_OPT constexpr auto get() const 
+		GEOSIMD_INLINE_OPT constexpr auto get() const
 		{ return m_value; }
 
 		GEOSIMD_INLINE_OPT constexpr auto& get(vectorops_magic)
 		{ return m_value; }
+
+		GEOSIMD_INLINE_OPT constexpr auto& operator*=(double val)
+		{
+			m_value = static_cast<int64_t>(val*static_cast<double>(m_value));
+			return *this;
+		}
+
+		GEOSIMD_INLINE_OPT constexpr auto& operator/=(double val)
+		{
+			m_value = static_cast<int64_t>(static_cast<double>(m_value)/val);
+			return *this;
+		}
 
 	private:
 		int64_t m_value;
