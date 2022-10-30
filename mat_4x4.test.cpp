@@ -21,8 +21,8 @@ TESTCASE(geosimd_mat44_zero)
 	{
 		cols[k] = 4*geosimd::vec_t<int, 4>{0, 1, 2, 3} + geosimd::vec_t<int, 4>{k, k, k, k};
 	}
-
 	mat44 const B{cols};
+
 	auto const C = A + B;
 	EXPECT_EQ(C, B);
 
@@ -46,4 +46,21 @@ TESTCASE(geosimd_mat44_one)
 	EXPECT_EQ(A.col(1), (vec{0, 1, 0, 0}));
 	EXPECT_EQ(A.col(2), (vec{0, 0, 1, 0}));
 	EXPECT_EQ(A.col(3), (vec{0, 0, 0, 1}));
+
+	std::array<mat44::column_type, 4> cols{};
+	for(int k = 0; k != 4; ++k)
+	{
+		cols[k] = 4*geosimd::vec_t<int, 4>{0, 1, 2, 3} + geosimd::vec_t<int, 4>{k, k, k, k};
+	}
+	mat44 const B{cols};
+
+	auto const C = A*B;
+	EXPECT_EQ(C, B);
+
+	auto const D = B*A;
+	EXPECT_EQ(D, B);
+
+	auto const e = geosimd::vec_t<int, 4>{1, 2, 3, 4};
+	auto const f = A*e;
+	EXPECT_EQ(f, e);
 }
