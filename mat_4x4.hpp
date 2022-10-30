@@ -2,6 +2,7 @@
 #define GEOSIMD_MAT4X4_HPP
 
 #include "./vec_t.hpp"
+#include "./adl_factories.hpp"
 
 namespace geosimd
 {
@@ -17,6 +18,8 @@ namespace geosimd
 	public:
 		using column_type = vec_t<T, 4>;
 		using scalar_type = column_type::scalar_type;
+
+		constexpr mat_4x4() = default;
 
 		GEOSIMD_INLINE_OPT constexpr explicit mat_4x4(column_type a,
 			column_type b,
@@ -76,9 +79,9 @@ namespace geosimd
 			for(auto k = 0; k < 4; ++k)
 			{
 				m_cols[k] = inner_product_raw({left_transposed.m_cols[0], m_cols[k]},
-				                {left_transposed.m_cols[1], m_cols[k]},
-				                {left_transposed.m_cols[2], m_cols[k]},
-				                {left_transposed.m_cols[3], m_cols[k]});
+					{left_transposed.m_cols[1], m_cols[k]},
+					{left_transposed.m_cols[2], m_cols[k]},
+					{left_transposed.m_cols[3], m_cols[k]});
 			}
 			return *this;
 		}
@@ -89,9 +92,9 @@ namespace geosimd
 			for(auto k = 0; k < 4; ++k)
 			{
 				m_cols[k] = inner_product_raw({left_transposed.m_cols[0], right.m_cols[k]},
-				                {left_transposed.m_cols[1], right.m_cols[k]},
-				                {left_transposed.m_cols[2], right.m_cols[k]},
-				                {left_transposed.m_cols[3], right.m_cols[k]});
+					{left_transposed.m_cols[1], right.m_cols[k]},
+					{left_transposed.m_cols[2], right.m_cols[k]},
+					{left_transposed.m_cols[3], right.m_cols[k]});
 			}
 			return *this;
 		}
@@ -191,6 +194,29 @@ namespace geosimd
 	{
 		auto temp = A;
 		return temp.transpose();
+	}
+
+	template<class T>
+	GEOSIMD_FLATTEN constexpr auto zero(empty<mat_4x4<T>>)
+	{
+		using column_type = typename mat_4x4<T>::column_type;
+		auto const nul = zero(empty<column_type>{});
+		return mat_4x4<T>{nul, nul, nul, nul};
+	}
+
+	template<class T>
+	GEOSIMD_FLATTEN constexpr auto one(empty<mat_4x4<T>>)
+	{
+		using column_type = typename mat_4x4<T>::column_type;
+		using scalar_type = typename mat_4x4<T>::scalar_type;
+		auto const nul = zero(empty<scalar_type>{});
+		auto const a = one(empty<scalar_type>{});
+
+		return mat_4x4<T>{column_type{a, nul, nul, nul},
+			column_type{nul, a, nul, nul},
+			column_type{nul, nul, a, nul},
+			column_type{nul, nul, nul, a}
+		};
 	}
 }
 #endif
