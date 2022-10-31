@@ -259,3 +259,24 @@ TESTCASE(geosimd_mat44_div_scalar)
 		geosimd::vec_t<int, 4>{-6, -8, 1, 2}
 	}));
 }
+
+TESTCASE(geosimd_mat44_transpose)
+{
+	using mat44 = geosimd::mat_4x4<int>;
+	constexpr mat44 A{
+		geosimd::vec_t<int, 4>{-3, 8, -1, 3},
+		geosimd::vec_t<int, 4>{-7, 4, -2, -5},
+		geosimd::vec_t<int, 4>{6, 7, 0, 5},
+		geosimd::vec_t<int, 4>{-6, -8, 1, 2}
+	};
+
+	EXPECT_EQ(transposed(transposed(A)), A);
+	auto const expected = mat44{
+		geosimd::vec_t<int, 4>{-3, -7, 6, -6},
+		geosimd::vec_t<int, 4>{ 8,  4, 7, -8},
+		geosimd::vec_t<int, 4>{-1, -2, 0, 1},
+		geosimd::vec_t<int, 4>{3, -5, 5, 2}
+	};
+
+	EXPECT_EQ(transposed(A), expected);
+}
