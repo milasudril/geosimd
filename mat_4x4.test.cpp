@@ -107,3 +107,18 @@ TESTCASE(geosimd_mat44_col)
 		EXPECT_EQ(A.col(k), expected);
 	}
 }
+
+TESTCASE(geosimd_mat44_assign_col)
+{
+	using mat44 = geosimd::mat_4x4<int>;
+	auto A = zero(geosimd::empty<mat44>{});
+	for(int k = 0; k != 4; ++k)
+	{
+		A.assign(k, geosimd::vec_t<int, 4>{k, k, k, k});
+		for(int l = 0; l != (k + 1); ++l)
+		{
+			EXPECT_EQ(A.col(l), (geosimd::vec_t<int, 4>{l, l, l, l}));
+		}
+	}
+
+}
