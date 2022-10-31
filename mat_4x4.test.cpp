@@ -181,7 +181,7 @@ TESTCASE(geosimd_mat44_sub)
 	}));
 }
 
-TESTCASE(geosimd_mat44_mul)
+TESTCASE(geosimd_mat44_mul_matrix)
 {
 	using mat44 = geosimd::mat_4x4<int>;
 	constexpr mat44 A{
@@ -213,4 +213,29 @@ TESTCASE(geosimd_mat44_mul)
 	auto A2 = mat44{A}.rightmul(B);
 	EXPECT_EQ(A1, D);
 	EXPECT_EQ(A2, C);
+
+	EXPECT_EQ(A*one(geosimd::empty<mat44>()), A);
+	EXPECT_EQ(one(geosimd::empty<mat44>())*A, A);
+}
+
+TESTCASE(geosimd_mat44_mul_scalar)
+{
+	using mat44 = geosimd::mat_4x4<int>;
+	constexpr mat44 A{
+		geosimd::vec_t<int, 4>{-3, 8, -1, 3},
+		geosimd::vec_t<int, 4>{-7, 4, -2, -5},
+		geosimd::vec_t<int, 4>{6, 7, 0, 5},
+		geosimd::vec_t<int, 4>{-6, -8, 1, 2}
+	};
+
+	auto const B = 3*A;
+	auto const C = A*3;
+	EXPECT_EQ(B, C);
+
+	EXPECT_EQ(B, (mat44{
+		3*geosimd::vec_t<int, 4>{-3, 8, -1, 3},
+		3*geosimd::vec_t<int, 4>{-7, 4, -2, -5},
+		3*geosimd::vec_t<int, 4>{6, 7, 0, 5},
+		3*geosimd::vec_t<int, 4>{-6, -8, 1, 2}
+	}));
 }
