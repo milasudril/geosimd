@@ -120,5 +120,64 @@ TESTCASE(geosimd_mat44_assign_col)
 			EXPECT_EQ(A.col(l), (geosimd::vec_t<int, 4>{l, l, l, l}));
 		}
 	}
+}
 
+TESTCASE(geosimd_mat44_add)
+{
+	using mat44 = geosimd::mat_4x4<int>;
+	constexpr mat44 A{
+		geosimd::vec_t<int, 4>{-3, 8, -1, 3},
+		geosimd::vec_t<int, 4>{-7, 4, -2, -5},
+		geosimd::vec_t<int, 4>{6, 7, 0, 5},
+		geosimd::vec_t<int, 4>{-6, -8, 1, 2}
+	};
+
+	constexpr mat44 B{
+		geosimd::vec_t<int, 4>{4, 1, -7, -2},
+		geosimd::vec_t<int, 4>{-6, 7, 0, -5},
+		geosimd::vec_t<int, 4>{5, 8, -1, -4},
+		geosimd::vec_t<int, 4>{3, 6, 2, -8}
+	};
+
+	auto const C = A + B;
+	auto const D = B + A;
+	EXPECT_EQ(C, D);
+	EXPECT_EQ(C, (mat44{
+		geosimd::vec_t<int, 4>{1, 9, -8, 1},
+		geosimd::vec_t<int, 4>{-13, 11, -2, -10},
+		geosimd::vec_t<int, 4>{11, 15, -1, 1},
+		geosimd::vec_t<int, 4>{-3, -2, 3, -6}
+	}));
+}
+
+TESTCASE(geosimd_mat44_sub)
+{
+	using mat44 = geosimd::mat_4x4<int>;
+	constexpr mat44 A{
+		geosimd::vec_t<int, 4>{-3, 8, -1, 3},
+		geosimd::vec_t<int, 4>{-7, 4, -2, -5},
+		geosimd::vec_t<int, 4>{6, 7, 0, 5},
+		geosimd::vec_t<int, 4>{-6, -8, 1, 2}
+	};
+
+	constexpr mat44 B{
+		geosimd::vec_t<int, 4>{4, 1, -7, -2},
+		geosimd::vec_t<int, 4>{-6, 7, 0, -5},
+		geosimd::vec_t<int, 4>{5, 8, -1, -4},
+		geosimd::vec_t<int, 4>{3, 6, 2, -8}
+	};
+
+	auto const C = A - B;
+	auto const D = B - A;
+	EXPECT_EQ(C, -D);
+	EXPECT_EQ(C, A + (-B));
+	EXPECT_EQ(A + B - B, A);
+	EXPECT_EQ(A - A, zero(geosimd::empty<mat44>{}));
+
+	EXPECT_EQ(C, (mat44{
+		geosimd::vec_t<int, 4>{-7, 7, 6, 5},
+		geosimd::vec_t<int, 4>{-1, -3, -2, 0},
+		geosimd::vec_t<int, 4>{1, -1, 1, 9},
+		geosimd::vec_t<int, 4>{-9, -14, -1, 10}
+	}));
 }
