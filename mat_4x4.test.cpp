@@ -239,3 +239,23 @@ TESTCASE(geosimd_mat44_mul_scalar)
 		3*geosimd::vec_t<int, 4>{-6, -8, 1, 2}
 	}));
 }
+
+TESTCASE(geosimd_mat44_div_scalar)
+{
+	using mat44 = geosimd::mat_4x4<int>;
+	constexpr mat44 A{
+		3*geosimd::vec_t<int, 4>{-3, 8, -1, 3},
+		3*geosimd::vec_t<int, 4>{-7, 4, -2, -5},
+		3*geosimd::vec_t<int, 4>{6, 7, 0, 5},
+		3*geosimd::vec_t<int, 4>{-6, -8, 1, 2}
+	};
+
+	auto const B = A/3;
+
+	EXPECT_EQ(B, (mat44{
+		geosimd::vec_t<int, 4>{-3, 8, -1, 3},
+		geosimd::vec_t<int, 4>{-7, 4, -2, -5},
+		geosimd::vec_t<int, 4>{6, 7, 0, 5},
+		geosimd::vec_t<int, 4>{-6, -8, 1, 2}
+	}));
+}
