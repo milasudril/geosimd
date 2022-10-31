@@ -113,7 +113,7 @@ namespace geosimd
 			return *this;
 		}
 
-		GEOSIMD_FLATTEN constexpr mat_4x4& leftmul_by(mat_4x4 const& left)
+		GEOSIMD_FLATTEN constexpr mat_4x4& leftmul(mat_4x4 const& left)
 		{
 			using mat_4x4_detail::transposed;
 			auto left_transposed = transposed(left);
@@ -128,7 +128,7 @@ namespace geosimd
 			return *this;
 		}
 
-		GEOSIMD_FLATTEN constexpr mat_4x4& rightmul_by(mat_4x4 const& right)
+		GEOSIMD_FLATTEN constexpr mat_4x4& rightmul(mat_4x4 const& right)
 		{
 			using mat_4x4_detail::transposed;
 			auto left_transposed = transposed(*this);
@@ -161,7 +161,7 @@ namespace geosimd
 			return *this;
 		}
 
-		constexpr mat_4x4& transpose()
+		GEOSIMD_INLINE_OPT constexpr mat_4x4& transpose()
 		{
 			using mat_4x4_detail::transposed;
 			m_cols = transposed(m_cols);
@@ -218,7 +218,7 @@ namespace geosimd
 	GEOSIMD_INLINE_OPT constexpr auto operator*(mat_4x4<T> const& A, mat_4x4<T> const& B)
 	{
 		auto ret = B;
-		return ret.leftmul_by(A);
+		return ret.leftmul(A);
 	}
 
 	template<class T>

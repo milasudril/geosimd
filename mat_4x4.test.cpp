@@ -97,7 +97,6 @@ TESTCASE(geosimd_mat44_columns)
 	}
 }
 
-
 TESTCASE(geosimd_mat44_col)
 {
 	auto const A = gen_matrix();
@@ -180,4 +179,38 @@ TESTCASE(geosimd_mat44_sub)
 		geosimd::vec_t<int, 4>{1, -1, 1, 9},
 		geosimd::vec_t<int, 4>{-9, -14, -1, 10}
 	}));
+}
+
+TESTCASE(geosimd_mat44_mul)
+{
+	using mat44 = geosimd::mat_4x4<int>;
+	constexpr mat44 A{
+		geosimd::vec_t<int, 4>{-3, 8, -1, 3},
+		geosimd::vec_t<int, 4>{-7, 4, -2, -5},
+		geosimd::vec_t<int, 4>{6, 7, 0, 5},
+		geosimd::vec_t<int, 4>{-6, -8, 1, 2}
+	};
+
+	constexpr mat44 B{
+		geosimd::vec_t<int, 4>{4, 1, -7, -2},
+		geosimd::vec_t<int, 4>{-6, 7, 0, -5},
+		geosimd::vec_t<int, 4>{5, 8, -1, -4},
+		geosimd::vec_t<int, 4>{3, 6, 2, -8}
+	};
+
+	auto const C = A*B;
+	auto const D = B*A;
+	EXPECT_NE(C, D);
+	EXPECT_EQ(transposed(A)*transposed(B), transposed(B*A));
+	EXPECT_EQ(C, (mat44{
+		geosimd::vec_t<int, 4>{-49, 3, -8, -32},
+		geosimd::vec_t<int, 4>{-1, 20, -13, -63},
+		geosimd::vec_t<int, 4>{-53, 97, -25, -38},
+		geosimd::vec_t<int, 4>{9, 126, -23, -27}
+	}));
+
+	auto A1 = mat44{A}.leftmul(B);
+	auto A2 = mat44{A}.rightmul(B);
+	EXPECT_EQ(A1, D);
+	EXPECT_EQ(A2, C);
 }
