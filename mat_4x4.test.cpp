@@ -280,3 +280,20 @@ TESTCASE(geosimd_mat44_transpose)
 
 	EXPECT_EQ(transposed(A), expected);
 }
+
+TESTCASE(geosimd_mat44_mul_vector)
+{
+	using mat44 = geosimd::mat_4x4<int>;
+	constexpr mat44 A{
+		geosimd::vec_t<int, 4>{-3, 8, -1, 3},
+		geosimd::vec_t<int, 4>{-7, 4, -2, -5},
+		geosimd::vec_t<int, 4>{6, 7, 0, 5},
+		geosimd::vec_t<int, 4>{-6, -8, 1, 2}
+	};
+
+	constexpr geosimd::vec_t<int, 4> x{1, 2, 3, 5};
+
+	auto const v = A*x;
+
+	EXPECT_EQ(v, (geosimd::vec_t<int, 4>{-29, -3, 0, 18}));
+}
