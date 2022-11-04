@@ -5,7 +5,8 @@
 #include "./basic_point.hpp"
 #include "./hilbert_space.hpp"
 
-#include <cassert>
+#include <array>
+#include <algorithm>
 
 namespace geosimd
 {
@@ -187,7 +188,6 @@ namespace geosimd
 		}
 	}
 
-
 	template<affine_space V>
 	struct line_segment
 	{
@@ -285,7 +285,23 @@ namespace geosimd
 					}
 					else
 					{
-						return point_pair{loc_a, loc_b};
+						auto const a_start = a.p1;
+						auto const a_end = a.p2;
+						auto const b_start = b.p1;
+						auto const b_end = b.p2;
+
+						std::array<point_pair<V>, 4> pairs{
+							point_pair{a_start, b_start},
+							point_pair{a_start, b_end},
+							point_pair{a_end, b_start},
+							point_pair{a_end, b_end}
+						};
+
+						std::ranges::sort(pairs, [](auto p1, auto p2){
+							return distance_squared(p1.a, p1.b) < distance_squared(p2.a, p2.b);
+						});
+
+						return pairs[0];
 					}
 				}
 			}
