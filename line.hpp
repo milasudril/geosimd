@@ -269,7 +269,8 @@ namespace geosimd
 			}
 			else
 			{
-				auto const loc_a = point_at(extension(a), line_segment<V>::clamp(intersect.a));
+				auto const param_a = line_segment<V>::clamp(intersect.a);
+				auto const loc_a = point_at(extension(a), param_a);
 				auto const proj_a_on_b = project(extension(b), loc_a);
 				if(line_segment<V>::valid(proj_a_on_b))
 				{
@@ -277,7 +278,8 @@ namespace geosimd
 				}
 				else
 				{
-					auto const loc_b = point_at(extension(b), line_segment<V>::clamp(intersect.b));
+					auto const param_b = line_segment<V>::clamp(intersect.b);
+					auto const loc_b = point_at(extension(b), param_b);
 					auto const proj_b_on_a = project(extension(a), loc_b);
 					if(line_segment<V>::valid(proj_b_on_a))
 					{
