@@ -47,6 +47,20 @@ TESTCASE(geosimd_euclidian_space_point_props)
 	static_assert(mid[3] == 1.0f);
 
 	static_assert(lerp(loc{1.0f, 2.0f, 4.0f}, loc{2.0f, 4.0f, 8.0f}, 0.25f) == loc{1.25f, 2.5f, 5.0f});
+
+	{
+		auto const [x, y, z] = a;
+		EXPECT_EQ(x, 1.0f);
+		EXPECT_EQ(y, 4.0f);
+		EXPECT_EQ(z, 5.0f);
+	}
+
+	{
+		auto const [x, y, z] = c;
+		EXPECT_EQ(x, 2.0f);
+		EXPECT_EQ(y, 3.0f);
+		EXPECT_EQ(z, 6.0f);
+	}
 }
 
 TESTCASE(geosimd_euclidian_space_to_string)

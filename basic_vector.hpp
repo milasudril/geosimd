@@ -16,6 +16,7 @@ namespace geosimd
 		using vectorops_magic = typename vectorops_mixin<basic_vector<V>>::magic;
 	public:
 		using scalar_type = typename V::scalar_type;
+		using value_type = scalar_type;
 		using storage_type = typename V::vector_type;
 		using vector_type = basic_vector<V>;
 
@@ -45,10 +46,22 @@ namespace geosimd
 			{ return m_value; }
 		}
 
+		template<class = void>
+		requires(!supports_static_constexpr_size<storage_type>)
 		GEOSIMD_INLINE_OPT constexpr size_t size() const
 		{
 			if constexpr(supports_size<storage_type>)
 			{ return std::size(m_value) - static_cast<size_t>(has_homogenous_coordinates<V>); }
+			else
+			{ return 1; }
+		}
+
+		template<class = void>
+		requires(supports_static_constexpr_size<storage_type>)
+		GEOSIMD_INLINE_OPT static constexpr size_t size()
+		{
+			if constexpr(supports_size<storage_type>)
+			{ return storage_type::size() - static_cast<size_t>(has_homogenous_coordinates<V>); }
 			else
 			{ return 1; }
 		}
