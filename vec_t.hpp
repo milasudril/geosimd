@@ -63,7 +63,7 @@ namespace geosimd
 	}
 
 	template<class T, size_t N>
-	GEOSIMD_FULL_INLINE constexpr auto conj(vec_t<T, N> val)
+	GEOSIMD_INLINE_OPT constexpr auto conj(vec_t<T, N> val)
 	{ return val; }
 
 	template<class T>
@@ -99,7 +99,7 @@ namespace geosimd
 	}
 
 	template<class T, size_t N>
-	GEOSIMD_FULL_INLINE constexpr auto conj(vec_t<std::complex<T>, N> val);
+	GEOSIMD_INLINE_OPT constexpr auto conj(vec_t<std::complex<T>, N> val);
 
 	template<class T, size_t N>
 	class vec_t<std::complex<T>, N>:public vectorops_mixin<vec_t<std::complex<T>, N>>
@@ -121,7 +121,7 @@ namespace geosimd
 
 		GEOSIMD_INLINE_OPT static constexpr size_t size() { return N; }
 
-		GEOSIMD_FULL_INLINE constexpr auto operator[](size_t n) const
+		GEOSIMD_INLINE_OPT constexpr auto operator[](size_t n) const
 		{
 			auto const real_val = m_value.real()[n];
 			auto const imag_val = m_value.imag()[n];

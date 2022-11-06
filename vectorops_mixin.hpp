@@ -18,7 +18,7 @@ namespace geosimd
 	public:
 		template<class T = Derived>
 		requires requires(T a){ {a.get(magic{})}; }
-		GEOSIMD_FULL_INLINE friend constexpr auto& operator+=(Derived& a, Derived b)
+		GEOSIMD_INLINE_OPT friend constexpr auto& operator+=(Derived& a, Derived b)
 		{
 			a.get(magic{}) += b.get();
 			return a;
@@ -26,39 +26,39 @@ namespace geosimd
 
 		template<class T = Derived>
 		requires requires(T a){ {a.get(magic{})}; }
-		GEOSIMD_FULL_INLINE friend constexpr auto& operator-=(Derived& a, Derived b)
+		GEOSIMD_INLINE_OPT friend constexpr auto& operator-=(Derived& a, Derived b)
 		{
 			a.get(magic{}) -= b.get();
 			return a;
 		}
 
-		GEOSIMD_FULL_INLINE constexpr Derived operator-() const
+		GEOSIMD_INLINE_OPT constexpr Derived operator-() const
 		{
 			auto& derived = static_cast<Derived const&>(*this);
 			return Derived{-derived.get()};
 		}
 
-		GEOSIMD_FULL_INLINE constexpr Derived operator+() const
+		GEOSIMD_INLINE_OPT constexpr Derived operator+() const
 		{ return static_cast<Derived const&>(*this); }
 
 		template<class T = Derived>
 		requires requires(T a){ {a.get(magic{})}; }
-		GEOSIMD_FULL_INLINE friend constexpr auto& operator*=(Derived& a, typename T::scalar_type b)
+		GEOSIMD_INLINE_OPT friend constexpr auto& operator*=(Derived& a, typename T::scalar_type b)
 		{
 			a.get(magic{}) *= b;
 			return a;
 		}
 
 		template<class T = Derived>
-		GEOSIMD_FULL_INLINE friend constexpr auto operator*(typename T::scalar_type a, Derived b)
+		GEOSIMD_INLINE_OPT friend constexpr auto operator*(typename T::scalar_type a, Derived b)
 		{ return b *= a; }
 
 		template<class T = Derived>
-		GEOSIMD_FULL_INLINE friend constexpr auto operator*(Derived b, typename T::scalar_type a)
+		GEOSIMD_INLINE_OPT friend constexpr auto operator*(Derived b, typename T::scalar_type a)
 		{ return b *= a; }
 
 		template<class T = Derived>
-		GEOSIMD_FULL_INLINE friend constexpr Derived& operator/=(Derived& a, typename T::scalar_type b)
+		GEOSIMD_INLINE_OPT friend constexpr Derived& operator/=(Derived& a, typename T::scalar_type b)
 		{
 			a.get(magic{}) /= b;
 			return a;
@@ -106,7 +106,7 @@ namespace geosimd
 
 		template<class T = Derived>
 		requires requires(T) { typename Derived::enable_hadamard_product_t; }
-		GEOSIMD_FULL_INLINE friend constexpr Derived& operator*=(Derived& a, Derived b)
+		GEOSIMD_INLINE_OPT friend constexpr Derived& operator*=(Derived& a, Derived b)
 		{
 			a.get(magic{}) *= b.get();
 			return a;
@@ -114,30 +114,30 @@ namespace geosimd
 
 		template<class T = Derived>
 		requires requires(T) { typename T::enable_hadamard_product_t; }
-		GEOSIMD_FULL_INLINE friend constexpr Derived& operator/=(Derived& a, Derived b)
+		GEOSIMD_INLINE_OPT friend constexpr Derived& operator/=(Derived& a, Derived b)
 		{
 			a.get(magic{}) /= b.get();
 			return a;
 		}
 
-		GEOSIMD_FULL_INLINE friend constexpr auto operator*(Derived a, Derived b)
+		GEOSIMD_INLINE_OPT friend constexpr auto operator*(Derived a, Derived b)
 		{ return a *= b; }
 
-		GEOSIMD_FULL_INLINE friend constexpr auto operator/(Derived a, Derived b)
+		GEOSIMD_INLINE_OPT friend constexpr auto operator/(Derived a, Derived b)
 		{ return a /= b; }
 
 		template<class T = Derived>
-		GEOSIMD_FULL_INLINE friend constexpr auto operator/(Derived a, typename T::scalar_type b)
+		GEOSIMD_INLINE_OPT friend constexpr auto operator/(Derived a, typename T::scalar_type b)
 		{ return a /= b; }
 
 		template<class T = Derived>
 		requires requires(T a, T b){ {a +=b }; }
-		GEOSIMD_FULL_INLINE friend constexpr auto operator+(Derived a, Derived b)
+		GEOSIMD_INLINE_OPT friend constexpr auto operator+(Derived a, Derived b)
 		{ return a += b; }
 
 		template<class T = Derived>
 		requires requires(T a, T b){ {a -=b }; }
-		GEOSIMD_FULL_INLINE friend constexpr auto operator-(Derived a, Derived b)
+		GEOSIMD_INLINE_OPT friend constexpr auto operator-(Derived a, Derived b)
 		{ return a -= b; }
 	};
 

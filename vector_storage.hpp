@@ -47,7 +47,7 @@ namespace geosimd
 		using base::base;
 		constexpr emulated_vector() = default;
 
-		GEOSIMD_FULL_INLINE constexpr explicit emulated_vector(base val):base{val}{}
+		GEOSIMD_INLINE_OPT constexpr explicit emulated_vector(base val):base{val}{}
 	};
 
 	template<class T, size_t N, class ... Indices>
