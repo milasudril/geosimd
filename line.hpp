@@ -300,7 +300,7 @@ namespace geosimd
 						};
 
 						return *std::ranges::min_element(pairs, [](auto p1, auto p2){
-							return distance_squared(p1.a, p1.b) < distance_squared(p2.a, p2.b);
+							return p1.get_distance_squared() < p2.get_distance_squared();
 						});
 					}
 				}
