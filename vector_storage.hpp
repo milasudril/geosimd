@@ -64,7 +64,7 @@ namespace geosimd
 		vector_storage<T, N> b,
 		Indices ... vals)
 	{
-		return __builtin_shuffle(a, b, vector_storage<T, N>{vals...});
+		return __builtin_shuffle(a, b, vector_storage<int, N>{vals...});
 	}
 }
 

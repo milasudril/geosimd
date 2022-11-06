@@ -5,11 +5,15 @@
 #include "./default_norm.hpp"
 
 #include <complex>
+#include <type_traits>
 
 namespace geosimd
 {
 	template<class T, class U>
 	constexpr inline auto is_complex_v = std::is_same_v<T, std::complex<U>>;
+
+	template<size_t N>
+	struct dimension_tag:std::integral_constant<size_t, N>{};
 
 	template<class T>
 	concept scalar = (std::is_arithmetic_v<T> && std::is_signed_v<T>)

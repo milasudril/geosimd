@@ -96,14 +96,14 @@ namespace geosimd
 
 		GEOSIMD_INLINE_OPT constexpr rotation_angle() = default;
 
-		GEOSIMD_INLINE_OPT explicit constexpr rotation_angle(uint32_t value) : m_value{value}
+		GEOSIMD_INLINE_OPT constexpr explicit rotation_angle(uint32_t value) : m_value{value}
 		{}
 
-		GEOSIMD_INLINE_OPT explicit constexpr rotation_angle(turns x):
+		GEOSIMD_INLINE_OPT constexpr explicit rotation_angle(turns x):
 			m_value{static_cast<uint32_t>(turn_angle{x}.get())}
 		{}
 
-		GEOSIMD_INLINE_OPT explicit constexpr rotation_angle(rad x):
+		GEOSIMD_INLINE_OPT constexpr explicit rotation_angle(rad x):
 			rotation_angle{static_cast<turns>(x)}
 		{}
 
@@ -191,6 +191,17 @@ namespace geosimd
 			default:
 				return static_cast<float>(std::cos(to_rad(x).value));
 		}
+	}
+
+	struct cos_sin
+	{
+		float cos;
+		float sin;
+	};
+
+	constexpr auto cossin(rotation_angle x)
+	{
+		return cos_sin{cos(x), sin(x)};
 	}
 }
 
