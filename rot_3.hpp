@@ -44,7 +44,7 @@ namespace geosimd
 				col{param.cos, param.sin, 0.0f, 0.0f},
 				col{-param.sin, param.cos, 0.0f, 0.0f},
 				col{0.0f, 0.0f, 1.0f, 0.0f},
-				col{0.0f, 0.0f, 1.0f, 1.0f}
+				col{0.0f, 0.0f, 0.0f, 1.0f}
 			};
 		}
 	}
@@ -79,9 +79,37 @@ namespace geosimd
 
 		constexpr bool operator!=(rot_3 const&) const = default;
 
+		template<size_t N>
+		GEOSIMD_INLINE_OPT constexpr rot_3& push(turn_angle angle, dimension_tag<N>)
+		{
+			m_value.rightmul(rot_3_detail::create_matrix(rotation_angle{0} + angle, dimension_tag<N>{}));
+			return *this;
+		}
+
+		template<size_t N>
+		GEOSIMD_INLINE_OPT constexpr rot_3& pop(turn_angle angle, dimension_tag<N>)
+		{
+			return push(-angle, dimension_tag<N>{});
+		}
+
+		GEOSIMD_INLINE_OPT constexpr rot_3& invert()
+		{
+			m_value.transpose();
+			return *this;
+		}
+
 	private:
 		storage_type m_value;
 	};
+
+	inline auto to_string(rot_3 const& mat)
+	{ return to_string(mat.get()); }
+
+	constexpr auto inverted(rot_3 const& mat)
+	{
+		auto tmp = mat;
+		return tmp.invert();
+	}
 }
 
 #endif

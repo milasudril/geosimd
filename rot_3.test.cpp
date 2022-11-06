@@ -69,3 +69,45 @@ TESTCASE(geosimd_rot3_init_quater_2)
 	auto const z_prime = rot.get() * z;
 	EXPECT_EQ(z_prime, z);
 }
+
+TESTCASE(geosimd_rot3_push_quater)
+{
+	auto const res = geosimd::rot_3{}.push(geosimd::turns{0.25}, geosimd::dimension_tag<2>{}).get()
+		* geosimd::vec_t<float, 4>{1.0f, 0.0f, 0.0f, 0.0f};
+	EXPECT_EQ(res, (geosimd::vec_t<float, 4>{0.0f, 1.0f, 0.0f, 0.0f}))
+}
+
+TESTCASE(geosimd_rot3_pop_quater)
+{
+	auto const res = geosimd::rot_3{}.pop(geosimd::turns{0.25}, geosimd::dimension_tag<2>{}).get()
+		* geosimd::vec_t<float, 4>{1.0f, 0.0f, 0.0f, 0.0f};
+	EXPECT_EQ(res, (geosimd::vec_t<float, 4>{0.0f, -1.0f, 0.0f, 0.0f}))
+}
+
+TESTCASE(geosimd_rot3_push_and_pop)
+{
+	geosimd::rot_3 test;
+
+	auto const init = test;
+	test.push(geosimd::turns{0.25}, geosimd::dimension_tag<0>{});
+	auto const after_first = test;
+	test.push(geosimd::turns{0.25}, geosimd::dimension_tag<1>{});
+	auto const after_second = test;
+	test.push(geosimd::turns{0.25}, geosimd::dimension_tag<2>{});
+
+	EXPECT_EQ(inverted(test).get()*test.get(), geosimd::rot_3{}.get());
+	EXPECT_EQ(test.get() * inverted(test).get(), geosimd::rot_3{}.get());
+	EXPECT_EQ(inverted(geosimd::rot_3{}.push(geosimd::turns{0.25}, geosimd::dimension_tag<0>{})),
+		geosimd::rot_3{}.pop(geosimd::turns{0.25}, geosimd::dimension_tag<0>{}));
+	EXPECT_EQ(geosimd::rot_3{}.pop(geosimd::turns{0.25}, geosimd::dimension_tag<0>{}),
+		geosimd::rot_3{}.push(geosimd::turns{-0.25}, geosimd::dimension_tag<0>{}));
+
+	test.pop(geosimd::turns{0.25}, geosimd::dimension_tag<2>{});
+	EXPECT_EQ(test, after_second);
+
+	test.pop(geosimd::turns{0.25}, geosimd::dimension_tag<1>{});
+	EXPECT_EQ(test, after_first);
+
+	test.pop(geosimd::turns{0.25}, geosimd::dimension_tag<0>{});
+	EXPECT_EQ(test, init);
+}
