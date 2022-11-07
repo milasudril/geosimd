@@ -83,3 +83,13 @@ TESTCASE(geosimd_euclidian_space_direction)
 	auto const dir_str = to_string(dir);
 	EXPECT_EQ(dir_str, "(1.000000, 0.000000, 0.000000)");
 }
+
+TESTCASE(geosimd_euclidian_space_rotate_vector)
+{
+	auto const R = geosimd::rot_3{}.push(geosimd::turns{0.25}, geosimd::dimension_tag<2>{});
+	using vec = geosimd::displacement<float, 3>;
+	vec v{1.0f, 0.0f, 0.0f};
+	v.apply(R);
+	EXPECT_EQ(v, (vec{0.0f, 1.0f, 0.0f}));
+
+}

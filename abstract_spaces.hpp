@@ -96,5 +96,8 @@ namespace geosimd
 
 	template<class V>
 	concept has_homogenous_coordinates = requires(V){ typename V::enable_homogenous_coordinates_t; };
+
+	template<class V>
+	concept has_rotations = requires(V){ typename V::enable_rotations_t; };
 }
 #endif

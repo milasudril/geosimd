@@ -15,6 +15,7 @@ namespace geosimd
 		metric_normed_space_mixin<vec_t<T, N + 1>, hilbert_space_mixin<vec_t<T, N + 1>>>
 	{
 		using enable_homogenous_coordinates_t = void;
+		using enable_rotations_t = void;
 	};
 
 	template<class T, size_t N>

@@ -105,7 +105,7 @@ namespace geosimd
 	inline auto to_string(rot_3 const& mat)
 	{ return to_string(mat.get()); }
 
-	GEOSIMD_INLINE_OPT constexpr auto inverted(rot_3 const& mat)
+	constexpr auto inverted(rot_3 const& mat)
 	{
 		auto tmp = mat;
 		return tmp.invert();
