@@ -18,6 +18,10 @@ namespace geosimd
 		using enable_rotations_t = void;
 	};
 
+	using X = dimension_tag<0>;
+	using Y = dimension_tag<1>;
+	using Z = dimension_tag<2>;
+
 	template<class T, size_t N>
 	using location = basic_point<euclidian_space<T, N>>;
 
