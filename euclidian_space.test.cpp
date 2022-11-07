@@ -91,5 +91,14 @@ TESTCASE(geosimd_euclidian_space_rotate_vector)
 	vec v{1.0f, 0.0f, 0.0f};
 	v.apply(R);
 	EXPECT_EQ(v, (vec{0.0f, 1.0f, 0.0f}));
+}
 
+TESTCASE(geosimd_euclidian_space_rotate_dir)
+{
+	auto const R = geosimd::rot_3{}.push(geosimd::turns{0.25}, geosimd::dimension_tag<2>{});
+	using dir = geosimd::direction<float, 3>;
+	using vec = geosimd::displacement<float, 3>;
+	dir d{vec{1.0f, 0.0f, 0.0f}};
+	d.apply(R);
+	EXPECT_EQ(d, (dir{vec{0.0f, 1.0f, 0.0f}}));
 }

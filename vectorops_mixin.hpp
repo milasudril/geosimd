@@ -64,6 +64,8 @@ namespace geosimd
 			return a;
 		}
 
+		template<class T = Derived>
+		requires requires(T a){ {a.get(magic{})}; }
 		GEOSIMD_FLATTEN friend constexpr bool operator==(Derived a, Derived b)
 		{
 			if constexpr(subscriptable<Derived>)
@@ -81,6 +83,8 @@ namespace geosimd
 			{return a.get() == b.get();}
 		}
 
+		template<class T = Derived>
+		requires requires(T a){ {a.get(magic{})}; }
 		GEOSIMD_INLINE_OPT friend constexpr bool operator!=(Derived a, Derived b)
 		{ return !(a == b); }
 

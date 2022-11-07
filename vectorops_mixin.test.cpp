@@ -156,10 +156,14 @@ namespace geosimd_test
 {
 	struct vectorops_mixin_tester_ordered:geosimd::vectorops_mixin<vectorops_mixin_tester_ordered>
 	{
+		using vectorops_magic = geosimd::vectorops_mixin<vectorops_mixin_tester_ordered>::magic;
+
 		using scalar_type = int;
 		int value;
 
 		constexpr int get() const { return value; }
+
+		auto& get(vectorops_magic) { return value; }
 
 		constexpr vectorops_mixin_tester_ordered() = default;
 

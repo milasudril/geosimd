@@ -55,6 +55,21 @@ namespace geosimd
 			return v.m_value/c;
 		}
 
+		template<class T = vector_type>
+		requires(std::is_same_v<scalar_type, float>
+			&& has_homogenous_coordinates<V>
+			&& has_rotations<V>
+			&& T::size() == 3)
+		GEOSIMD_INLINE_OPT constexpr auto& apply(rot_3 const& mat)
+		{
+			m_value.apply(mat);;
+			return *this;
+		}
+
+		constexpr bool operator==(unit_vector const&) const = default;
+
+		constexpr bool operator!=(unit_vector const&) const = default;
+
 	private:
 		vector_type m_value;
 	};
