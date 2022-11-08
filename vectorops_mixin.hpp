@@ -3,6 +3,7 @@
 
 #include "./inline.hpp"
 #include "./container_props.hpp"
+#include "./abstract_spaces.hpp"
 
 #include <cstddef>
 #include <iterator>
@@ -68,7 +69,7 @@ namespace geosimd
 		GEOSIMD_FLATTEN friend constexpr bool operator==(Derived a, Derived b)
 		{
 			if constexpr(std::equality_comparable<decltype(a.get())>
-				&& ! (requires(typename Derived::scalar_type a){{a.real()};}))
+				&& !complex<typename Derived::scalar_type>)
 			{
 				return a.get() == b.get();
 			}

@@ -9,7 +9,7 @@
 
 namespace geosimd
 {
-	template<class T, class U = typename T::value_type>
+	template<class T>
 	concept complex = requires(T a)
 	{
 		{a.real()} -> std::same_as<typename T::value_type>;
