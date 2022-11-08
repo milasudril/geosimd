@@ -48,6 +48,18 @@ namespace geosimd
 		constexpr emulated_vector() = default;
 
 		GEOSIMD_INLINE_OPT constexpr explicit emulated_vector(base val):base{val}{}
+
+		template<class U>
+		friend constexpr bool operator==(emulated_vector<std::complex<T>, N> const&, U const&) = delete;
+
+		template<class U>
+		friend constexpr bool operator==(U const&, emulated_vector<std::complex<T>, N>&) = delete;
+
+		template<class U>
+		friend constexpr bool operator!=(emulated_vector<std::complex<T>, N> const&, U const&) = delete;
+
+		template<class U>
+		friend constexpr bool operator!=(U const&, emulated_vector<std::complex<T>, N>&) = delete;
 	};
 
 	template<class T, size_t N, class ... Indices>

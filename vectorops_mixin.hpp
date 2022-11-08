@@ -68,8 +68,7 @@ namespace geosimd
 		template<class T = Derived>
 		GEOSIMD_FLATTEN friend constexpr bool operator==(Derived a, Derived b)
 		{
-			if constexpr(std::equality_comparable<decltype(a.get())>
-				&& !complex<typename Derived::scalar_type>)
+			if constexpr(std::equality_comparable<decltype(a.get())>)
 			{
 				return a.get() == b.get();
 			}
