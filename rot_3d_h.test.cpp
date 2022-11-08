@@ -1,21 +1,21 @@
-//@	{"target":{"name":"rot_3.test"}}
+//@	{"target":{"name":"rot_3d_h.test"}}
 
-#include "./rot_3.hpp"
+#include "./rot_3d_h.hpp"
 #include "./abstract_spaces.hpp"
 
 #include "testfwk/testfwk.hpp"
 
-static_assert(!geosimd::vector<geosimd::rot_3>);
+static_assert(!geosimd::vector<geosimd::rot_3d_h>);
 
 TESTCASE(geosimd_rot3_default_value)
 {
-	geosimd::rot_3 rot;
+	geosimd::rot_3d_h rot;
 	EXPECT_EQ(rot.get(), one(geosimd::empty<geosimd::mat_4x4<float>>{}));
 }
 
 TESTCASE(geosimd_rot3_init_quater_0)
 {
-	geosimd::rot_3 rot{geosimd::rotation_angle{geosimd::turns{0.25}}, geosimd::dimension_tag<0>{}};
+	geosimd::rot_3d_h rot{geosimd::rotation_angle{geosimd::turns{0.25}}, geosimd::dimension_tag<0>{}};
 
 	geosimd::vec_t<float, 4> const x{1.0f, 0.0f, 0.0f, 0.0f};
 	geosimd::vec_t<float, 4> const y{0.0f, 1.0f, 0.0f, 0.0f};
@@ -34,7 +34,7 @@ TESTCASE(geosimd_rot3_init_quater_0)
 
 TESTCASE(geosimd_rot3_init_quater_1)
 {
-	geosimd::rot_3 rot{geosimd::rotation_angle{geosimd::turns{0.25}}, geosimd::dimension_tag<1>{}};
+	geosimd::rot_3d_h rot{geosimd::rotation_angle{geosimd::turns{0.25}}, geosimd::dimension_tag<1>{}};
 
 	geosimd::vec_t<float, 4> const x{1.0f, 0.0f, 0.0f, 0.0f};
 	geosimd::vec_t<float, 4> const y{0.0f, 1.0f, 0.0f, 0.0f};
@@ -53,7 +53,7 @@ TESTCASE(geosimd_rot3_init_quater_1)
 
 TESTCASE(geosimd_rot3_init_quater_2)
 {
-	geosimd::rot_3 rot{geosimd::rotation_angle{geosimd::turns{0.25}}, geosimd::dimension_tag<2>{}};
+	geosimd::rot_3d_h rot{geosimd::rotation_angle{geosimd::turns{0.25}}, geosimd::dimension_tag<2>{}};
 
 	geosimd::vec_t<float, 4> const x{1.0f, 0.0f, 0.0f, 0.0f};
 	geosimd::vec_t<float, 4> const y{0.0f, 1.0f, 0.0f, 0.0f};
@@ -72,21 +72,21 @@ TESTCASE(geosimd_rot3_init_quater_2)
 
 TESTCASE(geosimd_rot3_push_quater)
 {
-	auto const res = geosimd::rot_3{}.push(geosimd::turns{0.25}, geosimd::dimension_tag<2>{}).get()
+	auto const res = geosimd::rot_3d_h{}.push(geosimd::turns{0.25}, geosimd::dimension_tag<2>{}).get()
 		* geosimd::vec_t<float, 4>{1.0f, 0.0f, 0.0f, 0.0f};
 	EXPECT_EQ(res, (geosimd::vec_t<float, 4>{0.0f, 1.0f, 0.0f, 0.0f}))
 }
 
 TESTCASE(geosimd_rot3_pop_quater)
 {
-	auto const res = geosimd::rot_3{}.pop(geosimd::turns{0.25}, geosimd::dimension_tag<2>{}).get()
+	auto const res = geosimd::rot_3d_h{}.pop(geosimd::turns{0.25}, geosimd::dimension_tag<2>{}).get()
 		* geosimd::vec_t<float, 4>{1.0f, 0.0f, 0.0f, 0.0f};
 	EXPECT_EQ(res, (geosimd::vec_t<float, 4>{0.0f, -1.0f, 0.0f, 0.0f}))
 }
 
 TESTCASE(geosimd_rot3_push_and_pop)
 {
-	geosimd::rot_3 test;
+	geosimd::rot_3d_h test;
 
 	auto const init = test;
 	test.push(geosimd::turns{0.25}, geosimd::dimension_tag<0>{});
@@ -95,12 +95,12 @@ TESTCASE(geosimd_rot3_push_and_pop)
 	auto const after_second = test;
 	test.push(geosimd::turns{0.25}, geosimd::dimension_tag<2>{});
 
-	EXPECT_EQ(inverted(test).get()*test.get(), geosimd::rot_3{}.get());
-	EXPECT_EQ(test.get() * inverted(test).get(), geosimd::rot_3{}.get());
-	EXPECT_EQ(inverted(geosimd::rot_3{}.push(geosimd::turns{0.25}, geosimd::dimension_tag<0>{})),
-		geosimd::rot_3{}.pop(geosimd::turns{0.25}, geosimd::dimension_tag<0>{}));
-	EXPECT_EQ(geosimd::rot_3{}.pop(geosimd::turns{0.25}, geosimd::dimension_tag<0>{}),
-		geosimd::rot_3{}.push(geosimd::turns{-0.25}, geosimd::dimension_tag<0>{}));
+	EXPECT_EQ(inverted(test).get()*test.get(), geosimd::rot_3d_h{}.get());
+	EXPECT_EQ(test.get() * inverted(test).get(), geosimd::rot_3d_h{}.get());
+	EXPECT_EQ(inverted(geosimd::rot_3d_h{}.push(geosimd::turns{0.25}, geosimd::dimension_tag<0>{})),
+		geosimd::rot_3d_h{}.pop(geosimd::turns{0.25}, geosimd::dimension_tag<0>{}));
+	EXPECT_EQ(geosimd::rot_3d_h{}.pop(geosimd::turns{0.25}, geosimd::dimension_tag<0>{}),
+		geosimd::rot_3d_h{}.push(geosimd::turns{-0.25}, geosimd::dimension_tag<0>{}));
 
 	test.pop(geosimd::turns{0.25}, geosimd::dimension_tag<2>{});
 	EXPECT_EQ(test, after_second);

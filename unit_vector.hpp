@@ -60,7 +60,7 @@ namespace geosimd
 			&& has_homogenous_coordinates<V>
 			&& has_rotations<V>
 			&& T::size() == 3)
-		GEOSIMD_INLINE_OPT constexpr auto& apply(rot_3 const& mat)
+		GEOSIMD_INLINE_OPT constexpr auto& apply(rot_3d_h const& mat)
 		{
 			m_value.apply(mat);;
 			return *this;
