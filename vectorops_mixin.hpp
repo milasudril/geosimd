@@ -65,9 +65,14 @@ namespace geosimd
 		}
 
 		template<class T = Derived>
-		requires requires(T a){ {a.get(magic{})}; }
 		GEOSIMD_FLATTEN friend constexpr bool operator==(Derived a, Derived b)
 		{
+			if constexpr(std::equality_comparable<decltype(a.get())>
+				&& ! (requires(typename Derived::scalar_type a){{a.real()};}))
+			{
+				return a.get() == b.get();
+			}
+			else
 			if constexpr(subscriptable<Derived>)
 			{
 				using scalar_type = typename Derived::scalar_type;
@@ -79,8 +84,6 @@ namespace geosimd
 				}
 				return true;
 			}
-			else
-			{return a.get() == b.get();}
 		}
 
 		template<class T = Derived>

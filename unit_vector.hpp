@@ -66,10 +66,6 @@ namespace geosimd
 			return *this;
 		}
 
-		constexpr bool operator==(unit_vector const&) const = default;
-
-		constexpr bool operator!=(unit_vector const&) const = default;
-
 	private:
 		vector_type m_value;
 	};
