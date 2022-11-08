@@ -9,21 +9,18 @@
 
 namespace geosimd
 {
-	template<class T, class U>
-	constexpr inline auto is_complex_v = std::is_same_v<T, std::complex<U>>;
+	template<class T, class U = typename T::value_type>
+	concept complex = requires(T a)
+	{
+		{a.real()} -> std::same_as<typename T::value_type>;
+		{a.imag()}-> std::same_as<typename T::value_type>;
+	};
 
 	template<size_t N>
 	struct dimension_tag:std::integral_constant<size_t, N>{};
 
 	template<class T>
-	concept scalar = (std::is_arithmetic_v<T> && std::is_signed_v<T>)
-		|| is_complex_v<T, char>
-		|| is_complex_v<T, short>
-		|| is_complex_v<T, int>
-		|| is_complex_v<T, long>
-		|| is_complex_v<T, long long>
-		|| is_complex_v<T, float>
-		|| is_complex_v<T, double>;
+	concept scalar = (std::is_arithmetic_v<T> && std::is_signed_v<T>) || complex<T>;
 
 	template<class T, class ScalarType = typename T::scalar_type>
 	concept vector = std::equality_comparable<T> && scalar<ScalarType> && requires(T a, T b, ScalarType c)
