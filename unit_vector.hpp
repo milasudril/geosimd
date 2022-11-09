@@ -56,11 +56,10 @@ namespace geosimd
 		}
 
 		template<class T = vector_type>
-		requires(std::is_same_v<scalar_type, float>
-			&& has_homogenous_coordinates<V>
+		requires(has_homogenous_coordinates<V>
 			&& has_rotations<V>
 			&& T::size() == 3)
-		GEOSIMD_INLINE_OPT constexpr auto& apply(rot_3d_h const& mat)
+		GEOSIMD_INLINE_OPT constexpr auto& apply(rot_3d_h<scalar_type> const& mat)
 		{
 			m_value.apply(mat);;
 			return *this;

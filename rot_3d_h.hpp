@@ -49,7 +49,11 @@ namespace geosimd
 		}
 	}
 
-	class rot_3d_h
+	template<scalar T>
+	class rot_3d_h;
+
+	template<>
+	class rot_3d_h<float>
 	{
 	public:
 		using scalar_type = float;
@@ -102,10 +106,12 @@ namespace geosimd
 		storage_type m_value;
 	};
 
-	inline auto to_string(rot_3d_h const& mat)
+	template<scalar T>
+	inline auto to_string(rot_3d_h<T> const& mat)
 	{ return to_string(mat.get()); }
 
-	GEOSIMD_INLINE_OPT constexpr auto inverted(rot_3d_h const& mat)
+	template<scalar T>
+	GEOSIMD_INLINE_OPT constexpr auto inverted(rot_3d_h<T> const& mat)
 	{
 		auto tmp = mat;
 		return tmp.invert();
