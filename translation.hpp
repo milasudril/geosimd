@@ -41,7 +41,7 @@ namespace geosimd
 
 		GEOSIMD_INLINE_OPT constexpr translation& push(basic_vector<V> offset)
 		{
-			m_value.col(3) += offset;
+			m_value.col(3) += offset.get();
 			return *this;
 		}
 

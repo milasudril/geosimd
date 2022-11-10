@@ -23,3 +23,8 @@ TESTCASE(geosimd_translation_default_value)
 	geosimd::translation<my_affine_space> transl;
 	EXPECT_EQ(transl.get(), one(geosimd::empty<geosimd::mat_4x4<int>>{}));
 }
+
+TESTCASE(geosimd_translation_create)
+{
+	geosimd::translation<my_affine_space> transl{geosimd::basic_vector<my_affine_space>{1, 2, 3}};
+}
