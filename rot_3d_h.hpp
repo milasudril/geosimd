@@ -70,12 +70,6 @@ namespace geosimd
 		GEOSIMD_INLINE_OPT constexpr auto column_major_elements() const
 		{ return m_value.column_major_elements(); }
 
-		GEOSIMD_INLINE_OPT constexpr auto const& columns() const
-		{ return m_value.columns(); }
-
-		GEOSIMD_INLINE_OPT constexpr column_type col(size_t index) const
-		{ return m_value.col(index); }
-
 		GEOSIMD_INLINE_OPT constexpr auto const& get() const
 		{ return m_value; }
 
