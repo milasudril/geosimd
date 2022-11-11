@@ -52,7 +52,8 @@ namespace geosimd
 
 		GEOSIMD_INLINE_OPT constexpr translation& invert()
 		{
-			m_value.col(3) = vec_t<scalar_type, 4>{-1, -1, -1, 1} * m_value.col(3);
+			auto const val = one(empty<scalar_type>{});
+			m_value.col(3) = vec_t<scalar_type, 4>{-val, -val, -val, val} * m_value.col(3);
 			return *this;
 		}
 
