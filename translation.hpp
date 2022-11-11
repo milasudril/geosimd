@@ -29,6 +29,13 @@ namespace geosimd
 		GEOSIMD_INLINE_OPT constexpr auto const& get() const
 		{ return m_value; }
 
+		GEOSIMD_INLINE_OPT constexpr auto offset() const
+		{
+			auto const z = zero(empty<scalar_type>{});
+			auto const o = one(empty<scalar_type>{});
+			return m_value.col(3) - vec_t<scalar_type, 4>{z, z, z, o};
+		}
+
 		constexpr bool operator==(translation const&) const = default;
 
 		constexpr bool operator!=(translation const&) const = default;

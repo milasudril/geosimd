@@ -3,6 +3,7 @@
 
 #include "./vectorops_mixin.hpp"
 #include "./basic_vector.hpp"
+#include "./translation.hpp"
 
 #include <utility>
 #include <string>
@@ -84,6 +85,12 @@ namespace geosimd
 		GEOSIMD_INLINE_OPT constexpr basic_point& operator-=(vector_type other)
 		{
 			m_value -= other.get();
+			return *this;
+		}
+
+		GEOSIMD_INLINE_OPT constexpr auto& apply(translation<V> const& t)
+		{
+			m_value += t.offset();
 			return *this;
 		}
 

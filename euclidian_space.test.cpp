@@ -102,3 +102,11 @@ TESTCASE(geosimd_euclidian_space_rotate_dir)
 	d.apply(R);
 	EXPECT_EQ(d, (dir{vec{0.0f, 1.0f, 0.0f}}));
 }
+
+TESTCASE(geosimd_euclidian_space_translate_point)
+{
+	geosimd::translation const T{geosimd::displacement<float, 3>{1.0f, 2.0f, 3.0f}};
+	geosimd::location<float, 3> loc{};
+	loc.apply(T);
+	EXPECT_EQ(loc, (geosimd::location<float, 3>{1.0f, 2.0f, 3.0f}));
+}
