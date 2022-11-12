@@ -1,5 +1,5 @@
-#ifndef GEOSIMD_ROT_3D_H_HPP
-#define GEOSIMD_ROT_3D_H_HPP
+#ifndef GEOSIMD_ROTATION_HPP
+#define GEOSIMD_ROTATION_HPP
 
 #include "./angle.hpp"
 #include "./mat_4x4.hpp"
@@ -7,7 +7,7 @@
 
 namespace geosimd
 {
-	namespace rot_3d_h_detail
+	namespace rotation_detail
 	{
 		constexpr auto create_matrix(rotation_angle theta, dimension_tag<0>)
 		{
@@ -50,21 +50,21 @@ namespace geosimd
 	}
 
 	template<scalar T>
-	class rot_3d_h;
+	class rotation;
 
 	template<>
-	class rot_3d_h<float>
+	class rotation<float>
 	{
 	public:
 		using scalar_type = float;
 		using storage_type = mat_4x4<float>;
 		using column_type = storage_type::column_type;
 
-		GEOSIMD_INLINE_OPT constexpr rot_3d_h():m_value{one(empty<storage_type>{})}{}
+		GEOSIMD_INLINE_OPT constexpr rotation():m_value{one(empty<storage_type>{})}{}
 
 		template<size_t N>
-		GEOSIMD_INLINE_OPT constexpr rot_3d_h(rotation_angle theta, dimension_tag<N>):
-			m_value{rot_3d_h_detail::create_matrix(theta, dimension_tag<N>{})}
+		GEOSIMD_INLINE_OPT constexpr rotation(rotation_angle theta, dimension_tag<N>):
+			m_value{rotation_detail::create_matrix(theta, dimension_tag<N>{})}
 		{}
 
 		GEOSIMD_INLINE_OPT constexpr auto column_major_elements() const
@@ -73,24 +73,24 @@ namespace geosimd
 		GEOSIMD_INLINE_OPT constexpr auto const& get() const
 		{ return m_value; }
 
-		constexpr bool operator==(rot_3d_h const&) const = default;
+		constexpr bool operator==(rotation const&) const = default;
 
-		constexpr bool operator!=(rot_3d_h const&) const = default;
+		constexpr bool operator!=(rotation const&) const = default;
 
 		template<size_t N>
-		GEOSIMD_INLINE_OPT constexpr rot_3d_h& push(turn_angle angle, dimension_tag<N>)
+		GEOSIMD_INLINE_OPT constexpr rotation& push(turn_angle angle, dimension_tag<N>)
 		{
-			m_value.rightmul(rot_3d_h_detail::create_matrix(rotation_angle{0} + angle, dimension_tag<N>{}));
+			m_value.rightmul(rotation_detail::create_matrix(rotation_angle{0} + angle, dimension_tag<N>{}));
 			return *this;
 		}
 
 		template<size_t N>
-		GEOSIMD_INLINE_OPT constexpr rot_3d_h& pop(turn_angle angle, dimension_tag<N>)
+		GEOSIMD_INLINE_OPT constexpr rotation& pop(turn_angle angle, dimension_tag<N>)
 		{
 			return push(-angle, dimension_tag<N>{});
 		}
 
-		GEOSIMD_INLINE_OPT constexpr rot_3d_h& invert()
+		GEOSIMD_INLINE_OPT constexpr rotation& invert()
 		{
 			m_value.transpose();
 			return *this;
@@ -101,11 +101,11 @@ namespace geosimd
 	};
 
 	template<scalar T>
-	inline auto to_string(rot_3d_h<T> const& mat)
+	inline auto to_string(rotation<T> const& mat)
 	{ return to_string(mat.get()); }
 
 	template<scalar T>
-	GEOSIMD_INLINE_OPT constexpr auto inverted(rot_3d_h<T> const& mat)
+	GEOSIMD_INLINE_OPT constexpr auto inverted(rotation<T> const& mat)
 	{
 		auto tmp = mat;
 		return tmp.invert();

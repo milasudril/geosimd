@@ -59,7 +59,7 @@ namespace geosimd
 		requires(has_homogenous_coordinates<V>
 			&& has_rotations<V>
 			&& T::size() == 3)
-		GEOSIMD_INLINE_OPT constexpr auto& apply(rot_3d_h<scalar_type> const& mat)
+		GEOSIMD_INLINE_OPT constexpr auto& apply(rotation<scalar_type> const& mat)
 		{
 			m_value.apply(mat);;
 			return *this;

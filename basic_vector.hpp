@@ -5,7 +5,7 @@
 #include "./vectorops_mixin.hpp"
 #include "./hilbert_space.hpp"
 #include "./container_props.hpp"
-#include "./rot_3d_h.hpp"
+#include "./rotation.hpp"
 
 #include <utility>
 
@@ -77,7 +77,7 @@ namespace geosimd
 		requires(has_homogenous_coordinates<V>
 			&& has_rotations<V>
 			&& T::size() == 3)
-		GEOSIMD_INLINE_OPT constexpr auto& apply(rot_3d_h<scalar_type> const& mat)
+		GEOSIMD_INLINE_OPT constexpr auto& apply(rotation<scalar_type> const& mat)
 		{
 			m_value = mat.get() * m_value;
 			return *this;
