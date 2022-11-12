@@ -49,14 +49,13 @@ namespace geosimd
 		}
 	}
 
-	template<scalar T>
-	class rotation;
-
-	template<>
-	class rotation<float>
+	template<vector_space V>
+	requires std::is_same_v<typename V::scalar_type, float>
+		&& (has_homogenous_coordinates<V> && V::vector_type::size() == 4)
+	class rotation
 	{
 	public:
-		using scalar_type = float;
+		using scalar_type = typename V::scalar_type;
 		using storage_type = mat_4x4<float>;
 		using column_type = storage_type::column_type;
 
@@ -100,12 +99,12 @@ namespace geosimd
 		storage_type m_value;
 	};
 
-	template<scalar T>
-	inline auto to_string(rotation<T> const& mat)
+	template<vector_space V>
+	inline auto to_string(rotation<V> const& mat)
 	{ return to_string(mat.get()); }
 
-	template<scalar T>
-	GEOSIMD_INLINE_OPT constexpr auto inverted(rotation<T> const& mat)
+	template<vector_space V>
+	GEOSIMD_INLINE_OPT constexpr auto inverted(rotation<V> const& mat)
 	{
 		auto tmp = mat;
 		return tmp.invert();

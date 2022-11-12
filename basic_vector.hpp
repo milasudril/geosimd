@@ -73,11 +73,9 @@ namespace geosimd
 		GEOSIMD_INLINE_OPT constexpr auto& get(vectorops_magic)
 		{ return m_value; }
 
-		template<class T = basic_vector<V>>
-		requires(has_homogenous_coordinates<V>
-			&& has_rotations<V>
-			&& T::size() == 3)
-		GEOSIMD_INLINE_OPT constexpr auto& apply(rotation<scalar_type> const& mat)
+		template<class T = V>
+		requires(std::is_same_v<T, V> && has_rotations<T>)
+		GEOSIMD_INLINE_OPT constexpr auto& apply(rotation<T> const& mat)
 		{
 			m_value = mat.get() * m_value;
 			return *this;

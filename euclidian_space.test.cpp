@@ -86,7 +86,8 @@ TESTCASE(geosimd_euclidian_space_direction)
 
 TESTCASE(geosimd_euclidian_space_rotate_vector)
 {
-	auto const R = geosimd::rotation<float>{}.push(geosimd::turns{0.25}, geosimd::Z{});
+	auto const R = geosimd::rotation<geosimd::euclidian_space<float, 3>>{}
+		.push(geosimd::turns{0.25}, geosimd::Z{});
 	using vec = geosimd::displacement<float, 3>;
 	vec v{1.0f, 0.0f, 0.0f};
 	v.apply(R);
@@ -95,7 +96,8 @@ TESTCASE(geosimd_euclidian_space_rotate_vector)
 
 TESTCASE(geosimd_euclidian_space_rotate_dir)
 {
-	auto const R = geosimd::rotation<float>{}.push(geosimd::turns{0.25}, geosimd::Z{});
+	auto const R = geosimd::rotation<geosimd::euclidian_space<float, 3>>{}
+		.push(geosimd::turns{0.25}, geosimd::Z{});
 	using dir = geosimd::direction<float, 3>;
 	using vec = geosimd::displacement<float, 3>;
 	dir d{vec{1.0f, 0.0f, 0.0f}};
