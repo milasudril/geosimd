@@ -51,7 +51,7 @@ namespace geosimd
 
 	template<vector_space V>
 	requires std::is_same_v<typename V::scalar_type, float>
-		&& (has_homogenous_coordinates<V> && V::vector_type::size() == 4)
+		&& (has_homogenous_coordinates<V> && V::vector_type::size() == 4 && has_rotations<V>)
 	class rotation
 	{
 	public:

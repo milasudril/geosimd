@@ -12,6 +12,7 @@ namespace
 		using vector_type = geosimd::vec_t<float, 4>;
 		using scalar_type = float;
 		using enable_homogenous_coordinates_t = void;
+		using enable_rotations_t = void;
 	};
 }
 
