@@ -88,7 +88,9 @@ namespace geosimd
 			return *this;
 		}
 
-		GEOSIMD_INLINE_OPT constexpr auto& apply(translation<V> const& t)
+		template<class T = V>
+		requires(std::is_same_v<T, V>)
+		GEOSIMD_INLINE_OPT constexpr auto& apply(translation<T> const& t)
 		{
 			m_value += t.offset();
 			return *this;
