@@ -26,8 +26,5 @@ TESTCASE(geosimd_rotloc_inverser)
 		}
 	};
 
-	printf("    T: %s\n", to_string(transform).c_str());
-	printf("T inv: %s", to_string(inverted(transform)).c_str());
-
 	EXPECT_EQ(inverted(transform).get()*transform.get(), one(geosimd::empty<geosimd::mat_4x4<float>>{}));
 }

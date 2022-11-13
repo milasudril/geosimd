@@ -148,6 +148,20 @@ namespace geosimd
 			return *this;
 		}
 
+		GEOSIMD_FLATTEN constexpr mat_4x4& self_transposed_rightmul(mat_4x4 const& right)
+		{
+			auto temp = *this;
+			for(auto k = 0; k < 4; ++k)
+			{
+				using mat_4x4_detail::multi_inner_prod_raw;
+				m_cols[k] = multi_inner_prod_raw<T>({temp.m_cols[0], right.m_cols[k]},
+					{temp.m_cols[1], right.m_cols[k]},
+					{temp.m_cols[2], right.m_cols[k]},
+					{temp.m_cols[3], right.m_cols[k]});
+			}
+			return *this;
+		}
+
 		GEOSIMD_FLATTEN constexpr mat_4x4& operator*=(scalar_type c)
 		{
 			for(int k = 0; k < 4; ++k)

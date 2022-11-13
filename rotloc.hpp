@@ -50,11 +50,10 @@ namespace geosimd
 
 			GEOSIMD_INLINE_OPT constexpr rotloc& invert()
 			{
-				auto const offset = -translation_part();
-				m_value.col(3) += offset;
-
-				// TODO: Is it possible to simplify this expression
-				m_value.transpose().rightmul(translation{basic_vector<V>{offset[0], offset[1], offset[2]}}.get());
+				auto const offs = -translation_part();
+				using vec = basic_vector<V>;
+				m_value.col(3) += offs;
+				m_value.self_transposed_rightmul(translation{vec{offs[0], offs[1], offs[2]}}.get());
 				return *this;
 			}
 
