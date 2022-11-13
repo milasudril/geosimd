@@ -4,6 +4,8 @@
 #include "./vectorops_mixin.hpp"
 #include "./basic_vector.hpp"
 #include "./translation.hpp"
+#include "./rotation.hpp"
+#include "./rotloc.hpp"
 
 #include <utility>
 #include <string>
@@ -95,6 +97,25 @@ namespace geosimd
 			m_value += t.offset();
 			return *this;
 		}
+
+		template<class T = V>
+		requires(std::is_same_v<T, V>)
+		GEOSIMD_INLINE_OPT constexpr auto& apply(rotloc<T> const& t, basic_point origin)
+		{
+			m_value = t.get()*(m_value - origin.get()) + origin.get();
+			return *this;
+		}
+
+		template<class T = V>
+		requires(std::is_same_v<T, V>)
+		GEOSIMD_INLINE_OPT constexpr auto& apply(rotation<T> const& t, basic_point origin)
+		{
+			// to preserve "pointness" after subtraction
+			auto const offset = origin - make_origin();
+			m_value = t.get()*(m_value - offset) + offset;
+			return *this;
+		}
+
 
 	private:
 		storage_type m_value;
