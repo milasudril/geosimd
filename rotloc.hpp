@@ -34,13 +34,20 @@ namespace geosimd
 
 			constexpr bool operator!=(rotloc const&) const = default;
 
+			GEOSIMD_INLINE_OPT constexpr auto translation_part() const
+			{
+				auto const z = zero(geosimd::empty<scalar_type>{});
+				auto const o = one(geosimd::empty<scalar_type>{});
+				return m_value.col(3) - vec_t<scalar_type, 4>{z, z, z, o};
+			}
+
 			GEOSIMD_INLINE_OPT constexpr rotloc& invert()
 			{
-				auto const offset = basic_vector<V>{m_value.col(3)[0], m_value.col(3)[1], m_value.col(3)[2]};
-				translation const T{-offset};
+				auto const offset = -translation_part();
+				m_value.col(3) += offset;
 
 				// TODO: Is it possible to simplify this expression
-				m_value.leftmul(T.get()).transpose().rightmul(T.get());
+				m_value.transpose().rightmul(translation{basic_vector<V>{offset[0], offset[1], offset[2]}}.get());
 				return *this;
 			}
 
