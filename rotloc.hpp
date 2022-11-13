@@ -41,6 +41,13 @@ namespace geosimd
 				return m_value.col(3) - vec_t<scalar_type, 4>{z, z, z, o};
 			}
 
+			GEOSIMD_INLINE_OPT constexpr auto rotation_part() const
+			{
+				auto ret = m_value;
+				ret.col(3) -= translation_part();
+				return ret;
+			}
+
 			GEOSIMD_INLINE_OPT constexpr rotloc& invert()
 			{
 				auto const offset = -translation_part();
