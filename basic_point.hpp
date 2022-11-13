@@ -165,7 +165,7 @@ namespace geosimd
 	}
 
 	template<affine_space V>
-	GEOSIMD_INLINE_OPT constexpr auto get_radius_vector(basic_point<V> a)
+	GEOSIMD_INLINE_OPT constexpr auto radius_vector(basic_point<V> a)
 	{
 		return a - origin<V>();
 	}
@@ -173,13 +173,13 @@ namespace geosimd
 	template<affine_space V>
 	GEOSIMD_INLINE_OPT constexpr auto midpoint(basic_point<V> a, basic_point<V> b)
 	{
-		return origin<V>() + mean(get_radius_vector(a), get_radius_vector(b));
+		return origin<V>() + mean(radius_vector(a), radius_vector(b));
 	}
 
 	template<affine_space V>
 	GEOSIMD_INLINE_OPT constexpr auto lerp(basic_point<V> a, basic_point<V> b, typename V::scalar_type t)
 	{
-		return origin<V>() + lerp(get_radius_vector(a), get_radius_vector(b), t);
+		return origin<V>() + lerp(radius_vector(a), radius_vector(b), t);
 	}
 
 	template<affine_space V>
@@ -200,14 +200,14 @@ namespace geosimd
 		basic_point<V> a;
 		basic_point<V> b;
 
-		GEOSIMD_INLINE_OPT constexpr auto get_distance() const
+		GEOSIMD_INLINE_OPT constexpr auto distance() const
 		{
-			return distance(a, b);
+			return geosimd::distance(a, b);
 		}
 
-		GEOSIMD_INLINE_OPT constexpr auto get_distance_squared() const
+		GEOSIMD_INLINE_OPT constexpr auto distance_squared() const
 		{
-			return distance_squared(a, b);
+			return geosimd::distance_squared(a, b);
 		}
 	};
 }

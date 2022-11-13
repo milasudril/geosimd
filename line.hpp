@@ -58,7 +58,7 @@ namespace geosimd
 	}
 
 	template<hilbert_space V>
-	constexpr auto get_closest_points(line<V> const& line, basic_point<V> loc)
+	constexpr auto closest_points(line<V> const& line, basic_point<V> loc)
 	{
 		auto const proj = project(line, loc);
 		return point_pair{point_at(line, proj), loc};
@@ -96,7 +96,7 @@ namespace geosimd
 	}
 
 	template<hilbert_space V>
-	constexpr auto get_closest_points(line<V> const& a, line<V> const& b)
+	constexpr auto closest_points(line<V> const& a, line<V> const& b)
 	{
 		auto const intersect = intersection(a, b);
 		auto const loc_a = point_at(a, intersect.a);
@@ -130,7 +130,7 @@ namespace geosimd
 	}
 
 	template<hilbert_space V>
-	constexpr auto get_closest_points(line<V> const& a, ray<V> const b)
+	constexpr auto closest_points(line<V> const& a, ray<V> const b)
 	{
 		auto const intersect = intersection(a, extension(b));
 		auto const loc_b = point_at(b, ray<V>::clamp(intersect.b));
@@ -139,7 +139,7 @@ namespace geosimd
 	}
 
 	template<hilbert_space V>
-	constexpr auto get_closest_points(ray<V> const& a, ray<V> const& b)
+	constexpr auto closest_points(ray<V> const& a, ray<V> const& b)
 	{
 		auto const intersect = intersection(extension(a), extension(b));
 		if(ray<V>::valid(intersect.a))
@@ -239,7 +239,7 @@ namespace geosimd
 	}
 
 	template<hilbert_space V>
-	constexpr auto get_closest_points(line_segment<V> const& a, line_segment<V> const& b)
+	constexpr auto closest_points(line_segment<V> const& a, line_segment<V> const& b)
 	{
 		auto const intersect = intersection(extension(a), extension(b));
 		if(line_segment<V>::valid(intersect.a)) [[unlikely]]
@@ -300,7 +300,7 @@ namespace geosimd
 						};
 
 						return *std::ranges::min_element(pairs, [](auto p1, auto p2){
-							return p1.get_distance_squared() < p2.get_distance_squared();
+							return p1.distance_squared() < p2.distance_squared();
 						});
 					}
 				}
