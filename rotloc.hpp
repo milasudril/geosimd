@@ -24,6 +24,10 @@ namespace geosimd
 				m_value{T.get() * R.get()}
 			{}
 
+			GEOSIMD_INLINE_OPT constexpr rotloc(rotation<V> const& R, translation<V> const& T):
+				m_value{R.get() * T.get()}
+			{}
+
 			GEOSIMD_INLINE_OPT constexpr auto column_major_elements() const
 			{ return m_value.column_major_elements(); }
 

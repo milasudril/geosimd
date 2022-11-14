@@ -20,15 +20,30 @@ namespace
 TESTCASE(geosimd_rotloc_inverse)
 {
 	geosimd::basic_vector<my_vector_space> const offset{1.0f, 2.0f, 3.0f};
-	geosimd::translation const transl{offset};
-	geosimd::rotloc const transform{
-		transl,
- 		geosimd::rotation<my_vector_space>{geosimd::rotation_angle{geosimd::turns{0.25f}},
-			geosimd::dimension_tag<2>{}
-		}
-	};
-	EXPECT_EQ(inverted(transform).get()*transform.get(), one(geosimd::empty<geosimd::mat_4x4<float>>{}));
-	EXPECT_EQ(inverted(inverted(transform)), transform);
+	geosimd::translation const T{offset};
+	geosimd::rotation const R{
+		geosimd::rotation<my_vector_space>{geosimd::rotation_angle{geosimd::turns{0.25f}},
+		geosimd::dimension_tag<2>{}
+	}};
+
+	geosimd::rotloc const A{T, R};
+	EXPECT_EQ(inverted(A).get()*A.get(), one(geosimd::empty<geosimd::mat_4x4<float>>{}));
+	EXPECT_EQ(inverted(inverted(A)), A);
+}
+
+TESTCASE(geosimd_rotloc_rev_inverse)
+{
+	geosimd::basic_vector<my_vector_space> const offset{1.0f, 2.0f, 3.0f};
+	geosimd::translation const T{offset};
+	geosimd::rotation const R{
+		geosimd::rotation<my_vector_space>{geosimd::rotation_angle{geosimd::turns{0.25f}},
+		geosimd::dimension_tag<2>{}
+	}};
+
+	geosimd::rotloc const A{R, T};
+
+	EXPECT_EQ(inverted(A).get()*A.get(), one(geosimd::empty<geosimd::mat_4x4<float>>{}));
+	EXPECT_EQ(inverted(inverted(A)), A);
 }
 
 TESTCASE(geosimd_rotloc_extract_parts)
