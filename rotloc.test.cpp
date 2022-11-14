@@ -28,6 +28,7 @@ TESTCASE(geosimd_rotloc_inverse)
 		}
 	};
 	EXPECT_EQ(inverted(transform).get()*transform.get(), one(geosimd::empty<geosimd::mat_4x4<float>>{}));
+	EXPECT_EQ(inverted(inverted(transform)), transform);
 }
 
 TESTCASE(geosimd_rotloc_extract_parts)

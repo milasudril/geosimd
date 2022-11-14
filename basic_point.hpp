@@ -112,7 +112,7 @@ namespace geosimd
 		{
 			// to preserve "pointness" after subtraction
 			auto const offset = origin - make_origin();
-			m_value = t.get()*(m_value - offset) + offset;
+			m_value = t.get()*(*this - offset) + offset;
 			return *this;
 		}
 
