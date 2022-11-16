@@ -5,7 +5,7 @@
 #include "./basic_vector.hpp"
 #include "./translation.hpp"
 #include "./rotation.hpp"
-#include "./rotloc.hpp"
+#include "./locrot.hpp"
 
 #include <utility>
 #include <string>
@@ -100,7 +100,7 @@ namespace geosimd
 
 		template<class T = V>
 		requires(std::is_same_v<T, V>)
-		GEOSIMD_INLINE_OPT constexpr auto& apply(rotloc<T> const& t, basic_point origin)
+		GEOSIMD_INLINE_OPT constexpr auto& apply(locrot<T> const& t, basic_point origin)
 		{
 			m_value = t.get()*(m_value - origin.get()) + origin.get();
 			return *this;

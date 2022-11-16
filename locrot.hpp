@@ -1,5 +1,5 @@
-#ifndef GEOSIMD_ROTLOC_HPP
-#define GEOSIMD_ROTLOC_HPP
+#ifndef GEOSIMD_LOCROT_HPP
+#define GEOSIMD_LOCROT_HPP
 
 #include "./mat_4x4.hpp"
 #include "./abstract_spaces.hpp"
@@ -11,20 +11,20 @@ namespace geosimd
 	template<affine_space V>
 	requires std::is_same_v<typename V::scalar_type, float>
 		&& (has_homogenous_coordinates<V> && V::vector_type::size() == 4 && has_rotations<V>)
-	class rotloc
+	class locrot
 	{
 		public:
 			using scalar_type = typename V::scalar_type;
 			using storage_type = mat_4x4<float>;
 			using column_type = storage_type::column_type;
 
-			GEOSIMD_INLINE_OPT constexpr rotloc():m_value{one(empty<storage_type>{})}{}
+			GEOSIMD_INLINE_OPT constexpr locrot():m_value{one(empty<storage_type>{})}{}
 
-			GEOSIMD_INLINE_OPT constexpr rotloc(translation<V> const& T, rotation<V> const& R):
+			GEOSIMD_INLINE_OPT constexpr locrot(translation<V> const& T, rotation<V> const& R):
 				m_value{T.get() * R.get()}
 			{}
 
-			GEOSIMD_INLINE_OPT constexpr rotloc(rotation<V> const& R, translation<V> const& T):
+			GEOSIMD_INLINE_OPT constexpr locrot(rotation<V> const& R, translation<V> const& T):
 				m_value{R.get() * T.get()}
 			{}
 
@@ -34,9 +34,9 @@ namespace geosimd
 			GEOSIMD_INLINE_OPT constexpr auto const& get() const
 			{ return m_value; }
 
-			constexpr bool operator==(rotloc const&) const = default;
+			constexpr bool operator==(locrot const&) const = default;
 
-			constexpr bool operator!=(rotloc const&) const = default;
+			constexpr bool operator!=(locrot const&) const = default;
 
 			GEOSIMD_INLINE_OPT constexpr auto translation_part() const
 			{
@@ -52,7 +52,7 @@ namespace geosimd
 				return ret;
 			}
 
-			GEOSIMD_INLINE_OPT constexpr rotloc& invert()
+			GEOSIMD_INLINE_OPT constexpr locrot& invert()
 			{
 				auto const offs = -translation_part();
 				using vec = basic_vector<V>;
@@ -66,13 +66,13 @@ namespace geosimd
 	};
 
 	template<affine_space V>
-	auto to_string(rotloc<V> const& transform)
+	auto to_string(locrot<V> const& transform)
 	{
 		return to_string(transform.get());
 	}
 
 	template<affine_space V>
-	auto inverted(rotloc<V> const& transform)
+	auto inverted(locrot<V> const& transform)
 	{
 		auto temp = transform;
 		return temp.invert();

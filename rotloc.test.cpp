@@ -1,6 +1,6 @@
 //@	{"target":{"name":"rocloc.test"}}
 
-#include "./rotloc.hpp"
+#include "./locrot.hpp"
 #include "./basic_point.hpp"
 
 #include "testfwk/testfwk.hpp"
@@ -17,7 +17,7 @@ namespace
 	};
 }
 
-TESTCASE(geosimd_rotloc_inverse)
+TESTCASE(geosimd_locrot_inverse)
 {
 	geosimd::basic_vector<my_vector_space> const offset{1.0f, 2.0f, 3.0f};
 	geosimd::translation const T{offset};
@@ -26,12 +26,12 @@ TESTCASE(geosimd_rotloc_inverse)
 		geosimd::dimension_tag<2>{}
 	}};
 
-	geosimd::rotloc const A{T, R};
+	geosimd::locrot const A{T, R};
 	EXPECT_EQ(inverted(A).get()*A.get(), one(geosimd::empty<geosimd::mat_4x4<float>>{}));
 	EXPECT_EQ(inverted(inverted(A)), A);
 }
 
-TESTCASE(geosimd_rotloc_rev_inverse)
+TESTCASE(geosimd_locrot_rev_inverse)
 {
 	geosimd::basic_vector<my_vector_space> const offset{1.0f, 2.0f, 3.0f};
 	geosimd::translation const T{offset};
@@ -40,13 +40,13 @@ TESTCASE(geosimd_rotloc_rev_inverse)
 		geosimd::dimension_tag<2>{}
 	}};
 
-	geosimd::rotloc const A{R, T};
+	geosimd::locrot const A{R, T};
 
 	EXPECT_EQ(inverted(A).get()*A.get(), one(geosimd::empty<geosimd::mat_4x4<float>>{}));
 	EXPECT_EQ(inverted(inverted(A)), A);
 }
 
-TESTCASE(geosimd_rotloc_extract_parts)
+TESTCASE(geosimd_locrot_extract_parts)
 {
 	geosimd::basic_vector<my_vector_space> const offset{1.0f, 2.0f, 3.0f};
 	geosimd::translation const T{offset};
@@ -55,12 +55,12 @@ TESTCASE(geosimd_rotloc_extract_parts)
 		geosimd::dimension_tag<2>{}
 	}};
 
-	geosimd::rotloc const A{T, R};
+	geosimd::locrot const A{T, R};
 	EXPECT_EQ(A.translation_part(), T.offset());
 	EXPECT_EQ(A.rotation_part(), R.get());
 }
 
-TESTCASE(geosimd_rotloc_apply)
+TESTCASE(geosimd_locrot_apply)
 {
 	geosimd::basic_vector<my_vector_space> const offset{1.0f, 2.0f, 3.0f};
 	geosimd::translation const T{offset};
@@ -69,7 +69,7 @@ TESTCASE(geosimd_rotloc_apply)
 		geosimd::dimension_tag<2>{}
 	}};
 
-	geosimd::rotloc const A{T, R};
+	geosimd::locrot const A{T, R};
 
 	geosimd::basic_point<my_vector_space> loc{1.0f, 2.0f, 3.0f};
 
