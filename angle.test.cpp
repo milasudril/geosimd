@@ -1,4 +1,4 @@
-//@	{"target":{"name":"angle.test.cpp"}}
+//@	{"target":{"name":"angle.test"}}
 
 #include "./angle.hpp"
 #include "./abstract_spaces.hpp"
