@@ -102,7 +102,9 @@ namespace geosimd
 		requires(std::is_same_v<T, V>)
 		GEOSIMD_INLINE_OPT constexpr auto& apply(locrot<T> const& t, basic_point origin)
 		{
-			m_value = t.get()*(m_value - origin.get()) + origin.get();
+			// to preserve "pointness" after subtraction
+			auto const offset = (origin - basic_point{}).get();
+			m_value = t.get()*(m_value - offset) + offset;
 			return *this;
 		}
 
@@ -111,8 +113,8 @@ namespace geosimd
 		GEOSIMD_INLINE_OPT constexpr auto& apply(rotation<T> const& t, basic_point origin)
 		{
 			// to preserve "pointness" after subtraction
-			auto const offset = origin - make_origin();
-			m_value = t.get()*(*this - offset) + offset;
+			auto const offset = (origin - basic_point{}).get();
+			m_value = t.get()*(m_value - offset) + offset;
 			return *this;
 		}
 
