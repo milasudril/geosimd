@@ -1,0 +1,156 @@
+@startuml
+hide circle
+set namespaceSeparator ::
+
+interface std::equality_comparable<T> <<concept>>
+interface std::is_arithmetic_v<T> <<concept>>
+interface std::is_signed_v<T> <<concept>>
+
+interface geosimd::complex<T> <<concept>>
+interface geosimd::scalar<T> <<concept>>
+interface geosimd::vector<T, ScalarType=T::scalar_type> <<concept>>
+interface geosimd::vector_space<T> <<concept>>
+interface geosimd::point<T, VectorType = T::vector_type, ScalarType = T::scalar_type> <<concept>>
+interface geosimd::affine_space<T> <<concept>>
+interface geosimd::metric_space<T> <<concept>>
+interface geosimd::overrides_distance<T> <<concept>>
+interface geosimd::supports_distance<T> <<concept>>
+interface geosimd::normed_space<T> <<concept>>
+interface geosimd::overrides_norm<T> <<concept>>
+interface geosimd::supports_norm<T> <<concept>>
+interface geosimd::supports_inner_product<VectorType, ScalarType> <<concept>>
+interface geosimd::inner_product_space<T> <<concept>>
+
+() o1
+<> a1
+<> a2
+<> a3
+<> a4
+<> a5
+() o2
+<> a6
+() o3
+<> a7
+geosimd::scalar *-- o1
+o1 -- a1
+o1 -- a2
+a1 -- std::is_arithmetic_v : <<T>>
+a1 -- std::is_signed_v : <<T>>
+a2 -- geosimd::complex : <<T>>
+a2 -- std::is_signed_v : <<T::value_type>>
+geosimd::point *-- a3
+a3 -- std::equality_comparable : <<T>>
+a3 -- geosimd::vector : <<VectorType, ScalarType>>
+a4 -- geosimd::vector_space : <<T>>
+a4 -- geosimd::point : <<T::point_type, T::vector_type, T::scalar_type>>
+geosimd::vector_space *-- geosimd::vector : <<T::vector_type, T::scalar_type>>
+geosimd::affine_space *-- a4
+geosimd::overrides_distance *-- geosimd::affine_space : <<T>>
+geosimd::metric_space *-- a5
+a5 -- geosimd::affine_space : <<T>>
+a5 -- o2
+o2 -- geosimd::overrides_distance : <<T>>
+o2 -- geosimd::supports_distance : <<T::point_type>>
+geosimd::normed_space *-- a6
+a6 -- geosimd::vector_space : <<T>>
+a6 -- o3
+o3 -- geosimd::overrides_norm : <<T>>
+o3 -- geosimd::supports_norm : <<T::point_type>>
+geosimd::overrides_norm *-- geosimd::vector_space : <<T>>
+geosimd::inner_product_space *-- a7
+a7 -- geosimd::vector_space : <<T::vector_type, T::scalar_type>>
+a7 -- geosimd::supports_inner_product : <<T::vector_type, T::scalar_type>>
+
+<> a0
+geosimd::vector *-- a0
+a0 -- geosimd::scalar : <<ScalarType>>
+a0 -- std::equality_comparable : <<T>>
+
+interface geosimd::complex
+{
+	__ Params __
+	T a
+	__ requires __
+	{method} {a.real()} -> std::same_as<typename T::value_type>;
+	{method} {a.imag()}-> std::same_as<typename T::value_type>;	
+}
+
+interface geosimd::vector
+{
+	__ Params __
+	T a
+	T b
+	ScalarType c
+	__ requires __
+	{method} {a + b} -> std::same_as<T>
+	{method} {a - b} -> std::same_as<T>
+	{method} {a += b} -> std::same_as<T&>
+	{method} {a -= b} -> std::same_as<T&>
+	{method} {c * a} -> std::same_as<T>
+	{method} {a * c} -> std::same_as<T>
+	{method} {a / c} -> std::same_as<T>
+	{method} {a *= c} -> std::same_as<T&>
+	{method} {a /= c} -> std::same_as<T&>
+	{method} {-a} -> std::same_as<T>
+	{method} {zero(std::declval<empty<T>>())} -> std::same_as<T>
+}
+
+interface geosimd::point
+{
+	__ Params __
+	T p1
+	T p2
+	VectorType v
+	__ requires __
+	{method} {p1 + v} -> std::same_as<T>;
+	{method} {p1 - v} -> std::same_as<T>;
+	{method} {p1 += v} -> std::same_as<T&>;
+	{method} {p1 -= v} -> std::same_as<T&>;
+	{method} {p1 - p2} -> std::same_as<VectorType>;
+}
+
+interface geosimd::overrides_distance
+{
+	__ Params __
+	T
+	__ requires __
+	{method} { T::distance(std::declval<typename T::point_type>(), std::declval<typename T::point_type>()) } -> std::totally_ordered;
+}
+
+interface geosimd::supports_distance
+{
+	__ Params __
+	T a
+	T b
+	__ requires __
+	{method} { distance(a, b) } -> std::totally_ordered;
+}
+
+interface geosimd::overrides_norm
+{
+	__ Params __
+	T
+	__ requires __
+	{method}{ T::norm(std::declval<typename T::vector_type>()) } -> std::totally_ordered
+}
+
+interface geosimd::supports_norm
+{
+	__ Params __
+	T a
+	T b
+	__ requires __
+	{method} { norm(a) } -> std::totally_ordered;
+}
+
+interface geosimd::supports_inner_product
+{
+	__ Params __
+	VectorType a
+	VectorType b
+	__ requires __
+	{method} {inner_product(a, b)} -> std::same_as<ScalarType>;
+	{method} {inner_product(a)} -> std::totally_ordered;
+}
+
+@enduml

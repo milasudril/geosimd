@@ -21,7 +21,9 @@ namespace geosimd
 
 	template<class T>
 	concept scalar = (std::is_arithmetic_v<T> && std::is_signed_v<T>)
-		|| (complex<T> && (std::is_arithmetic_v<typename T::value_type> && std::is_signed_v<typename T::value_type>));
+		|| (complex<T> && (std::is_arithmetic_v<typename T::value_type> &&
+		// TODO: Does std::is_signed_v imply std::is_arithmetic_v?
+		std::is_signed_v<typename T::value_type>));
 
 	template<class T, class ScalarType = typename T::scalar_type>
 	concept vector = std::equality_comparable<T> && scalar<ScalarType> && requires(T a, T b, ScalarType c)
