@@ -9,28 +9,27 @@
             "app": {
                 "compiler": {
                     "config": {
-                        "cflags": [
-                            "-g",
-                            "-Wall",
-                            "-Wextra",
-                            "-Werror",
-                            "-Wconversion"
-                        ],
-                        "std_revision":{
-                            "min":"c++20"
-                        }
                     },
                     "recipe": "cxx_linker.py",
                     "use_get_tags": 0
                 },
                 "config": {},
-                "loader": "app"
+                "loader": "maikerule"
+            },
+            "lib": {
+                "compiler": {
+                    "config": {},
+                    "recipe": "make_lib.py",
+                    "use_get_tags": 0
+                },
+                "config": {},
+                "loader": "lib"
             },
             "cxx": {
                 "compiler": {
                     "config": {
                         "cflags": [
-                            "-g",
+							"-Wconversion",
                             "-Wall",
                             "-Wextra",
                             "-Werror",
@@ -39,50 +38,38 @@
                         "iquote": [
                             "."
                         ],
-                        "std_revision":{
-                            "min":"c++20"
+                        "std_revision": {
+							"min":"c++20"
                         }
                     },
                     "recipe": "cxx_compiler.py",
                     "use_get_tags": 0
                 },
-                "config": {
-                    "generated_includes": [
-                        ".*\\.gen\\.hpp$"
-                    ]
-                },
+                "config": {},
                 "loader": "cxx_src_loader"
             },
             "cxx_test": {
                 "compiler": {
                     "config": {
-                        "actions": [
-                            "link",
-                            "run"
-                        ],
+						"actions":["link", "run"],
                         "cflags": [
-                            "-g",
+							"-Wconversion",
                             "-Wall",
                             "-Wextra",
                             "-Werror",
-                            "-Wconversion",
-                            "-fconcepts-diagnostics-depth=3"
+                            "-Wconversion"
                         ],
                         "iquote": [
                             "."
                         ],
-                        "std_revision":{
-                            "min":"c++20"
+                        "std_revision": {
+							"min":"c++20"
                         }
                     },
                     "recipe": "cxx_compiler.py",
                     "use_get_tags": 0
                 },
-                "config": {
-                    "generated_includes": [
-                        ".*\\.gen\\.hpp$"
-                    ]
-                },
+                "config": {},
                 "loader": "cxx_src_loader"
             },
             "extension": {
@@ -94,10 +81,10 @@
                 "config": {},
                 "loader": "extension"
             },
-            "identity": {
+            "generic_example": {
                 "compiler": {
                     "config": {},
-                    "recipe": "copy_file.py",
+                    "recipe": "",
                     "use_get_tags": 0
                 },
                 "config": {
@@ -105,44 +92,22 @@
                     "target_filename_ext": ""
                 },
                 "loader": "generic"
-            },
-            "lib": {
-                "compiler": {
-                    "config": {},
-                    "recipe": "make_lib.py",
-                    "use_get_tags": 0
-                },
-                "config": {},
-                "loader": "lib"
-            },
-            "sass2css": {
-                "compiler": {
-                    "config": {},
-                    "recipe": "sass2css.py",
-                    "use_get_tags": 0
-                },
-                "config": {
-                    "filename_ext_replacement_mode": "replace",
-                    "target_filename_ext": ".css"
-                },
-                "loader": "generic"
             }
         },
         "source_tree_loader": {
             "file_info_loaders": {
                 ".app.maikerule": "app",
+				".lib.maikerule": "lib",
                 ".cpp": "cxx",
                 ".hpp": "cxx",
-                ".lib.maikerule": "lib",
                 ".py": "extension",
-                ".sass": "sass2css",
                 ".test.cpp": "cxx_test"
             },
-            "fullpath_input_filter": [
+            "input_filter": [
                 "^\\.",
                 "^__"
             ],
-            "input_filter": [
+            "fullpath_input_filter": [
                 "^\\.",
                 "^__"
             ],

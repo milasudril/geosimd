@@ -32,39 +32,41 @@ interface geosimd::inner_product_space<T> <<concept>>
 () o3
 <> a7
 geosimd::scalar *-- o1
-o1 -- a1
-o1 -- a2
-a1 -- std::is_arithmetic_v : <<T>>
-a1 -- std::is_signed_v : <<T>>
-a2 -- geosimd::complex : <<T>>
-a2 -- std::is_signed_v : <<T::value_type>>
+o1 *-- a1
+o1 *-- a2
+a1 *-- std::is_arithmetic_v : <<T>>
+a1 *-- std::is_signed_v : <<T>>
+a2 *-- geosimd::complex : <<T>>
+a2 *-- std::is_signed_v : <<T::value_type>>
 geosimd::point *-- a3
-a3 -- std::equality_comparable : <<T>>
-a3 -- geosimd::vector : <<VectorType, ScalarType>>
-a4 -- geosimd::vector_space : <<T>>
-a4 -- geosimd::point : <<T::point_type, T::vector_type, T::scalar_type>>
+a3 *-- std::equality_comparable : <<T>>
+a3 *-- geosimd::vector : <<VectorType, ScalarType>>
+a4 *-- geosimd::vector_space : <<T>>
+a4 *-- geosimd::point : <<T::point_type, T::vector_type, T::scalar_type>>
 geosimd::vector_space *-- geosimd::vector : <<T::vector_type, T::scalar_type>>
 geosimd::affine_space *-- a4
 geosimd::overrides_distance *-- geosimd::affine_space : <<T>>
 geosimd::metric_space *-- a5
-a5 -- geosimd::affine_space : <<T>>
-a5 -- o2
-o2 -- geosimd::overrides_distance : <<T>>
-o2 -- geosimd::supports_distance : <<T::point_type>>
+a5 *-- geosimd::affine_space : <<T>>
+a5 *-- o2
+o2 *-- geosimd::overrides_distance : <<T>>
+o2 *-- geosimd::supports_distance : <<T::point_type>>
 geosimd::normed_space *-- a6
-a6 -- geosimd::vector_space : <<T>>
-a6 -- o3
-o3 -- geosimd::overrides_norm : <<T>>
-o3 -- geosimd::supports_norm : <<T::point_type>>
+a6 *-- geosimd::vector_space : <<T>>
+a6 *-- o3
+o3 *-- geosimd::overrides_norm : <<T>>
+o3 *-- geosimd::supports_norm : <<T::point_type>>
 geosimd::overrides_norm *-- geosimd::vector_space : <<T>>
 geosimd::inner_product_space *-- a7
-a7 -- geosimd::vector_space : <<T::vector_type, T::scalar_type>>
-a7 -- geosimd::supports_inner_product : <<T::vector_type, T::scalar_type>>
-
+a7 *-- geosimd::vector_space : <<T::vector_type, T::scalar_type>>
+a7 *-- geosimd::supports_inner_product : <<T::vector_type, T::scalar_type>>
 <> a0
 geosimd::vector *-- a0
-a0 -- geosimd::scalar : <<ScalarType>>
-a0 -- std::equality_comparable : <<T>>
+a0 *-- geosimd::scalar : <<ScalarType>>
+a0 *-- std::equality_comparable : <<T>>
+
+geosimd::complex -[hidden]- geosimd::scalar
+geosimd::scalar -[hidden]- geosimd::complex
 
 interface geosimd::complex
 {
@@ -72,7 +74,7 @@ interface geosimd::complex
 	T a
 	__ requires __
 	{method} {a.real()} -> std::same_as<typename T::value_type>;
-	{method} {a.imag()}-> std::same_as<typename T::value_type>;	
+	{method} {a.imag()}-> std::same_as<typename T::value_type>;
 }
 
 interface geosimd::vector
