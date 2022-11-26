@@ -31,10 +31,10 @@ TESTCASE(geosimd_basic_point_1d_origin)
 
 TESTCASE(geosimd_basic_point_1d_construct)
 {
-	static_assert(std::is_same_v<typename point_1d::vector_type, geosimd::basic_vector<my_1d_vector_space>>);
-	static_assert(std::is_same_v<typename point_1d::scalar_type, int>);
-	static_assert(std::is_same_v<typename point_1d::value_type, int>);
-	static_assert(std::is_same_v<typename point_1d::storage_type, int>);
+	static_assert(std::is_same_v<point_1d::vector_type, geosimd::basic_vector<my_1d_vector_space>>);
+	static_assert(std::is_same_v<point_1d::scalar_type, int>);
+	static_assert(std::is_same_v<point_1d::value_type, int>);
+	static_assert(std::is_same_v<point_1d::storage_type, int>);
 
 	point_1d x{2};
 	EXPECT_EQ(x.get(), 2);
@@ -183,10 +183,10 @@ namespace
 
 TESTCASE(geosimd_basic_point_4d_construct_from_scalars)
 {
-	static_assert(std::is_same_v<typename point_4d_float::vector_type, geosimd::basic_vector<my_4d_vector_space_float>>);
-	static_assert(std::is_same_v<typename point_4d_float::scalar_type, float>);
-	static_assert(std::is_same_v<typename point_4d_float::value_type, float>);
-	static_assert(std::is_same_v<typename point_4d_float::storage_type, geosimd::vec_t<float, 4>>);
+	static_assert(std::is_same_v<point_4d_float::vector_type, geosimd::basic_vector<my_4d_vector_space_float>>);
+	static_assert(std::is_same_v<point_4d_float::scalar_type, float>);
+	static_assert(std::is_same_v<point_4d_float::value_type, float>);
+	static_assert(std::is_same_v<point_4d_float::storage_type, geosimd::vec_t<float, 4>>);
 
 	point_4d_float x{1.0f, 2.0f, 4.0f, 8.0f};
 	EXPECT_EQ(x.get(), (geosimd::vec_t{1.0f, 2.0f, 4.0f, 8.0f}));
@@ -216,4 +216,48 @@ TESTCASE(geosimd_basic_point_4d_origin)
 {
 	point_4d_float x;
 	EXPECT_EQ(x, geosimd::origin<my_4d_vector_space_float>());
+}
+
+namespace
+{
+	struct my_3d_vector_space_float_homo_coords
+	{
+		using scalar_type = float;
+		using vector_type = geosimd::vec_t<float, 4>;
+		using point_type = geosimd::vec_t<float, 4>;
+		using enable_homogenous_coordinates_t = void;
+	};
+
+	static_assert(geosimd::has_homogenous_coordinates<my_3d_vector_space_float_homo_coords>);
+	using point_3d_float = geosimd::basic_point<my_3d_vector_space_float_homo_coords>;
+	using vector_3d_float = geosimd::basic_vector<my_3d_vector_space_float_homo_coords>;
+}
+
+TESTCASE(geosimd_basic_point_3d_construct_from_scalars)
+{
+	static_assert(std::is_same_v<point_3d_float::vector_type, geosimd::basic_vector<my_3d_vector_space_float_homo_coords>>);
+	static_assert(std::is_same_v<point_3d_float::scalar_type, float>);
+	static_assert(std::is_same_v<point_3d_float::value_type, float>);
+	static_assert(std::is_same_v<point_3d_float::storage_type, geosimd::vec_t<float, 4>>);
+
+	point_3d_float x{1.0f, 2.0f, 4.0f};
+	EXPECT_EQ(x.get(), (geosimd::vec_t{1.0f, 2.0f, 4.0f, 1.0f}));
+}
+
+TESTCASE(geosimd_basic_point_3d_size)
+{
+	EXPECT_EQ(point_3d_float::size(), 3);
+}
+
+TESTCASE(geosimd_basic_point_3d_origin)
+{
+	point_3d_float x;
+	EXPECT_EQ(x, geosimd::origin<my_3d_vector_space_float_homo_coords>());
+}
+
+TESTCASE(geosimd_basic_point_3d_to_string)
+{
+	point_3d_float  const x{1.0f, 2.0f, 4.0f};
+	auto const str = to_string(x);
+	EXPECT_EQ(str, "(1.000000, 2.000000, 4.000000)");
 }
