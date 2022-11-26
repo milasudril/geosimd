@@ -58,7 +58,7 @@ namespace geosimd
 
 		GEOSIMD_INLINE_OPT constexpr turn_angle(rad x):
 			turn_angle{static_cast<turns>(x)}
-		{}
+		{ codecov::function_called(__FILE__, __LINE__); }
 
 		GEOSIMD_INLINE_OPT constexpr auto get() const
 		{ return m_value; }
@@ -101,7 +101,7 @@ namespace geosimd
 
 		GEOSIMD_INLINE_OPT constexpr explicit rotation_angle(turns x):
 			m_value{static_cast<uint32_t>(turn_angle{x}.get())}
-		{}
+		{ codecov::function_called(__FILE__, __LINE__); }
 
 		GEOSIMD_INLINE_OPT constexpr explicit rotation_angle(rad x):
 			rotation_angle{static_cast<turns>(x)}

@@ -10,15 +10,86 @@ static_assert(std::totally_ordered<geosimd::turn_angle>);
 static_assert(geosimd::point<geosimd::rotation_angle>);
 static_assert(geosimd::uses_vectorops_mixin_v<geosimd::turn_angle>);
 
+TESTCASE(geosimd_rad_from_value)
+{
+	geosimd::rad const x{0.5};
+	EXPECT_EQ(x.value, 0.5);
+}
+
+TESTCASE(geosimd_rad_from_turns)
+{
+	geosimd::rad const x{geosimd::turns{0.5}};
+	EXPECT_EQ(x.value, std::numbers::pi_v<double>);
+	EXPECT_EQ(static_cast<geosimd::turns>(x), geosimd::turns{0.5});
+}
+
+TESTCASE(geosimd_turn_angle_full_turn)
+{
+	EXPECT_EQ(geosimd::turn_angle::full_turn, 0x1'0000'0000L);
+}
+
+TESTCASE(geosimd_turn_angle_from_value)
+{
+	geosimd::turn_angle x{0x80000000};
+	EXPECT_EQ(x.get(), 0x80000000);
+}
+
+TESTCASE(geosimd_trun_angle_from_turns)
+{
+	geosimd::turn_angle x{geosimd::turns{0.5}};
+	EXPECT_EQ(x.get(), 0x80000000);
+}
+
+TESTCASE(geosimd_trun_angle_from_rad)
+{
+	geosimd::turn_angle x{geosimd::rad{std::numbers::pi_v<double>}};
+	EXPECT_EQ(x.get(), 0x80000000);
+}
+
+TESTCASE(geosimd_trun_angle_scale_mult)
+{
+	geosimd::turn_angle x{0x40000000};
+	x *= 2.0;
+
+	EXPECT_EQ(x.get(), 0x80000000);
+}
+
+TESTCASE(geosimd_trun_angle_scale_div)
+{
+	geosimd::turn_angle x{0x40000000};
+	x /= 2.0;
+
+	EXPECT_EQ(x.get(), 0x20000000);
+}
+
+TESTCASE(geosimd_turn_angle_add)
+{
+	geosimd::turn_angle a{0x40000000};
+	a += geosimd::turn_angle{0x20000000};
+	EXPECT_EQ(a.get(), 0x60000000);
+}
+
+TESTCASE(geosimd_turn_angle_zero)
+{
+	EXPECT_EQ(geosimd::zero<geosimd::turn_angle>().get(), 0);
+}
+
+TESTCASE(geosimd_rotation_angle_from_rad)
+{
+	geosimd::rotation_angle const x{geosimd::rad{std::numbers::pi_v<double>}};
+	EXPECT_EQ(x.get(), 0x80000000);
+	EXPECT_EQ(to_rad(x), geosimd::rad{std::numbers::pi_v<double>});
+}
+
 TESTCASE(geosimd_rotation_angle_from_turns)
 {
-	constexpr geosimd::rotation_angle a{geosimd::turns{-0.25f}};
-	constexpr geosimd::rotation_angle b{geosimd::turns{0.0f  }};
-	constexpr geosimd::rotation_angle c{geosimd::turns{0.25f }};
-	constexpr geosimd::rotation_angle d{geosimd::turns{0.5f  }};
-	constexpr geosimd::rotation_angle f{geosimd::turns{-0.5f }};
-	constexpr geosimd::rotation_angle g{geosimd::turns{2.0f  }};
-	constexpr geosimd::rotation_angle h{geosimd::turns{-2.0f }};
+	geosimd::rotation_angle const a{geosimd::turns{-0.25f}};
+	geosimd::rotation_angle const b{geosimd::turns{0.0f  }};
+	geosimd::rotation_angle const c{geosimd::turns{0.25f }};
+	geosimd::rotation_angle const d{geosimd::turns{0.5f  }};
+	geosimd::rotation_angle const f{geosimd::turns{-0.5f }};
+	geosimd::rotation_angle const g{geosimd::turns{2.0f  }};
+	geosimd::rotation_angle const h{geosimd::turns{-2.0f }};
 
 	EXPECT_EQ(a.get(), 0xc0000000);
 	EXPECT_EQ(b.get(), 0x00000000);
@@ -29,24 +100,17 @@ TESTCASE(geosimd_rotation_angle_from_turns)
 	EXPECT_EQ(h.get(), 0x00000000);
 
 	EXPECT_EQ(to_turns(a), geosimd::turns{0.75} );
-	EXPECT_EQ(to_turns(b), geosimd::turns{0.0 }  );
+	EXPECT_EQ(to_turns(b), geosimd::turns{0.0 } );
 	EXPECT_EQ(to_turns(c), geosimd::turns{0.25} );
 	EXPECT_EQ(to_turns(d), geosimd::turns{0.5 });
 }
 
-TESTCASE(geosimd_rotation_angle_from_rad)
-{
-	constexpr geosimd::rotation_angle x{geosimd::rad{std::numbers::pi_v<double>}};
-	EXPECT_EQ(x.get(), 0x80000000);
-	EXPECT_EQ(to_rad(x), geosimd::rad{std::numbers::pi_v<double>});
-}
-
 TESTCASE(geosimd_rotation_angle_add_subtract)
 {
-	constexpr geosimd::rotation_angle a{geosimd::turns{-0.25}};
-	constexpr geosimd::rotation_angle b{geosimd::turns{0.5}};
-	constexpr geosimd::turn_angle c{geosimd::turns{-0.25}};
-	constexpr geosimd::turn_angle d{geosimd::turns{0.5}};
+	geosimd::rotation_angle const a{geosimd::turns{-0.25}};
+	geosimd::rotation_angle const b{geosimd::turns{0.5}};
+	geosimd::turn_angle const c{geosimd::turns{-0.25}};
+	geosimd::turn_angle const d{geosimd::turns{0.5}};
 
 	EXPECT_EQ((a + d).get(), 0x40000000);
 	EXPECT_EQ((b - c).get(), 0xc0000000);
@@ -54,18 +118,18 @@ TESTCASE(geosimd_rotation_angle_add_subtract)
 	EXPECT_EQ((b + geosimd::turns{0.25f}).get(), 0xc0000000);
 	EXPECT_EQ((b - geosimd::turns{0.25f}).get(), 0x40000000);
 
-	constexpr geosimd::rotation_angle almost_full_turn{0xffffffff};
-	constexpr auto no_rot = zero(geosimd::empty<geosimd::rotation_angle>{});
+	geosimd::rotation_angle const almost_full_turn{0xffffffff};
+	auto no_rot = geosimd::zero<geosimd::rotation_angle>();
 	EXPECT_EQ(almost_full_turn - no_rot, geosimd::turn_angle{0xffffffff});
 	EXPECT_EQ(no_rot - almost_full_turn, geosimd::turn_angle{-0xffffffffll});
 }
 
 TESTCASE(geosimd_rotation_angle_sine_cosine)
 {
-	constexpr geosimd::rotation_angle a{geosimd::turns{-0.25f}};
-	constexpr geosimd::rotation_angle b{geosimd::turns{0.0f  }};
-	constexpr geosimd::rotation_angle c{geosimd::turns{0.25f }};
-	constexpr geosimd::rotation_angle d{geosimd::turns{0.5f  }};
+	geosimd::rotation_angle const a{geosimd::turns{-0.25f}};
+	geosimd::rotation_angle const b{geosimd::turns{0.0f  }};
+	geosimd::rotation_angle const c{geosimd::turns{0.25f }};
+	geosimd::rotation_angle const d{geosimd::turns{0.5f  }};
 
 	EXPECT_EQ(sin(a), -1.0f);
 	EXPECT_EQ(sin(b), 0.0f);
@@ -113,7 +177,7 @@ TESTCASE(geosimd_rotation_angle_sine_cosine)
 
 TESTCASE(geosimd_turn_angle_scale)
 {
-	constexpr geosimd::turn_angle x{geosimd::turns{0.25}};
-	constexpr auto y = 4.0*x;
+	geosimd::turn_angle const x{geosimd::turns{0.25}};
+	auto const y = 4.0*x;
 	EXPECT_EQ(y.get(), 0x1'0000'0000ll);
 }
