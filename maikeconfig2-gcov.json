@@ -9,7 +9,7 @@
 				{
 					"config":
 					{
-						"cflags":["-g", "-fprofile-arcs", "-ftest-coverage", "-fno-inline", "-fno-early-inlining"]
+						"cflags":["-g", "-fprofile-arcs", "-ftest-coverage", "-fno-inline", "-fno-early-inlining", "-DCOVERAGE_BUILD"]
 					}
 				}
 			},
@@ -19,7 +19,7 @@
 				{
 					"config":
 					{
-						"cflags":["-g", "-fprofile-arcs", "-ftest-coverage", "-fno-inline", "-fno-early-inlining"]
+						"cflags":["-g", "-fprofile-arcs", "-ftest-coverage", "-fno-inline", "-fno-early-inlining", "-DCOVERAGE_BUILD"]
 					}
 				}
 			},
@@ -29,7 +29,7 @@
 				{
 					"config":
 					{
-						"cflags":["-g", "-fprofile-arcs", "-ftest-coverage", "-fno-inline", "-fno-early-inlining"]
+						"cflags":["-g", "-fprofile-arcs", "-ftest-coverage", "-fno-inline", "-fno-early-inlining", "-DCOVERAGE_BUILD"]
 					}
 				}
 			}
