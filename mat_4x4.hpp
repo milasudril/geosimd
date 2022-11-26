@@ -2,7 +2,7 @@
 #define GEOSIMD_MAT4X4_HPP
 
 #include "./vec_t.hpp"
-#include "./adl_factories.hpp"
+#include "./factories.hpp"
 
 #include <span>
 

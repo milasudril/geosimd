@@ -1,7 +1,7 @@
 #ifndef GEOSIMD_ABSTRACTSPACES_HPP
 #define GEOSIMD_ABSTRACTSPACES_HPP
 
-#include "./adl_factories.hpp"
+#include "./factories.hpp"
 #include "./default_norm.hpp"
 
 #include <complex>

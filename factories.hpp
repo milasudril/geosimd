@@ -1,5 +1,5 @@
-#ifndef GEOSIMD_ADLFACTORIES_HPP
-#define GEOSIMD_ADLFACTORIES_HPP
+#ifndef GEOSIMD_FACTORIES_HPP
+#define GEOSIMD_FACTORIES_HPP
 
 #include <type_traits>
 #include <utility>
@@ -20,6 +20,18 @@ namespace geosimd
 	template<class T, class ... Args>
 	constexpr T create(empty<T>, Args&& ... args)
 	{ return T{std::forward<Args>(args)...}; }
+
+	template<class T>
+	constexpr T zero()
+	{ return zero(empty<T>{}); }
+
+	template<class T>
+	constexpr T one()
+	{ return one(empty<T>{}); }
+
+	template<class T, class ... Args>
+	constexpr T create(Args&& ... args)
+	{ return create<T>(empty<T>{}, std::forward<Args>(args)...); }
 }
 
 #endif

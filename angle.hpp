@@ -2,7 +2,7 @@
 #define GEOSIMD_ANGLE_HPP
 
 #include "./inline.hpp"
-#include "./adl_factories.hpp"
+#include "./factories.hpp"
 #include "./vectorops_mixin.hpp"
 
 #include <cmath>
