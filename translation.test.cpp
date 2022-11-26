@@ -21,7 +21,7 @@ static_assert(!geosimd::vector<geosimd::translation<my_affine_space>>);
 TESTCASE(geosimd_translation_default_value)
 {
 	geosimd::translation<my_affine_space> transl;
-	EXPECT_EQ(transl.get(), one(geosimd::empty<geosimd::mat_4x4<int>>{}));
+	EXPECT_EQ(transl.get(), geosimd::one<geosimd::mat_4x4<int>>());
 }
 
 TESTCASE(geosimd_translation_create)
@@ -34,13 +34,13 @@ TESTCASE(geosimd_translation_create)
 		geosimd::vec_t<int, 4>{1, 2, 3, 1}
 	}));
 
-	EXPECT_EQ(transl.get()*inverted(transl).get(), one(geosimd::empty<geosimd::mat_4x4<int>>{}));
+	EXPECT_EQ(transl.get()*inverted(transl).get(), geosimd::one<geosimd::mat_4x4<int>>());
 }
 
 TESTCASE(geosimd_translation_push_pop)
 {
 	geosimd::translation<my_affine_space> transl;
-	EXPECT_EQ(transl.get(), one(geosimd::empty<geosimd::mat_4x4<int>>{}));
+	EXPECT_EQ(transl.get(), geosimd::one<geosimd::mat_4x4<int>>());
 
 	transl.push(geosimd::basic_vector<my_affine_space>{1, 2, 3});
 	EXPECT_EQ(transl.get(), (geosimd::mat_4x4{

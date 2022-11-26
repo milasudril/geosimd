@@ -16,7 +16,7 @@ namespace geosimd
 		using storage_type = mat_4x4<scalar_type>;
 		using column_type = storage_type::column_type;
 
-		GEOSIMD_INLINE_OPT constexpr translation():m_value{one(empty<storage_type>{})}{}
+		GEOSIMD_INLINE_OPT constexpr translation():m_value{one<storage_type>()}{}
 
 		GEOSIMD_INLINE_OPT explicit constexpr translation(basic_vector<V> offset):translation{}
 		{
@@ -31,8 +31,8 @@ namespace geosimd
 
 		GEOSIMD_INLINE_OPT constexpr auto offset() const
 		{
-			auto const z = zero(empty<scalar_type>{});
-			auto const o = one(empty<scalar_type>{});
+			auto const z = zero<scalar_type>();
+			auto const o = one<scalar_type>();
 			return m_value.col(3) - vec_t<scalar_type, 4>{z, z, z, o};
 		}
 
@@ -53,7 +53,7 @@ namespace geosimd
 
 		GEOSIMD_INLINE_OPT constexpr translation& invert()
 		{
-			auto const val = one(empty<scalar_type>{});
+			auto const val = one<scalar_type>();
 			m_value.col(3) *= vec_t<scalar_type, 4>{-val, -val, -val, val};
 			return *this;
 		}
