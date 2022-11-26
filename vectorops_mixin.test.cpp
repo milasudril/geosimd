@@ -55,6 +55,7 @@ namespace geosimd_test
 		ret.append(std::to_string(val[N - 1])).append(")");
 		return ret;
 	}
+
 }
 
 TESTCASE(geosimd_vectorops_mixin_mult_vec)
@@ -182,22 +183,22 @@ TESTCASE(geosimd_vectorops_mixin_comparisons)
 	constexpr geosimd_test::vectorops_mixin_tester_ordered e{2};
 	constexpr geosimd_test::vectorops_mixin_tester_ordered f{3};
 
-	static_assert(a < b);
-	static_assert(a < c);
-	static_assert(b < c);
-	static_assert(a <= b);
-	static_assert(a <= c);
-	static_assert(b <= c);
-	static_assert(b > a);
-	static_assert(c > a);
-	static_assert(c > b);
-	static_assert(b >= a);
-	static_assert(c >= a);
-	static_assert(c >= b);
-	static_assert(a != b);
-	static_assert(a != c);
-	static_assert(b != c);
-	static_assert(a == d);
-	static_assert(b == e);
-	static_assert(c == f);
+	EXPECT_EQ(a < b , true);
+	EXPECT_EQ(a < c , true);
+	EXPECT_EQ(b < c , true);
+	EXPECT_EQ(a <= b, true);
+	EXPECT_EQ(a <= c, true);
+	EXPECT_EQ(b <= c, true);
+	EXPECT_EQ(b > a , true);
+	EXPECT_EQ(c > a , true);
+	EXPECT_EQ(c > b , true);
+	EXPECT_EQ(b >= a, true);
+	EXPECT_EQ(c >= a, true);
+	EXPECT_EQ(c >= b, true);
+	EXPECT_EQ(a != b, true);
+	EXPECT_EQ(a != c, true);
+	EXPECT_EQ(b != c, true);
+	EXPECT_EQ(a == d, true);
+	EXPECT_EQ(b == e, true);
+	EXPECT_EQ(c == f, true);
 }

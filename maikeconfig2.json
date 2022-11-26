@@ -29,7 +29,6 @@
                 "compiler": {
                     "config": {
                         "cflags": [
-							"-Wconversion",
                             "-Wall",
                             "-Wextra",
                             "-Werror",
@@ -53,11 +52,10 @@
                     "config": {
 						"actions":["link", "run"],
                         "cflags": [
-							"-Wconversion",
                             "-Wall",
                             "-Wextra",
-                            "-Werror",
-                            "-Wconversion"
+                            "-Wconversion",
+                            "-Werror"
                         ],
                         "iquote": [
                             "."
