@@ -29,7 +29,7 @@ namespace geosimd
 			&& (!has_homogenous_coordinates<V> && !std::is_same_v<scalar_type, storage_type>)
 		GEOSIMD_INLINE_OPT constexpr explicit basic_point(scalar_type x, Args ... xn):
 			m_value{x, xn...}
-		{ }
+		{ codecov::function_called(__FILE__, __LINE__); }
 
 		template<class T = void>
 		requires(!has_homogenous_coordinates<V>)

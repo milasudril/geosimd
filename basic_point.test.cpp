@@ -146,7 +146,6 @@ TESTCASE(geosimd_basic_point_1d_point_pair_distance)
 	EXPECT_EQ(d, 4);
 }
 
-
 namespace
 {
 	struct my_1d_vector_space_float
@@ -167,4 +166,54 @@ TESTCASE(geosimd_basic_point_1d_float_lerp)
 	auto val = lerp(x1, x2, 0.75f);
 	static_assert(std::is_same_v<decltype(val), point_1d_float>);
 	EXPECT_EQ(val, point_1d_float{8.0f});
+}
+
+namespace
+{
+	struct my_4d_vector_space_float
+	{
+		using scalar_type = float;
+		using vector_type = geosimd::vec_t<float, 4>;
+		using point_type = geosimd::vec_t<float, 4>;
+	};
+
+	using point_4d_float = geosimd::basic_point<my_4d_vector_space_float>;
+	using vector_4d_float = geosimd::basic_vector<my_4d_vector_space_float>;
+}
+
+TESTCASE(geosimd_basic_point_4d_construct_from_scalars)
+{
+	static_assert(std::is_same_v<typename point_4d_float::vector_type, geosimd::basic_vector<my_4d_vector_space_float>>);
+	static_assert(std::is_same_v<typename point_4d_float::scalar_type, float>);
+	static_assert(std::is_same_v<typename point_4d_float::value_type, float>);
+	static_assert(std::is_same_v<typename point_4d_float::storage_type, geosimd::vec_t<float, 4>>);
+
+	point_4d_float x{1.0f, 2.0f, 4.0f, 8.0f};
+	EXPECT_EQ(x.get(), (geosimd::vec_t{1.0f, 2.0f, 4.0f, 8.0f}));
+}
+
+TESTCASE(geosimd_basic_point_4d_construct_from_value)
+{
+	point_4d_float x{geosimd::vec_t{1.0f, 2.0f, 4.0f, 8.0f}};
+	EXPECT_EQ(x.get(), (geosimd::vec_t{1.0f, 2.0f, 4.0f, 8.0f}));
+}
+
+TESTCASE(geosimd_basic_point_4d_subscript)
+{
+	point_4d_float x{1.0f, 2.0f, 4.0f, 8.0f};
+	EXPECT_EQ(x[0], 1.0f);
+	EXPECT_EQ(x[1], 2.0f);
+	EXPECT_EQ(x[2], 4.0f);
+	EXPECT_EQ(x[3], 8.0f);
+}
+
+TESTCASE(geosimd_basic_point_4d_size)
+{
+	EXPECT_EQ(point_4d_float::size(), 4);
+}
+
+TESTCASE(geosimd_basic_point_4d_origin)
+{
+	point_4d_float x;
+	EXPECT_EQ(x, geosimd::origin<my_4d_vector_space_float>());
 }
