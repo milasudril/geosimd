@@ -226,6 +226,12 @@ namespace
 		using vector_type = geosimd::vec_t<float, 4>;
 		using point_type = geosimd::vec_t<float, 4>;
 		using enable_homogenous_coordinates_t = void;
+		using enable_rotations_t = void;
+
+		static constexpr scalar_type distance(point_type a, point_type b)
+		{
+			return std::sqrt(inner_product(a - b));
+		}
 	};
 
 	static_assert(geosimd::has_homogenous_coordinates<my_3d_vector_space_float_homo_coords>);
@@ -261,3 +267,30 @@ TESTCASE(geosimd_basic_point_3d_to_string)
 	auto const str = to_string(x);
 	EXPECT_EQ(str, "(1.000000, 2.000000, 4.000000)");
 }
+
+TESTCASE(geosimd_basic_point_3d_apply_transation)
+{
+	point_3d_float x{1.0f, 2.0f, 4.0f};
+	x.apply(geosimd::translation{vector_3d_float{2.0f, 4.0f, 8.0f}});
+	EXPECT_EQ(x, (point_3d_float{3.0f, 6.0f, 12.0f}));
+}
+
+TESTCASE(geosimd_basic_point_3d_apply_rotation)
+{
+	point_3d_float x{1.0f, 2.0f, 4.0f};
+	geosimd::rotation<point_3d_float::vector_space> const
+		R{geosimd::rotation_angle{geosimd::turns{0.25}}, geosimd::dimension_tag<2>{}};
+	x.apply(R, point_3d_float{0.5f, 1.0f, 2.0f});
+	EXPECT_LT(geosimd::distance(x, point_3d_float{-0.5f, 1.5f, 4.0f}), 1e-7f);
+}
+
+TESTCASE(geosimd_basic_point_3d_apply_locrot)
+{
+	point_3d_float x{1.0f, 2.0f, 4.0f};
+	geosimd::rotation<point_3d_float::vector_space> const
+		R{geosimd::rotation_angle{geosimd::turns{0.25}}, geosimd::dimension_tag<2>{}};
+	geosimd::translation const T{vector_3d_float{2.0f, 4.0f, 8.0f}};
+	x.apply(geosimd::locrot{T, R}, point_3d_float{0.5f, 1.0f, 2.0f});
+	EXPECT_EQ(x, (point_3d_float{1.5f, 5.5f, 12.0f}));
+}
+

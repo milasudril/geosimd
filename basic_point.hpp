@@ -20,6 +20,7 @@ namespace geosimd
 		using scalar_type = typename V::scalar_type;
 		using value_type = scalar_type;
 		using storage_type = typename V::point_type;
+		using vector_space = V;
 
 		GEOSIMD_INLINE_OPT constexpr basic_point(): m_value{make_origin()}
 		{}
