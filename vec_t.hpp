@@ -55,6 +55,10 @@ namespace geosimd
 		element_type m_value;
 	};
 
+	template<class T, class ... Args>
+	requires (std::conjunction_v<std::is_same<T, Args>...>)
+	vec_t(T x, Args... xn) -> vec_t<T, sizeof...(Args) + 1>;
+
 	template<class T, size_t N, class ... Indices>
 	requires (std::conjunction_v<std::is_same<int, Indices>...> && sizeof...(Indices) == N)
 	GEOSIMD_INLINE_OPT constexpr auto shuffle(vec_t<T, N> a, vec_t<T, N> b, Indices ... vals)
