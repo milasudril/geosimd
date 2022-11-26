@@ -94,3 +94,55 @@ TESTCASE(geosimd_basic_point_1d_difference)
 	static_assert(std::is_same_v<decltype(diff), vector_1d>);
 	EXPECT_EQ(diff, vector_1d{-3});
 }
+
+TESTCASE(geosimd_basic_point_1d_distance)
+{
+	point_1d const x1{2};
+	point_1d const x2{5};
+	auto d1 = distance(x1, x2);
+	auto d2 = distance(x2, x1);
+	static_assert(std::is_same_v<decltype(d1), typename my_1d_vector_space::scalar_type>);
+	EXPECT_EQ(d1, d2);
+	EXPECT_EQ(d1, 3);
+}
+
+TESTCASE(geosimd_basic_point_1d_radius_vector)
+{
+	point_1d const x{5};
+	auto r = radius_vector(x);
+	static_assert(std::is_same_v<decltype(r), vector_1d>);
+	EXPECT_EQ(r, vector_1d{5});
+}
+
+TESTCASE(geosimd_basic_point_1d_midpoint)
+{
+	point_1d const x1{5};
+	point_1d const x2{9};
+	auto mid = midpoint(x1, x2);
+	static_assert(std::is_same_v<decltype(mid), point_1d>);
+	EXPECT_EQ(mid, point_1d{7});
+}
+
+#ifdef FAIL_geosimd_basic_point_1d_lerp
+TESTCASE(geosimd_basic_point_1d_lerp)
+{
+	point_1d const x1{5};
+	point_1d const x2{9};
+	(void)lerp(x1, x2, 1);
+}
+#endif
+
+TESTCASE(geosimd_basic_point_1d_to_string)
+{
+	point_1d const x1{5};
+	auto const str = to_string(x1);
+	EXPECT_EQ(str, "5");
+}
+
+TESTCASE(geosimd_basic_point_1d_point_pair_distance)
+{
+	geosimd::point_pair const p{point_1d{5}, point_1d{9}};
+	auto d = p.distance();
+	static_assert(std::is_same_v<decltype(d), typename my_1d_vector_space::scalar_type>);
+	EXPECT_EQ(d, 4);
+}
