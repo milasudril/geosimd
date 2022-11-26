@@ -26,16 +26,16 @@ namespace geosimd
 
 		template<class ... Args>
 		requires std::conjunction_v<std::is_same<scalar_type, Args>...>
-			&& (!has_homogenous_coordinates<V>)
+			&& (!has_homogenous_coordinates<V> && !std::is_same_v<scalar_type, storage_type>)
 		GEOSIMD_INLINE_OPT constexpr explicit basic_point(scalar_type x, Args ... xn):
 			m_value{x, xn...}
-		{}
+		{ }
 
 		template<class T = void>
-		requires(!has_homogenous_coordinates<V>)
+		requires(!has_homogenous_coordinates<V> && std::is_same_v<scalar_type, storage_type>)
 		GEOSIMD_INLINE_OPT constexpr explicit basic_point(storage_type val):
 			m_value{val}
-		{}
+		{ codecov::function_called(__FILE__, __LINE__); }
 
 		template<class ... Args>
 		requires std::conjunction_v<std::is_same<scalar_type, Args>...>
@@ -44,33 +44,27 @@ namespace geosimd
 			m_value{x, xn..., one<scalar_type>()}
 		{}
 
+		template<class = void>
+		requires(subscriptable<storage_type>)
 		GEOSIMD_INLINE_OPT constexpr scalar_type operator[](size_t n) const
 		{
-			if constexpr(subscriptable<storage_type>)
-			{ return m_value[n]; }
-			else
-			{ return m_value; }
+			return m_value[n];
 		}
 
 		template<class = void>
-		requires(!supports_static_constexpr_size<storage_type>)
+		requires(!supports_static_constexpr_size<storage_type> && supports_size<storage_type>)
 		GEOSIMD_INLINE_OPT constexpr size_t size() const
-		{
-			if constexpr(supports_size<storage_type>)
-			{ return std::size(m_value) - static_cast<size_t>(has_homogenous_coordinates<V>); }
-			else
-			{ return 1; }
-		}
+		{ return std::size(m_value) - static_cast<size_t>(has_homogenous_coordinates<V>); }
 
 		template<class = void>
 		requires(supports_static_constexpr_size<storage_type>)
 		GEOSIMD_INLINE_OPT static constexpr size_t size()
-		{
-			if constexpr(supports_size<storage_type>)
-			{ return storage_type::size() - static_cast<size_t>(has_homogenous_coordinates<V>); }
-			else
-			{ return 1; }
-		}
+		{ return storage_type::size() - static_cast<size_t>(has_homogenous_coordinates<V>); }
+
+		template<class = void>
+		requires(!supports_size<storage_type>)
+		GEOSIMD_INLINE_OPT static constexpr size_t size()
+		{ return 1; }
 
 		GEOSIMD_INLINE_OPT constexpr auto get() const
 		{ return m_value; }
