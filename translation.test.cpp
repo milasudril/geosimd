@@ -75,3 +75,11 @@ TESTCASE(geosimd_translation_push_pop)
 	}));
 }
 
+TESTCASE(geosimd_translation_column_major_elements)
+{
+	geosimd::translation<my_affine_space> transl{geosimd::basic_vector<my_affine_space>{1, 2, 3}};
+
+	auto const elems = transl.column_major_elements();
+	EXPECT_EQ(std::data(transl.column_major_elements()), std::data(elems))
+
+}
