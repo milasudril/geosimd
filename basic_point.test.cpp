@@ -15,7 +15,6 @@ namespace
 
 	using point_1d = geosimd::basic_point<my_1d_vector_space>;
 	using vector_1d = geosimd::basic_vector<my_1d_vector_space>;
-
 }
 
 TESTCASE(geosimd_basic_point_1d_default_construct)
@@ -145,4 +144,27 @@ TESTCASE(geosimd_basic_point_1d_point_pair_distance)
 	auto d = p.distance();
 	static_assert(std::is_same_v<decltype(d), typename my_1d_vector_space::scalar_type>);
 	EXPECT_EQ(d, 4);
+}
+
+
+namespace
+{
+	struct my_1d_vector_space_float
+	{
+		using scalar_type = float;
+		using vector_type = float;
+		using point_type = float;
+	};
+
+	using point_1d_float = geosimd::basic_point<my_1d_vector_space_float>;
+	using vector_1d_float = geosimd::basic_vector<my_1d_vector_space_float>;
+}
+
+TESTCASE(geosimd_basic_point_1d_float_lerp)
+{
+	point_1d_float const x1{5.0f};
+	point_1d_float const x2{9.0f};
+	auto val = lerp(x1, x2, 0.75f);
+	static_assert(std::is_same_v<decltype(val), point_1d_float>);
+	EXPECT_EQ(val, point_1d_float{8.0f});
 }
