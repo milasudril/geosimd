@@ -41,7 +41,7 @@ namespace geosimd
 		requires std::conjunction_v<std::is_same<scalar_type, Args>...>
 			&& (has_homogenous_coordinates<V>)
 		GEOSIMD_INLINE_OPT constexpr explicit basic_point(scalar_type x, Args ... xn):
-			m_value{x, xn..., one(empty<scalar_type>{})}
+			m_value{x, xn..., one<scalar_type>()}
 		{}
 
 		GEOSIMD_INLINE_OPT constexpr scalar_type operator[](size_t n) const
@@ -129,16 +129,16 @@ namespace geosimd
 			{
 				return storage_type
 				{
-					(static_cast<void>(Is), zero(empty<scalar_type>{}))...,
-					one(empty<scalar_type>{})
+					(static_cast<void>(Is), zero<scalar_type>())...,
+					one<scalar_type>()
 				};
 			}
 			else
 			{
 				return storage_type
 				{
-					(static_cast<void>(Is), zero(empty<scalar_type>{}))...,
-					zero(empty<scalar_type>{})
+					(static_cast<void>(Is), zero<scalar_type>())...,
+					zero<scalar_type>()
 				};
 			}
 		}
