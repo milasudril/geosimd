@@ -14,6 +14,7 @@ namespace
 	};
 
 	using point_1d = geosimd::basic_point<my_1d_vector_space>;
+	using vector_1d = geosimd::basic_vector<my_1d_vector_space>;
 
 }
 
@@ -43,4 +44,53 @@ TESTCASE(geosimd_basic_point_1d_construct)
 TESTCASE(geosimd_basic_point_1d_size)
 {
 	EXPECT_EQ(point_1d::size(), 1);
+}
+
+#ifdef FAIL_geosimd_basic_point_1d_index
+TESTCASE(FAIL_geosimd_basic_point_1d_index)
+{
+	point_1d x;
+	(void)x[0];
+}
+#endif
+
+TESTCASE(geosimd_basic_point_1d_add_vector)
+{
+	point_1d x{2};
+	x += vector_1d{3};
+	EXPECT_EQ(x, point_1d{5});
+}
+
+TESTCASE(geosimd_basic_point_1d_subtract_vector)
+{
+	point_1d x{2};
+	x -= vector_1d{3};
+	EXPECT_EQ(x, point_1d{-1});
+}
+
+TESTCASE(geosimd_basic_point_1d_add_vector_no_assign)
+{
+	point_1d const x1{2};
+	auto x2 = x1 + vector_1d{3};
+	static_assert(std::is_same_v<decltype(x2), point_1d>);
+	EXPECT_EQ(x1, point_1d{2});
+	EXPECT_EQ(x2, point_1d{5});
+}
+
+TESTCASE(geosimd_basic_point_1d_subtract_vector_no_assign)
+{
+	point_1d const x1{2};
+	auto x2 = x1 - vector_1d{3};
+	static_assert(std::is_same_v<decltype(x2), point_1d>);
+	EXPECT_EQ(x1, point_1d{2});
+	EXPECT_EQ(x2, point_1d{-1});
+}
+
+TESTCASE(geosimd_basic_point_1d_difference)
+{
+	point_1d const x1{2};
+	point_1d const x2{5};
+	auto diff = x1 - x2;
+	static_assert(std::is_same_v<decltype(diff), vector_1d>);
+	EXPECT_EQ(diff, vector_1d{-3});
 }
