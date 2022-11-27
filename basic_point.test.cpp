@@ -294,3 +294,30 @@ TESTCASE(geosimd_basic_point_3d_apply_locrot)
 	EXPECT_EQ(x, (point_3d_float{1.5f, 5.5f, 12.0f}));
 }
 
+namespace
+{
+	struct my_3d_vector_space_disabled_rotations
+	{
+		using scalar_type = float;
+		using vector_type = geosimd::vec_t<float, 4>;
+		using point_type = geosimd::vec_t<float, 4>;
+		using enable_homogenous_coordinates_t = void;
+
+		static constexpr scalar_type distance(point_type a, point_type b)
+		{
+			return std::sqrt(inner_product(a - b));
+		}
+	};
+
+	static_assert(geosimd::has_homogenous_coordinates<my_3d_vector_space_disabled_rotations>);
+	using point_3d_float_norot = geosimd::basic_point<my_3d_vector_space_disabled_rotations>;
+	using vector_3d_float_norot = geosimd::basic_vector<my_3d_vector_space_disabled_rotations>;
+}
+
+#ifdef FAIL_my_3d_vector_space_disabled_rotations
+TESTCASE(my_3d_vector_space_disabled_rotations)
+{
+	geosimd::rotation<my_3d_vector_space_disabled_rotations> const
+		R{geosimd::rotation_angle{geosimd::turns{0.25}}, geosimd::dimension_tag<2>{}};
+}
+#endif
