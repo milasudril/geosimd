@@ -9,7 +9,7 @@
 				{
 					"config":
 					{
-						"cflags":["-g", "-fprofile-arcs", "-ftest-coverage", "-fno-inline", "-fno-early-inlining", "-DCOVERAGE_BUILD"]
+						"cflags":["-g", "-fprofile-arcs", "-ftest-coverage", "-fno-inline", "-fno-early-inlining", "-DCOVERAGE_BUILD", "-fconcepts-diagnostics-depth=2"]
 					}
 				}
 			},
@@ -19,7 +19,7 @@
 				{
 					"config":
 					{
-						"cflags":["-g", "-fprofile-arcs", "-ftest-coverage", "-fno-inline", "-fno-early-inlining", "-DCOVERAGE_BUILD"]
+						"cflags":["-g", "-fprofile-arcs", "-ftest-coverage", "-fno-inline", "-fno-early-inlining", "-DCOVERAGE_BUILD", "-fconcepts-diagnostics-depth=2"]
 					}
 				}
 			},
@@ -29,7 +29,7 @@
 				{
 					"config":
 					{
-						"cflags":["-g", "-fprofile-arcs", "-ftest-coverage", "-fno-inline", "-fno-early-inlining", "-DCOVERAGE_BUILD"]
+						"cflags":["-g", "-fprofile-arcs", "-ftest-coverage", "-fno-inline", "-fno-early-inlining", "-DCOVERAGE_BUILD", "-fconcepts-diagnostics-depth=2"]
 					}
 				}
 			}
