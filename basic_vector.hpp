@@ -20,6 +20,7 @@ namespace geosimd
 		using value_type = scalar_type;
 		using storage_type = typename V::vector_type;
 		using vector_type = basic_vector<V>;
+		using vector_space = V;
 
 		GEOSIMD_INLINE_OPT constexpr basic_vector():m_value{make_origin()}{}
 

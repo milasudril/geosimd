@@ -113,6 +113,13 @@ TESTCASE(geosimd_basic_vector_1d_mean)
 	EXPECT_EQ(val, vector_1d{2});
 }
 
+TESTCASE(geosimd_basic_vector_1d_to_string)
+{
+	vector_1d const a{-2};
+	auto str = to_string(a);
+	EXPECT_EQ(str, "-2");
+}
+
 namespace
 {
 	struct my_1d_vector_space_float
@@ -176,3 +183,63 @@ TESTCASE(geosimd_basic_vector_4d_size)
 {
 	EXPECT_EQ(vector_4d_float::size(), 4);
 }
+
+
+namespace
+{
+	struct my_3d_vector_space_float_homo_coords
+	{
+		using scalar_type = float;
+		using vector_type = geosimd::vec_t<float, 4>;
+		using enable_homogenous_coordinates_t = void;
+		using enable_rotations_t = void;
+	};
+
+	static_assert(geosimd::has_homogenous_coordinates<my_3d_vector_space_float_homo_coords>);
+	using vector_3d_float = geosimd::basic_vector<my_3d_vector_space_float_homo_coords>;
+}
+
+TESTCASE(geosimd_basic_vector_3d_construct_from_scalars)
+{
+	static_assert(std::is_same_v<vector_3d_float::scalar_type, float>);
+	static_assert(std::is_same_v<vector_3d_float::value_type, float>);
+	static_assert(std::is_same_v<vector_3d_float::storage_type, geosimd::vec_t<float, 4>>);
+
+	vector_3d_float x{1.0f, 2.0f, 4.0f};
+	EXPECT_EQ(x.get(), (geosimd::vec_t{1.0f, 2.0f, 4.0f, 0.0f}));
+}
+
+TESTCASE(geosimd_basic_vector_3d_size)
+{
+	EXPECT_EQ(vector_3d_float::size(), 3);
+}
+
+TESTCASE(geosimd_basic_vector_3d_to_string)
+{
+	vector_3d_float  const x{1.0f, 2.0f, 4.0f};
+	auto const str = to_string(x);
+	EXPECT_EQ(str, "(1.000000, 2.000000, 4.000000)");
+}
+
+TESTCASE(geosimd_basic_vector_3d_apply_rotation)
+{
+	vector_3d_float x{1.0f, 2.0f, 4.0f};
+	geosimd::rotation<vector_3d_float::vector_space> const
+		R{geosimd::rotation_angle{geosimd::turns{0.25}}, geosimd::dimension_tag<2>{}};
+	x.apply(R);
+	EXPECT_EQ(x, (vector_3d_float{-2.0f, 1.0f, 4.0f}));
+}
+
+#if 0
+
+
+TESTCASE(geosimd_basic_vector_3d_apply_locrot)
+{
+	vector_3d_float x{1.0f, 2.0f, 4.0f};
+	geosimd::rotation<vector_3d_float::vector_space> const
+		R{geosimd::rotation_angle{geosimd::turns{0.25}}, geosimd::dimension_tag<2>{}};
+	geosimd::translation const T{vector_3d_float{2.0f, 4.0f, 8.0f}};
+	x.apply(geosimd::locrot{T, R}, vector_3d_float{0.5f, 1.0f, 2.0f});
+	EXPECT_EQ(x, (vector_3d_float{1.5f, 5.5f, 12.0f}));
+}
+#endif
