@@ -1,6 +1,8 @@
 #ifndef GEOSIMD_CONTAINER_PROPS_HPP
 #define GEOSIMD_CONTAINER_PROPS_HPP
 
+#include "./inline.hpp"
+
 #include <iterator>
 #include <type_traits>
 #include <utility>
@@ -23,7 +25,7 @@ namespace geosimd
 	concept supports_constexpr_size = supports_size<Container>
 		&& requires(Container a)
 	{
-		{ std::bool_constant<(std::size(std::declval<Container>()), true)>() } -> std::same_as<std::true_type>;
+		{ std::bool_constant<(std::size(Container{}), true)> {} } -> std::same_as<std::true_type>;
 	};
 
 	template<class Container>
@@ -34,7 +36,7 @@ namespace geosimd
 
 	template<size_t N, subscriptable Container>
 	requires supports_static_constexpr_size<Container>
-	decltype(auto) get(Container&& a)
+	GEOSIMD_INLINE_OPT constexpr decltype(auto) get(Container&& a)
 	{
 		static_assert(N < Container::size());
 		return std::forward<Container>(a)[N];

@@ -2,6 +2,7 @@
 #define GEOSIMD_HILBERT_SPACE_HPP
 
 #include "./abstract_spaces.hpp"
+#include "./inline.hpp"
 
 namespace geosimd
 {
@@ -12,13 +13,15 @@ namespace geosimd
 		using vector_type = VectorType;
 		using scalar_type = ScalarType;
 
-		static constexpr auto norm(vector_type v)
+		GEOSIMD_INLINE_OPT static constexpr auto norm(vector_type v)
 		{
+			codecov::function_called(__FILE__, __LINE__);
 			return std::sqrt(norm_squared(v));
 		}
 
-		static constexpr auto norm_squared(vector_type v)
+		GEOSIMD_INLINE_OPT static constexpr auto norm_squared(vector_type v)
 		{
+			codecov::function_called(__FILE__, __LINE__);
 			return inner_product(v);
 		}
 	};
