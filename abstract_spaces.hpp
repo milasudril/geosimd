@@ -47,8 +47,6 @@ namespace geosimd
 	{
 		{p1 + v} -> std::same_as<T>;
 		{p1 - v} -> std::same_as<T>;
-		{p1 += v} -> std::same_as<T&>;
-		{p1 -= v} -> std::same_as<T&>;
 		{p1 - p2} -> std::same_as<VectorType>;
 	};
 
