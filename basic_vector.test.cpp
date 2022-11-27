@@ -95,6 +95,15 @@ TESTCASE(geosimd_basic_vector_1d_inner_product)
 }
 #endif
 
+#ifdef FAIL_geosimd_basic_vector_1d_lerp
+TESTCASE(geosimd_basic_vector_1d_lerp)
+{
+	vector_1d const x1{5};
+	vector_1d const x2{9};
+	(void)lerp(x1, x2, 1);
+}
+#endif
+
 TESTCASE(geosimd_basic_vector_1d_mean)
 {
 	vector_1d const a{-2};
@@ -102,4 +111,23 @@ TESTCASE(geosimd_basic_vector_1d_mean)
 	auto val = mean(a, b);
 	static_assert(std::is_same_v<decltype(val), vector_1d>);
 	EXPECT_EQ(val, vector_1d{2});
+}
+namespace
+{
+	struct my_1d_vector_space_float
+	{
+		using scalar_type = float;
+		using vector_type = float;
+	};
+
+	using vector_1d_float = geosimd::basic_vector<my_1d_vector_space_float>;
+}
+
+TESTCASE(geosimd_basic_vector_1d_float_lerp)
+{
+	vector_1d_float const x1{5.0f};
+	vector_1d_float const x2{9.0f};
+	auto val = lerp(x1, x2, 0.75f);
+	static_assert(std::is_same_v<decltype(val), vector_1d_float>);
+	EXPECT_EQ(val, vector_1d_float{8.0f});
 }
