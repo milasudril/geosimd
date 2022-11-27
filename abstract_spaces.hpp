@@ -30,13 +30,9 @@ namespace geosimd
 	{
 		{a + b} -> std::same_as<T>;
 		{a - b} -> std::same_as<T>;
-		{a += b} -> std::same_as<T&>;
-		{a -= b} -> std::same_as<T&>;
 		{c * a} -> std::same_as<T>;
 		{a * c} -> std::same_as<T>;
 		{a / c} -> std::same_as<T>;
-		{a *= c} -> std::same_as<T&>;
-		{a /= c} -> std::same_as<T&>;
 		{-a} -> std::same_as<T>;
 		{zero(std::declval<empty<T>>())} -> std::same_as<T>;
 	};
