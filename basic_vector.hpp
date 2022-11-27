@@ -31,7 +31,7 @@ namespace geosimd
 			&& (!has_homogenous_coordinates<V>)
 		GEOSIMD_INLINE_OPT constexpr explicit basic_vector(scalar_type x, Args ... xn):
 			m_value{x, xn...}
-		{ }
+		{ codecov::function_called(__FILE__, __LINE__); }
 
 		template<class ... Args>
 		requires std::conjunction_v<std::is_same<scalar_type, Args>...>
