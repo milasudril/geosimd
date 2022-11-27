@@ -205,7 +205,7 @@ TESTCASE(geosimd_basic_vector_3d_construct_from_scalars)
 	static_assert(std::is_same_v<vector_3d_float::value_type, float>);
 	static_assert(std::is_same_v<vector_3d_float::storage_type, geosimd::vec_t<float, 4>>);
 
-	vector_3d_float x{1.0f, 2.0f, 4.0f};
+	vector_3d_float const x{1.0f, 2.0f, 4.0f};
 	EXPECT_EQ(x.get(), (geosimd::vec_t{1.0f, 2.0f, 4.0f, 0.0f}));
 }
 
@@ -230,16 +230,33 @@ TESTCASE(geosimd_basic_vector_3d_apply_rotation)
 	EXPECT_EQ(x, (vector_3d_float{-2.0f, 1.0f, 4.0f}));
 }
 
-#if 0
-
-
-TESTCASE(geosimd_basic_vector_3d_apply_locrot)
+TESTCASE(geosimd_basic_vector_3d_inner_product)
 {
-	vector_3d_float x{1.0f, 2.0f, 4.0f};
-	geosimd::rotation<vector_3d_float::vector_space> const
+	vector_3d_float const x{1.0f, 2.0f, 4.0f};
+	vector_3d_float const y{3.0f, 5.0f, 7.0f};
+	auto res = inner_product(x, y);
+	static_assert(std::is_same_v<decltype(res), float>);
+	EXPECT_EQ(res, 41.0f);
+
+	auto res2 = inner_product(x);
+	static_assert(std::is_same_v<decltype(res2), float>);
+	EXPECT_EQ(res2, 21.0f);
+}
+
+namespace
+{
+	struct my_3d_vector_space_disabled_rotations
+	{
+		using scalar_type = float;
+		using vector_type = geosimd::vec_t<float, 4>;
+		using enable_homogenous_coordinates_t = void;
+	};
+}
+
+#ifdef FAIL_my_3d_vector_space_disabled_rotations
+TESTCASE(my_3d_vector_space_disabled_rotations)
+{
+	geosimd::rotation<my_3d_vector_space_disabled_rotations> const
 		R{geosimd::rotation_angle{geosimd::turns{0.25}}, geosimd::dimension_tag<2>{}};
-	geosimd::translation const T{vector_3d_float{2.0f, 4.0f, 8.0f}};
-	x.apply(geosimd::locrot{T, R}, vector_3d_float{0.5f, 1.0f, 2.0f});
-	EXPECT_EQ(x, (vector_3d_float{1.5f, 5.5f, 12.0f}));
 }
 #endif
