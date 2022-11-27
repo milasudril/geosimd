@@ -239,6 +239,13 @@ namespace
 	using vector_3d_float = geosimd::basic_vector<my_3d_vector_space_float_homo_coords>;
 }
 
+#ifdef FAIL_geosimd_basic_point_3d_construct_from_value
+TESTCASE(geosimd_basic_point_3d_construct_from_value)
+{
+	point_3d_float x{geosimd::vec_t{1.0f, 2.0f, 4.0f, 8.0}};
+}
+#endif
+
 TESTCASE(geosimd_basic_point_3d_construct_from_scalars)
 {
 	static_assert(std::is_same_v<point_3d_float::vector_type, geosimd::basic_vector<my_3d_vector_space_float_homo_coords>>);
