@@ -43,14 +43,12 @@ namespace geosimd
 			&& (has_homogenous_coordinates<V>)
 		GEOSIMD_INLINE_OPT constexpr explicit basic_point(scalar_type x, Args ... xn):
 			m_value{x, xn..., one<scalar_type>()}
-		{}
+		{ }
 
 		template<class = void>
 		requires(subscriptable<storage_type>)
 		GEOSIMD_INLINE_OPT constexpr scalar_type operator[](size_t n) const
-		{
-			return m_value[n];
-		}
+		{ return m_value[n]; }
 
 		template<class = void>
 		requires(!supports_static_constexpr_size<storage_type> && supports_size<storage_type>)
