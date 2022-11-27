@@ -12,8 +12,8 @@
 
 	namespace geosimd::codecov
 	{
-		char const* last_file;
-		size_t last_line;
+		inline char const* last_file;
+		inline size_t last_line;
 
 		constexpr void function_called(char const* file, size_t line)
 		{

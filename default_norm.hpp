@@ -1,6 +1,8 @@
 #ifndef GEOSIMD_DEFAULTNORM_HPP
 #define GEOSIMD_DEFAULTNORM_HPP
 
+#include "./inline.hpp"
+
 #include <cstdlib>
 #include <cmath>
 #include <concepts>
@@ -17,16 +19,18 @@ namespace geosimd
 	};
 
 	template<supports_abs T>
-	constexpr auto distance(T a, T b)
+	GEOSIMD_INLINE_OPT constexpr auto distance(T a, T b)
 	{
+		codecov::function_called(__FILE__, __LINE__);
 		using std::abs;
 		return abs(a - b);
 	}
 
 	template<std::totally_ordered T>
 	requires (!supports_abs<T>)
-	constexpr auto distance(T a, T b)
+	GEOSIMD_INLINE_OPT constexpr auto distance(T a, T b)
 	{
+		codecov::function_called(__FILE__, __LINE__);
 		return a < b ? (b - a) : (a - b);
 	}
 
@@ -37,8 +41,9 @@ namespace geosimd
 	};
 
 	template<supports_abs T>
-	constexpr auto norm(T val)
+	GEOSIMD_INLINE_OPT constexpr auto norm(T val)
 	{
+		codecov::function_called(__FILE__, __LINE__);
 		using std::abs;
 		return abs(val);
 	}
