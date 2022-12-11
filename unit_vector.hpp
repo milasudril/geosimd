@@ -14,26 +14,31 @@ namespace geosimd
 	public:
 		using vector_type = basic_vector<V>;
 		using scalar_type = vector_type::scalar_type;
+		using value_type = vector_type::value_type;
 
 		GEOSIMD_INLINE_OPT constexpr explicit unit_vector(vector_type val):
 			m_value{val/norm(val)}
 		{}
 
+		template<class T = void>
+		requires(subscriptable<vector_type>)
 		GEOSIMD_INLINE_OPT constexpr scalar_type operator[](size_t n) const
-		{
-			if constexpr(subscriptable<vector_type>)
-			{ return m_value[n]; }
-			else
-			{ return m_value; }
-		}
+		{ return m_value[n]; }
 
+		template<class = void>
+		requires(!supports_static_constexpr_size<vector_type> && supports_size<vector_type>)
 		GEOSIMD_INLINE_OPT constexpr size_t size() const
-		{
-			if constexpr(supports_size<vector_type>)
-			{ return std::size(m_value) - static_cast<size_t>(has_homogenous_coordinates<V>); }
-			else
-			{ return 1; }
-		}
+		{ return std::size(m_value); }
+
+		template<class = void>
+		requires(supports_static_constexpr_size<vector_type>)
+		GEOSIMD_INLINE_OPT static constexpr size_t size()
+		{ return vector_type::size(); }
+
+		template<class = void>
+		requires(!supports_size<vector_type>)
+		GEOSIMD_INLINE_OPT static constexpr size_t size()
+		{ return 1; }
 
 		auto get() const
 		{ return m_value; }
