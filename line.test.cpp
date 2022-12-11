@@ -7,7 +7,7 @@
 
 TESTCASE(geodimd_line_verify_points)
 {
-	using loc = geosimd::location<float, 3>;
+	using loc = geosimd::euclidian_space<float, 3>::location;
 
 	constexpr geosimd::line line{loc{1.0f, 2.0f, 3.0f}, loc{2.0f, 4.0f, 6.0f}};
 	EXPECT_EQ(line.p1, (loc{1.0f, 2.0f, 3.0f}));
@@ -16,7 +16,7 @@ TESTCASE(geodimd_line_verify_points)
 
 TESTCASE(geodimd_line_line_intersection)
 {
-	using loc = geosimd::location<float, 3>;
+	using loc = geosimd::euclidian_space<float, 3>::location;
 
 	constexpr geosimd::line line_a{loc{0.0f, 1.0f, 0.0f}, loc{1.0f, 0.0f, 0.0f}};
 	constexpr geosimd::line line_b{loc{0.0f, 0.0f, 0.0f}, loc{2.0f, 1.0f, 0.0f}};
@@ -40,7 +40,7 @@ TESTCASE(geodimd_line_line_intersection)
 
 TESTCASE(geosimd_line_ray_intersection)
 {
-	using loc = geosimd::location<float, 3>;
+	using loc = geosimd::euclidian_space<float, 3>::location;
 
 	constexpr geosimd::line line{loc{0.0f, 0.0f, 0.0f}, loc{1.0f, 0.0f, 0.0f}};
 	constexpr geosimd::ray ray_a{loc{2.0f, 1.0f, 0.0f}, loc{3.0f, 2.0f, 0.0f}};
@@ -57,7 +57,7 @@ TESTCASE(geosimd_line_ray_intersection)
 
 TESTCASE(geosimd_ray_ray_intersection)
 {
-	using loc = geosimd::location<float, 3>;
+	using loc = geosimd::euclidian_space<float, 3>::location;
 
 	{
 		constexpr geosimd::ray ray_a{loc{-1.0f, -1.0f, 0.0f}, loc{1.0f, 1.0f, 0.0f}};
@@ -114,7 +114,7 @@ TESTCASE(geosimd_ray_ray_intersection)
 
 TESTCASE(geosimd_line_segemt_flip)
 {
-	using loc = geosimd::location<float, 3>;
+	using loc = geosimd::euclidian_space<float, 3>::location;
 
 	constexpr geosimd::line_segment seg{loc{-1.0f, -1.0f, 0.0f}, loc{1.0f, 1.0f, 0.0f}};
 	EXPECT_EQ(seg.p1, (loc{-1.0f, -1.0f, 0.0f}));
@@ -127,7 +127,7 @@ TESTCASE(geosimd_line_segemt_flip)
 
 TESTCASE(geosimd_line_segment_line_segment_intersection)
 {
-	using loc = geosimd::location<float, 3>;
+	using loc = geosimd::euclidian_space<float, 3>::location;
 
 	{
 		constexpr geosimd::line_segment line_segment_a{loc{-1.0f, -1.0f, 0.0f}, loc{1.0f, 1.0f, 0.0f}};
