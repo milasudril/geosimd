@@ -6,16 +6,59 @@ This is a header-only library whose main focus is to model Euclidian geometry wi
  * Points
  * Angles
 
+Below is an example on how you may use it
+
+```c++
+#include <geosimd/euclidian_space.hpp>
+
+#include <cstdio>
+
+namespace your_project::geom
+{
+	inline constexpr size_t num_dimensions = 3;
+	using scalar = float;
+	using the_space = geosimd::euclidian_space<scalar, num_dimensions>;
+
+	using location = the_space::location;
+	using displacement = the_space::displacement;
+	using direction = the_space::direction;
+	using rotation = geosimd::rotation<the_space>;
+	using translation = geosimd::translation<the_space>;
+	using locrot = geosimd::locrot<the_space>;
+	using x = the_space::x;
+	using y = the_space::y;
+	using z = the_space::z;
+	inline constexpr auto origin = geosimd::origin<the_space>();
+}
+
+int main()
+{
+	your_project::geom::location loc{1.0f, 2.0f, 3.0f};
+	loc.apply(your_project::geom::rotation{geosimd::rotation_angle{geosimd::turns{0.25}},
+		your_project::geom::z{}},
+		your_project::geom::location{1.0f, 0.0f, 0.0f}
+	);
+
+	auto d = distance(loc, your_project::geom::origin);
+
+	printf("%s %.8e\n", to_string(loc).c_str(), d);
+}
+```
+
+The library require support for c++20. It is known to work with gcc 11, but clang 15 has not yet sufficient support for c++20 to compile the code. In addition to that, clang may complain about non-standard use of `constexpr`.
+
 While efforts has been made to force the compiler to optimize away abstractions also without any optimizations turned on (debugging an optimize build is a real pain), it is still recommended to enable all optimizations when using this library. This means that the following options are recommended
 
 `-O3 -ffast-math -ftree-vectorize`
 
+at least for release builds.
+
 
 ## Vectors and Points
 
-A point can be defined as a 0-dimensional object with a distinct location in some space. It is possible to take the difference between two poins A and B. Doing so, results in a vector from A to B. Vectors can be added, and multiplied by a factor called a scalar. Furthermore, points and vectors can be added, which results in a different point. Since these concepts are interesting on their own, and also that C++ has types that describes points (such as pointers), and vectors (regular signed integers), these are described as `concepts`, see `abstract_spaces.hpp`.
+A point can be defined as a 0-dimensional object with a distinct location in some space. It is possible to take the difference between two poins A and B. Doing so, results in a vector from A to B. Vectors can be added, and multiplied by a factor called a scalar. Furthermore, points and vectors can be added, which results in a different point. Since these concepts are interesting on their own, and also that C++ has types that describes points (such as pointers), and vectors (regular signed integers), these are described as *concepts*, see `abstract_spaces.hpp`.
 
-Storage types for vectors (and also points), of a compile-time known dimensionality, are found in `vector_storage.hpp`. It uses `vector_limits.hpp` to determine whether or not a type is suitable for native vectorization. If not support is emulated through an `emulated_vector`. There is support for complex vectors. This works by using std::complex together with a vector type. Thus, a complex vector will consist of a real vector, and an imaginary vector. The main abstraction over SIMD operations is `vec_t`. In addition to arithmetic operations, `vec_t` defines the Hermitian `inner_product`, as well as vector complex conjugate.
+Storage types for vectors (and also points), of a compile-time known dimensionality, are found in `vector_storage.hpp`. It uses `vector_limits.hpp` to determine whether or not a type is suitable for native vectorization. If not, support is emulated through an `emulated_vector`. There is support for complex vectors. This works by using std::complex together with a vector type. Thus, a complex vector will consist of a real vector, and an imaginary vector. The main abstraction over SIMD operations is `vec_t`. In addition to arithmetic operations, `vec_t` defines the Hermitian `inner_product`, as well as vector complex conjugate.
 
 Vectors and points are modelled by `basic_vector` and `basic_point`, respectively. These are class templates that accepts a suitable vector space. `basic_point` requires the vector space to be an affine space. The requirements on different kinds of vector spaces are specified in `abstract_spaces.hpp`. Basically, a vector space is implemented as a struct, containing using aliases and static member functions. The minimal requirement on a vector space, is that it specifies the vector type, and the scalar type. An affine space, must also specify the point type. An example of an affine space, that would work with both `basic_point` and `basic_vector` is
 
@@ -30,7 +73,7 @@ struct writable_address_space
 
 Since it is possible to compute the distance between two pointers, `writable_address_space` is also a metric space. It is also possible to create similar mappings for the `std::chrono` library.
 
-The Euclidian N-space is defined in `euclidian_sapce.hpp`. The Euclidian N-space is a metric normed space, with the norm defined as in a Hilbert space. Points are called `location`s and vectors are called `displacement`s. The implementation of the Euclidian N-space found in this library uses homogenous coordinates, which means that if the observable dimensionality is N, N+1 elements are allocated for each object. For example a, for a 3-dimensional quantity, 4 elements are used, the last being 0 for a vector, and 1 for a point.
+The Euclidian N-space is defined in `euclidian_space.hpp`. The Euclidian N-space is a metric normed space, with the norm defined as in a Hilbert space. Points are called `location`s and vectors are called `displacement`s. The implementation of the Euclidian N-space found in this library uses homogenous coordinates, which means that if the observable dimensionality is N, N+1 elements are allocated for each object. For example a, for a 3-dimensional quantity, 4 elements are used, the last being 0 for a vector, and 1 for a point.
 
 
 ### More about vector spaces
