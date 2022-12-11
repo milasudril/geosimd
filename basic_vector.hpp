@@ -8,6 +8,7 @@
 #include "./rotation.hpp"
 
 #include <utility>
+#include <numeric>
 
 namespace geosimd
 {
@@ -129,7 +130,14 @@ namespace geosimd
 	template<vector_space V>
 	GEOSIMD_INLINE_OPT constexpr auto mean(basic_vector<V> a, basic_vector<V> b)
 	{
-		return (a + b)/static_cast<typename V::scalar_type>(2);
+		if constexpr(std::is_integral_v<typename V::vector_type>)
+		{
+			return basic_vector<V>{std::midpoint(a.get(), b.get())};
+		}
+		else
+		{
+			return (a + b)/static_cast<typename V::scalar_type>(2);
+		}
 	}
 
 	template<vector_space V>
