@@ -134,3 +134,16 @@ TESTCASE(geosimd_unit_vector_3d_rotate)
 	EXPECT_EQ(vec[1], 1.0f);
 	EXPECT_EQ(vec[2], 0.0f);
 }
+
+TESTCASE(geosimd_unit_vector_inner_product)
+{
+	using vector_type = unit_vector_3d::vector_type;
+	unit_vector_3d n{vector_type{1.0f, 0.0f, 0.0f}};
+	vector_type v{3.0f, 2.0f, 1.0f};
+	auto proj = inner_product(v, n);
+	static_assert(std::is_same_v<decltype(proj), vector_type::scalar_type>);
+	EXPECT_EQ(proj, 3.0f);
+
+	unit_vector_3d n1{vector_type{-1.0f, 0.0f, 0.0f}};
+	EXPECT_EQ(inner_product(n, n1), -1.0f);
+}
