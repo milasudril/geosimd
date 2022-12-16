@@ -301,6 +301,15 @@ TESTCASE(geosimd_basic_point_3d_apply_locrot)
 	EXPECT_EQ(x, (point_3d_float{1.5f, 5.5f, 12.0f}));
 }
 
+TESTCASE(geosimd_basic_point_3d_structured_binding)
+{
+	point_3d_float  const p{1.0f, 2.0f, 4.0f};
+	auto [x, y, z] = p;
+	EXPECT_EQ(x, 1.0f);
+	EXPECT_EQ(y, 2.0f);
+	EXPECT_EQ(z, 4.0f);
+}
+
 namespace
 {
 	struct my_3d_vector_space_disabled_rotations
