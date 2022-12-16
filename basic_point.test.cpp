@@ -305,6 +305,8 @@ TESTCASE(geosimd_basic_point_3d_structured_binding)
 {
 	point_3d_float  const p{1.0f, 2.0f, 4.0f};
 	auto [x, y, z] = p;
+	auto x2 = get<0>(p);
+	EXPECT_EQ(x2, x);
 	EXPECT_EQ(x, 1.0f);
 	EXPECT_EQ(y, 2.0f);
 	EXPECT_EQ(z, 4.0f);

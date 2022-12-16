@@ -31,14 +31,14 @@ namespace geosimd
 	template<class Container>
 	concept supports_static_constexpr_size = requires(Container a)
 	{
-		{ std::bool_constant<(Container::size(), true)>() } -> std::same_as<std::true_type>;
+		{ std::bool_constant<(std::decay_t<Container>::size(), true)>() } -> std::same_as<std::true_type>;
 	};
 
 	template<size_t N, subscriptable Container>
 	requires supports_static_constexpr_size<Container>
 	GEOSIMD_INLINE_OPT constexpr decltype(auto) get(Container&& a)
 	{
-		static_assert(N < Container::size());
+		static_assert(N < std::decay_t<Container>::size());
 		return std::forward<Container>(a)[N];
 	}
 }
