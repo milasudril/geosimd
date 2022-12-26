@@ -1,6 +1,7 @@
 #ifndef GEOSIMD_POINT_CONTAINER_HPP
 #define GEOSIMD_POINT_CONTAINER_HPP
 
+#include <valarray>
 #include <algorithm>
 #include <cassert>
 
@@ -110,6 +111,26 @@ namespace geosimd
 	constexpr auto operator-(point_container<T> a, Other const& b)
 	{
 		return a -= b;
+	}
+	
+	template<class T>
+	auto distance(point_container<T> const& a, point_container<T> const& b)
+	{
+		assert(std::size(a) == std::size(b));
+		std::valarray<typename T::value_type::scalar_type> ret(std::size(a));
+		auto i_a = std::begin(a);
+		auto i_b = std::begin(b);
+		auto const a_end = std::end(a);
+		size_t k = 0;
+		while(i_a != a_end)
+		{
+			ret[k] = distance(*i_a, *i_b);
+			
+			++i_a;
+			++i_b;
+			++k;
+		}		
+		return ret;
 	}
 
 	template<class T>
