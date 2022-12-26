@@ -19,6 +19,15 @@ namespace geosimd
 		using value_type = typename Container::value_type;
 		
 		template<class Dummy = void>
+		requires requires(Container x) {
+			{x.push_back(value_type{})};
+		}
+		decltype(auto) push_back(value_type const& val)
+		{
+			return Container::push_back(val);
+		}
+		
+		template<class Dummy = void>
 		requires(std::ranges::random_access_range<Container>)
 		value_type& operator[](size_t n)
 		{
@@ -32,17 +41,23 @@ namespace geosimd
 			return *(begin() + n);
 		}
 		
-		constexpr bool operator==(vec_container const& other) const
+		template<std::ranges::input_range Other>
+		requires(std::is_same_v<std::ranges::range_value_t<Other>, value_type>)
+		constexpr bool operator==(Other const& other) const
 		{
 			return std::ranges::equal(*this, other); 
 		}
 		
+		template<std::ranges::input_range Other>
+		requires(std::is_same_v<std::ranges::range_value_t<Other>, value_type>)
 		constexpr bool operator!=(vec_container const& other) const
 		{
 			return !(*this == other);
 		}
 		
-		constexpr vec_container& operator+=(vec_container const& other)
+		template<std::ranges::sized_range Other>
+		requires(std::is_same_v<std::ranges::range_value_t<Other>, value_type>)
+		constexpr vec_container& operator+=(Other const& other)
 		{
 			assert(size() == other.size());
 
@@ -61,7 +76,9 @@ namespace geosimd
 			return *this;
 		}
 		
-		constexpr vec_container& operator-=(vec_container const& other)
+		template<std::ranges::sized_range Other>
+		requires(std::is_same_v<std::ranges::range_value_t<Other>, value_type>)
+		constexpr vec_container& operator-=(Other const& other)
 		{
 			assert(size() == other.size());
 
@@ -104,33 +121,35 @@ namespace geosimd
 			return *this;
 		}
 	};
-	
-	template<class T>
-	auto operator+(vec_container<T> a, vec_container<T> const& b)
+
+	template<class T, std::ranges::input_range Other>
+	requires(std::is_same_v<std::ranges::range_value_t<Other>, typename vec_container<T>::value_type>)
+	constexpr auto operator+(vec_container<T> a, Other const& b)
 	{
 		return a += b;
 	}
 	
-	template<class T>
-	auto operator-(vec_container<T> a, vec_container<T> const& b)
+	template<class T, std::ranges::input_range Other>
+	requires(std::is_same_v<std::ranges::range_value_t<Other>, typename vec_container<T>::value_type>)
+	constexpr auto operator-(vec_container<T> a, Other const& b)
 	{
 		return a -= b;
 	}
 	
 	template<class T>
-	auto operator*(typename vec_container<T>::value_type::scalar_type b, vec_container<T> a)
+	constexpr auto operator*(typename vec_container<T>::value_type::scalar_type b, vec_container<T> a)
 	{
 		return a *= b;
 	}
 	
 	template<class T>
-	auto operator*(vec_container<T> a, typename vec_container<T>::value_type::scalar_type b)
+	constexpr auto operator*(vec_container<T> a, typename vec_container<T>::value_type::scalar_type b)
 	{
 		return a *= b;
 	}
 	
 	template<class T>
-	auto operator/(vec_container<T> a, typename vec_container<T>::value_type::scalar_type b)
+	constexpr auto operator/(vec_container<T> a, typename vec_container<T>::value_type::scalar_type b)
 	{
 		return a /= b;
 	}
