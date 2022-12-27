@@ -15,7 +15,7 @@ namespace geosimd
 	{
 	public:
 		using value_type = basic_vector<V>;
-		using scalar_type = typename basic_vector<V>::scalar_type;
+		using scalar_type = typename value_type::scalar_type;
 		using container_type = std::vector<basic_vector<V>>;
 
 		using container_type::container_type;
