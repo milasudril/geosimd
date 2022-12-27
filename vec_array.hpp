@@ -110,15 +110,26 @@ namespace geosimd
 	}
 
 	template<vector_space V>
-	constexpr auto operator*(vec_array<V> a, typename V::scalar_type b)
+	auto operator*(vec_array<V> a, typename V::scalar_type b)
 	{
 		return a *= b;
 	}
 
 	template<vector_space V>
-	constexpr auto operator/(vec_array<V> a, typename V::scalar_type b)
+	auto operator/(vec_array<V> a, typename V::scalar_type b)
 	{
 		return a /= b;
+	}
+
+	template<normed_space V>
+	auto norm(vec_array<V> const& vals)
+	{
+		std::vector<typename V::scalar_type> ret(std::size(vals));
+		for(size_t k = 0; k != std::size(vals); ++k)
+		{
+			ret[k] = norm(vals[k]);
+		}
+		return ret;
 	}
 
 	template<vector_space V>

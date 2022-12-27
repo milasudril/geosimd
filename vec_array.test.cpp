@@ -81,3 +81,21 @@ TESTCASE(geosimd_vec_array_mul_div)
 	EXPECT_EQ(3*a, a*3);
 	EXPECT_EQ(c/3, old_a);
 }
+
+TESTCASE(geosimd_vec_array_norm)
+{
+	struct vector_space_int
+	{
+		using vector_type = int;
+		using scalar_type = int;
+	};
+
+	static_assert(geosimd::normed_space<vector_space_int>);
+
+	geosimd::vec_array<vector_space_int> a{geosimd::basic_vector<vector_space_int>{1},
+		geosimd::basic_vector<vector_space_int>{-2},
+		geosimd::basic_vector<vector_space_int>{3}};
+
+	auto const n = norm(a);
+	EXPECT_EQ(n, (std::vector{1, 2, 3}));
+}
