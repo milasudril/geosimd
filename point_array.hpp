@@ -69,19 +69,57 @@ namespace geosimd
 		}
 	};
 
-	template<vector_space V>
+	template<affine_space V>
 	auto operator+(point_array<V> a, vec_array<V> const& b)
 	{
 		return a += b;
 	}
 
-	template<vector_space V>
+	template<affine_space V>
 	auto operator-(point_array<V> a, vec_array<V> const& b)
 	{
 		return a -= b;
 	}
 
-	template<vector_space V>
+	template<affine_space V>
+	auto operator-(point_array<V> const& a, point_array<V> const& b)
+	{
+		assert(std::size(a) == std::size(b));
+		vec_array<V> ret(std::size(a));
+		for(size_t k = 0; k != std::size(a); ++k)
+		{
+			ret[k] = a[k] - b[k];
+		}
+		return ret;
+	}
+
+	template<metric_space V>
+	auto distance(point_array<V> const& a, point_array<V> const& b)
+	{
+		assert(std::size(a) == std::size(b));
+		std::vector<typename V::scalar_type> ret(std::size(a));
+		for(size_t k = 0; k != std::size(a); ++k)
+		{
+			ret[k] = distance(a[k], b[k]);
+		}
+
+		return ret;
+	}
+
+	template<metric_space V>
+	auto distance_squared(point_array<V> const& a, point_array<V> const& b)
+	{
+		assert(std::size(a) == std::size(b));
+		std::vector<typename V::scalar_type> ret(std::size(a));
+		for(size_t k = 0; k != std::size(a); ++k)
+		{
+			ret[k] = distance_squared(a[k], b[k]);
+		}
+
+		return ret;
+	}
+
+	template<affine_space V>
 	std::string to_string(point_array<V> const& obj)
 	{
 		std::string ret{};
