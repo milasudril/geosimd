@@ -132,6 +132,37 @@ namespace geosimd
 		return ret;
 	}
 
+	template<hilbert_space V>
+	auto norm_squared(vec_array<V> const& vals)
+	{
+		std::vector<typename V::scalar_type> ret(std::size(vals));
+		for(size_t k = 0; k != std::size(vals); ++k)
+		{
+			ret[k] = norm_squared(vals[k]);
+		}
+		return ret;
+	}
+
+	template<inner_product_space V>
+	auto inner_product(vec_array<V> const& a, vec_array<V> const& b)
+	{
+		assert(std::size(a) == std::size(b));
+
+		std::vector<typename V::scalar_type> ret(std::size(a));
+		for(size_t k = 0; k != std::size(a); ++k)
+		{
+			ret[k] = inner_product(a[k], b[k]);
+		}
+
+		return ret;
+	}
+
+	template<inner_product_space V>
+	auto inner_product(vec_array<V> const& a)
+	{
+		return inner_product(a, a);
+	}
+
 	template<vector_space V>
 	std::string to_string(vec_array<V> const& obj)
 	{
