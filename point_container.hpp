@@ -1,13 +1,16 @@
 #ifndef GEOSIMD_POINT_CONTAINER_HPP
 #define GEOSIMD_POINT_CONTAINER_HPP
 
-#include <valarray>
+#include "./vec_container.hpp"
+#include "./abstract_spaces.hpp"
+
 #include <algorithm>
 #include <cassert>
 
 namespace geosimd
 {
-	template<class Container>
+	template<point P, class Container = std::vector<P>>
+	requires requires(){typename P::scalar_type; typename P::vector_type;}
 	class point_container:private Container
 	{
 	public:
@@ -99,16 +102,16 @@ namespace geosimd
 		}
 	};
 
-	template<class T, std::ranges::input_range Other>
-	requires(std::is_same_v<std::ranges::range_value_t<Other>, typename point_container<T>::value_type::vector_type>)
-	constexpr auto operator+(point_container<T> a, Other const& b)
+	template<point P, class Container, std::ranges::input_range Other>
+	requires(std::is_same_v<std::ranges::range_value_t<Other>, typename P::vector_type>)
+	constexpr auto operator+(point_container<P, Container> a, Other const& b)
 	{
 		return a += b;
 	}
 	
-	template<class T, std::ranges::input_range Other>
-	requires(std::is_same_v<std::ranges::range_value_t<Other>, typename point_container<T>::value_type::vector_type>)
-	constexpr auto operator-(point_container<T> a, Other const& b)
+	template<point P, class Container, std::ranges::input_range Other>
+	requires(std::is_same_v<std::ranges::range_value_t<Other>, typename P::vector_type>)
+	constexpr auto operator-(point_container<P, Container> a, Other const& b)
 	{
 		return a -= b;
 	}

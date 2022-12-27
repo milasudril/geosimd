@@ -23,7 +23,7 @@ namespace
 
 TESTCASE(geosimd_point_container_add_sub)
 {
-	geosimd::point_container<std::array<my_point, 3>> a;
+	geosimd::point_container<my_point, std::array<my_point, 3>> a;
 	a[0] = my_point{1, 2, 3, 4};
 	a[1] = my_point{5, 6, 7, 8};
 	a[2] = my_point{9, 10, 11, 12};
@@ -36,7 +36,7 @@ TESTCASE(geosimd_point_container_add_sub)
 	auto const old_a = a;
 	
 	a += b;
-	geosimd::point_container<std::array<my_point, 3>> expected_sum;
+	geosimd::point_container<my_point, std::array<my_point, 3>> expected_sum;
 	expected_sum[2] = my_point{13, 13, 13, 13};
 	expected_sum[1] = my_point{13, 13, 13, 13};
 	expected_sum[0] = my_point{13, 13, 13, 13};
@@ -55,10 +55,9 @@ TESTCASE(geosimd_point_container_add_sub)
 	EXPECT_EQ(d, old_a);
 }
 
-
 TESTCASE(geosimd_point_container_add_other_container)
 {
-	geosimd::point_container<std::array<my_point, 3>> a;
+	geosimd::point_container<my_point, std::array<my_point, 3>> a;
 	a[0] = my_point{1, 2, 3, 4};
 	a[1] = my_point{5, 6, 7, 8};
 	a[2] = my_point{9, 10, 11, 12};
@@ -68,7 +67,7 @@ TESTCASE(geosimd_point_container_add_other_container)
 	b.push_back(my_vector{8, 7, 6, 5});
 	b.push_back(my_vector{4, 3, 2, 1});
 	
-	geosimd::point_container<std::array<my_point, 3>> expected_sum;
+	geosimd::point_container<my_point, std::array<my_point, 3>> expected_sum;
 	expected_sum[2] = my_point{13, 13, 13, 13};
 	expected_sum[1] = my_point{13, 13, 13, 13};
 	expected_sum[0] = my_point{13, 13, 13, 13};
