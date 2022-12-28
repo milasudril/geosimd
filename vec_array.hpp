@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <vector>
 #include <cassert>
+#include <valarray>
 
 namespace geosimd
 {
@@ -124,7 +125,7 @@ namespace geosimd
 	template<normed_space V>
 	auto norm(vec_array<V> const& vals)
 	{
-		std::vector<typename V::scalar_type> ret(std::size(vals));
+		std::valarray<typename V::scalar_type> ret(std::size(vals));
 		for(size_t k = 0; k != std::size(vals); ++k)
 		{
 			ret[k] = norm(vals[k]);
@@ -135,7 +136,7 @@ namespace geosimd
 	template<hilbert_space V>
 	auto norm_squared(vec_array<V> const& vals)
 	{
-		std::vector<typename V::scalar_type> ret(std::size(vals));
+		std::valarray<typename V::scalar_type> ret(std::size(vals));
 		for(size_t k = 0; k != std::size(vals); ++k)
 		{
 			ret[k] = norm_squared(vals[k]);
@@ -148,7 +149,7 @@ namespace geosimd
 	{
 		assert(std::size(a) == std::size(b));
 
-		std::vector<typename V::scalar_type> ret(std::size(a));
+		std::valarray<typename V::scalar_type> ret(std::size(a));
 		for(size_t k = 0; k != std::size(a); ++k)
 		{
 			ret[k] = inner_product(a[k], b[k]);

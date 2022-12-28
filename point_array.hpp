@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <vector>
+#include <valarray>
 #include <cassert>
 
 namespace geosimd
@@ -97,7 +98,7 @@ namespace geosimd
 	auto distance(point_array<V> const& a, point_array<V> const& b)
 	{
 		assert(std::size(a) == std::size(b));
-		std::vector<typename V::scalar_type> ret(std::size(a));
+		std::valarray<typename V::scalar_type> ret(std::size(a));
 		for(size_t k = 0; k != std::size(a); ++k)
 		{
 			ret[k] = distance(a[k], b[k]);
@@ -110,7 +111,7 @@ namespace geosimd
 	auto distance_squared(point_array<V> const& a, point_array<V> const& b)
 	{
 		assert(std::size(a) == std::size(b));
-		std::vector<typename V::scalar_type> ret(std::size(a));
+		std::valarray<typename V::scalar_type> ret(std::size(a));
 		for(size_t k = 0; k != std::size(a); ++k)
 		{
 			ret[k] = distance_squared(a[k], b[k]);

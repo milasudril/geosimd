@@ -97,5 +97,9 @@ TESTCASE(geosimd_vec_array_norm)
 		geosimd::basic_vector<vector_space_int>{3}};
 
 	auto const n = norm(a);
-	EXPECT_EQ(n, (std::vector{1, 2, 3}));
+	REQUIRE_EQ(std::size(n), std::size(a));
+	for(size_t k = 0; k != std::size(n); ++k)
+	{
+		EXPECT_EQ(n[k], norm(a[k]));
+	}
 }
