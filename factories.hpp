@@ -52,6 +52,12 @@ namespace geosimd
 		codecov::function_called(__FILE__, __LINE__);
 		return create<T>(empty<T>{}, std::forward<Args>(args)...);
 	}
+
+	template<class Generator, class Value, class ... Args>
+	concept generator = requires(Generator x, Args... args)
+	{
+		{x(empty<Value>{}, args...)} -> std::same_as<Value>;
+	};
 }
 
 #endif
