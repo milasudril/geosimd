@@ -56,7 +56,7 @@ namespace geosimd
 	template<class Generator, class Value, class ... Args>
 	concept generator = requires(Generator x, Args... args)
 	{
-		{x(empty<Value>{}, args...)} -> std::same_as<Value>;
+		{x(args...)} -> std::same_as<Value>;
 	};
 }
 

@@ -109,7 +109,7 @@ namespace geosimd
 		vec_array<V> ret(n);
 		for(size_t k = 0; k != n; ++k)
 		{
-			ret[k] = gen(empty<basic_vector<V>>{}, args...);
+			ret[k] = gen(args...);
 		}
 		return ret;
 	}
