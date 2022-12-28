@@ -121,6 +121,20 @@ namespace geosimd
 	}
 
 	template<affine_space V>
+	auto midpoint(point_array<V> const& a, point_array<V> const& b)
+	{
+		assert(std::size(a) == std::size(b));
+		point_array<V> ret(std::size(a));
+		for(size_t k = 0; k != std::size(a); ++k)
+		{
+			ret[k] = midpoint(a[k], b[k]);
+		}
+
+		return ret;
+	}
+
+
+	template<affine_space V>
 	std::string to_string(point_array<V> const& obj)
 	{
 		std::string ret{};

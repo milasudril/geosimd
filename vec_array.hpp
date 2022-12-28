@@ -79,6 +79,16 @@ namespace geosimd
 			return *this;
 		}
 
+		vec_array& operator*=(std::valarray<scalar_type> const& other)
+		{
+			assert(size() == other.size());
+			for(size_t k = 0; k != size(); ++k)
+			{
+				(*this)[k] *= other[k];
+			}
+			return *this;
+		}
+
 		vec_array& operator/=(scalar_type c)
 		{
 			auto i_this = begin();
@@ -125,6 +135,18 @@ namespace geosimd
 
 	template<vector_space V>
 	auto operator*(vec_array<V> a, typename V::scalar_type b)
+	{
+		return a *= b;
+	}
+
+	template<vector_space V>
+	auto operator*(std::valarray<typename V::scalar_type> const& b, vec_array<V> a)
+	{
+		return a *= b;
+	}
+
+	template<vector_space V>
+	auto operator*(vec_array<V> a, std::valarray<typename V::scalar_type> const& b)
 	{
 		return a *= b;
 	}
