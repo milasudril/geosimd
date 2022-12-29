@@ -70,6 +70,18 @@ namespace geosimd
 		}
 	};
 
+	template<affine_space V, class Generator, class ... Args>
+	requires(generator<Generator, basic_point<V>, Args...>)
+	auto generate_points(size_t n, Generator&& gen, Args... args)
+	{
+		point_array<V> ret(n);
+		for(size_t k = 0; k != n; ++k)
+		{
+			ret[k] = gen(args...);
+		}
+		return ret;
+	}
+
 	template<affine_space V>
 	auto operator+(point_array<V> a, vec_array<V> const& b)
 	{

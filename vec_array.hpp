@@ -104,7 +104,7 @@ namespace geosimd
 
 	template<vector_space V, class Generator, class ... Args>
 	requires(generator<Generator, basic_vector<V>, Args...>)
-	auto generate_vectors(size_t n, Generator const& gen, Args... args)
+	auto generate_vectors(size_t n, Generator&& gen, Args... args)
 	{
 		vec_array<V> ret(n);
 		for(size_t k = 0; k != n; ++k)
