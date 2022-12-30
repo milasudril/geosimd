@@ -88,15 +88,47 @@ namespace geosimd
 	}
 
 	template<inner_product_space V>
-	GEOSIMD_INLINE_OPT constexpr auto inner_product(unit_vector<V> a, unit_vector<V> b)
+	GEOSIMD_INLINE_OPT constexpr auto inner_product(unit_vector<V> a, basic_vector<V> b)
 	{
-		return inner_product(a.get(), b.get());
+		return inner_product(a.get(), b);
 	}
 	
-	template<hilbert_space V>
-	constexpr auto angular_difference(unit_vector<V> a, unit_vector<V> b)
+	template<inner_product_space V>
+	GEOSIMD_INLINE_OPT constexpr auto inner_product(unit_vector<V> a, unit_vector<V> b)
 	{
-		return turn_angle{rad{std::acos(inner_product(a, b))}};
+		return inner_product(a, b.get());
+	}
+
+
+	
+	template<vector_space V>
+	GEOSIMD_INLINE_OPT constexpr auto cross(unit_vector<V> a, unit_vector<V> b)
+	{
+		return cross(a.get(), b.get());
+	}
+
+	template<vector_space V>
+	GEOSIMD_INLINE_OPT constexpr auto cross(basic_vector<V> a, unit_vector<V> b)
+	{
+		return cross(a, b.get());
+	}
+	
+	template<inner_product_space V>
+	GEOSIMD_FLATTEN constexpr auto angular_distance(unit_vector<V> a, unit_vector<V> b)
+	{
+		return rotation_angle{rad{std::acos(inner_product(a, b))}};
+	}
+	
+	template<inner_product_space V>
+	requires(unit_vector<V>::size() == 3)
+	GEOSIMD_FLATTEN constexpr auto angular_difference(unit_vector<V> a,
+		unit_vector<V> b,
+		basic_vector<V> reference_normal = basic_vector<V>{0.0f, 0.0f, 1.0f}) 
+	{
+		auto const theta = std::acos(static_cast<double>(inner_product(a, b)));
+		auto const n = cross(a, b);
+		auto const side = static_cast<double>(inner_product(n, reference_normal)) > 0.0 ? -1.0 : 1.0;
+		return turn_angle{rad{side*theta}};
 	}
 }
 

@@ -147,3 +147,16 @@ TESTCASE(geosimd_unit_vector_inner_product)
 	unit_vector_3d n1{vector_type{-1.0f, 0.0f, 0.0f}};
 	EXPECT_EQ(inner_product(n, n1), -1.0f);
 }
+
+TESTCASE(geosimd_unit_vector_angular_difference)
+{
+	using vector_type = unit_vector_3d::vector_type;
+	unit_vector_3d a{vector_type{1.0f, 0.0f, 0.0f}};
+	unit_vector_3d b{vector_type{0.0f, 1.0f, 0.0f}};
+	
+	auto const theta1 = angular_difference(a, b);
+	EXPECT_EQ(theta1, geosimd::turn_angle{geosimd::turns{-0.25}});
+	
+	auto const theta2 = angular_difference(b, a);
+	EXPECT_EQ(theta2, geosimd::turn_angle{geosimd::turns{0.25}});
+}
