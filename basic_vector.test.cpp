@@ -243,6 +243,14 @@ TESTCASE(geosimd_basic_vector_3d_inner_product)
 	EXPECT_EQ(res2, 21.0f);
 }
 
+TESTCASE(geosimd_basic_vector_3d_cross)
+{
+	vector_3d_float const x{2.0f, 0.0f, 0.0f};
+	vector_3d_float const y{0.0f, 5.0f, 0.0f};
+	auto const z = cross(x, y);
+	EXPECT_EQ(z, (vector_3d_float{0.0f, 0.0f, 10.f}));
+}
+
 namespace
 {
 	struct my_3d_vector_space_disabled_rotations

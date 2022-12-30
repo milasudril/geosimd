@@ -12,6 +12,8 @@ namespace geosimd
 	{
 		using vectorops_magic = typename vectorops_mixin<unit_vector<V>>::magic;
 	public:
+		//TODO: Add unit vectors for coordinate axis
+		
 		using vector_type = basic_vector<V>;
 		using scalar_type = vector_type::scalar_type;
 		using value_type = vector_type::value_type;
@@ -89,6 +91,12 @@ namespace geosimd
 	GEOSIMD_INLINE_OPT constexpr auto inner_product(unit_vector<V> a, unit_vector<V> b)
 	{
 		return inner_product(a.get(), b.get());
+	}
+	
+	template<hilbert_space V>
+	constexpr auto angular_difference(unit_vector<V> a, unit_vector<V> b)
+	{
+		return turn_angle{rad{std::acos(inner_product(a, b))}};
 	}
 }
 

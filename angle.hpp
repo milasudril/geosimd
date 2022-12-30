@@ -81,12 +81,37 @@ namespace geosimd
 	private:
 		int64_t m_value;
 	};
+	
+	GEOSIMD_INLINE_OPT constexpr auto abs(turn_angle x)
+	{
+		return turn_angle{x.get() >= 0 ? x.get() : -x.get()};
+	}
 
 	inline auto to_string(turn_angle x)
 	{ return std::to_string(x.get()); }
 
 	GEOSIMD_INLINE_OPT constexpr auto zero(geosimd::empty<turn_angle>)
 	{ return turn_angle{0}; }
+	
+	GEOSIMD_INLINE_OPT constexpr auto to_turns(turn_angle x)
+	{
+		return turns{static_cast<double>(x.get())/static_cast<double>(turn_angle::full_turn)};
+	}
+
+	GEOSIMD_INLINE_OPT constexpr auto to_rad(turn_angle x)
+	{
+		return rad{to_turns(x)};
+	}
+
+	constexpr auto sin(turn_angle x)
+	{
+		return static_cast<float>(std::sin(to_rad(x).value));
+	}
+
+	constexpr auto cos(turn_angle x)
+	{
+		return static_cast<float>(std::cos(to_rad(x).value));
+	}
 
 	class rotation_angle
 	{
@@ -193,14 +218,18 @@ namespace geosimd
 		}
 	}
 
+	template<std::floating_point T>
 	struct cos_sin
 	{
-		float cos;
-		float sin;
+		T cos;
+		T sin;
 	};
 
-	constexpr auto cossin(rotation_angle x)
+	template<class T>
+	constexpr auto cossin(T x)
 	{
+		using std::sin;
+		using std::cos;
 		return cos_sin{cos(x), sin(x)};
 	}
 }

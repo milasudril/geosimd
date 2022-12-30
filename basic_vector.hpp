@@ -128,6 +128,24 @@ namespace geosimd
 	}
 
 	template<vector_space V>
+	requires(basic_vector<V>::size() == 3)
+	GEOSIMD_FLATTEN constexpr auto cross(basic_vector<V> a, basic_vector<V> b)
+	{
+		auto const vals_a = a.get();
+		auto const vals_b = b.get();
+
+		auto const a120 = shuffle(vals_a, 1, 2, 0, 3);
+		auto const a201 = shuffle(vals_a, 2, 0, 1, 3);
+
+		auto const b201 = shuffle(vals_b, 2, 0, 1, 3);
+		auto const b120 = shuffle(vals_b, 1, 2, 0, 3);
+		
+		auto const result = a120 * b201 - a201 * b120;
+
+		return basic_vector<V>{result[0], result[1], result[2]};
+	}	
+
+	template<vector_space V>
 	GEOSIMD_INLINE_OPT constexpr auto mean(basic_vector<V> a, basic_vector<V> b)
 	{
 		if constexpr(std::is_integral_v<typename V::vector_type>)
@@ -145,7 +163,7 @@ namespace geosimd
 	GEOSIMD_INLINE_OPT constexpr auto lerp(basic_vector<V> a, basic_vector<V> b, typename V::scalar_type t)
 	{
 		return t*b + (one(empty<typename V::scalar_type>{}) - t)*a;
-	}
+	}	
 
 	template<vector_space V>
 	auto to_string(basic_vector<V> a)
