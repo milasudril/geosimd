@@ -3,6 +3,7 @@
 
 #include "./abstract_spaces.hpp"
 #include "./basic_vector.hpp"
+#include "./unit_vector.hpp"
 
 #include <algorithm>
 #include <vector>
@@ -197,6 +198,20 @@ namespace geosimd
 	auto inner_product(vec_array<V> const& a)
 	{
 		return inner_product(a, a);
+	}
+
+	template<hilbert_space V>
+	auto angular_difference(vec_array<V> const& a, vec_array<V> const& b)
+	{
+		assert(std::size(a) == std::size(b));
+
+		std::valarray<turn_angle> ret(std::size(a));
+		for(size_t k = 0; k != std::size(a); ++k)
+		{
+			ret[k] = angular_difference(unit_vector{a[k]}, unit_vector{b[k]});
+		}
+
+		return ret;
 	}
 
 	template<vector_space V>
