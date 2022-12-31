@@ -13,7 +13,7 @@ namespace geosimd
 		using vectorops_magic = typename vectorops_mixin<unit_vector<V>>::magic;
 	public:
 		//TODO: Add unit vectors for coordinate axis
-		
+
 		using vector_type = basic_vector<V>;
 		using scalar_type = vector_type::scalar_type;
 		using value_type = vector_type::value_type;
@@ -92,7 +92,7 @@ namespace geosimd
 	{
 		return inner_product(a.get(), b);
 	}
-	
+
 	template<inner_product_space V>
 	GEOSIMD_INLINE_OPT constexpr auto inner_product(unit_vector<V> a, unit_vector<V> b)
 	{
@@ -100,7 +100,7 @@ namespace geosimd
 	}
 
 
-	
+
 	template<vector_space V>
 	GEOSIMD_INLINE_OPT constexpr auto cross(unit_vector<V> a, unit_vector<V> b)
 	{
@@ -112,20 +112,29 @@ namespace geosimd
 	{
 		return cross(a, b.get());
 	}
-	
+
 	template<inner_product_space V>
 	GEOSIMD_FLATTEN constexpr auto angular_distance(unit_vector<V> a, unit_vector<V> b)
 	{
 		return rotation_angle{rad{std::acos(inner_product(a, b))}};
 	}
-	
+
 	template<inner_product_space V>
 	requires(unit_vector<V>::size() == 3)
 	GEOSIMD_FLATTEN constexpr auto angular_difference(unit_vector<V> a,
 		unit_vector<V> b,
-		basic_vector<V> reference_normal = basic_vector<V>{0.0f, 0.0f, 1.0f}) 
+		basic_vector<V> reference_normal = basic_vector<V>{0.0f, 0.0f, 1.0f})
 	{
-		auto const theta = std::acos(static_cast<double>(inner_product(a, b)));
+		auto const proj = inner_product(a, b);
+
+		if(std::abs(proj - (-1.0f)) < 1.0f*std::numeric_limits<float>::epsilon()) [[unlikely]]
+		{ return turn_angle{turns{0.5}}; }
+
+		if(std::abs(proj - 1.0f) < 1.0f*std::numeric_limits<float>::epsilon()) [[unlikely]]
+		{ return turn_angle{turns{0.0}};}
+
+		auto const theta = std::acos(static_cast<double>(proj));
+
 		auto const n = cross(a, b);
 		auto const side = static_cast<double>(inner_product(n, reference_normal)) > 0.0 ? -1.0 : 1.0;
 		return turn_angle{rad{side*theta}};

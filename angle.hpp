@@ -53,7 +53,7 @@ namespace geosimd
 		GEOSIMD_INLINE_OPT constexpr explicit turn_angle(int64_t x):m_value{x}{}
 
 		GEOSIMD_INLINE_OPT constexpr turn_angle(turns x):
-			m_value{static_cast<uint32_t>(static_cast<int64_t>(x.value * full_turn))}
+			m_value{static_cast<int64_t>(x.value * full_turn)}
 		{}
 
 		GEOSIMD_INLINE_OPT constexpr turn_angle(rad x):
@@ -81,7 +81,7 @@ namespace geosimd
 	private:
 		int64_t m_value;
 	};
-	
+
 	GEOSIMD_INLINE_OPT constexpr auto abs(turn_angle x)
 	{
 		return turn_angle{x.get() >= 0 ? x.get() : -x.get()};
@@ -92,7 +92,7 @@ namespace geosimd
 
 	GEOSIMD_INLINE_OPT constexpr auto zero(geosimd::empty<turn_angle>)
 	{ return turn_angle{0}; }
-	
+
 	GEOSIMD_INLINE_OPT constexpr auto to_turns(turn_angle x)
 	{
 		return turns{static_cast<double>(x.get())/static_cast<double>(turn_angle::full_turn)};

@@ -151,12 +151,34 @@ TESTCASE(geosimd_unit_vector_inner_product)
 TESTCASE(geosimd_unit_vector_angular_difference)
 {
 	using vector_type = unit_vector_3d::vector_type;
-	unit_vector_3d a{vector_type{1.0f, 0.0f, 0.0f}};
-	unit_vector_3d b{vector_type{0.0f, 1.0f, 0.0f}};
-	
-	auto const theta1 = angular_difference(a, b);
-	EXPECT_EQ(theta1, geosimd::turn_angle{geosimd::turns{-0.25}});
-	
-	auto const theta2 = angular_difference(b, a);
-	EXPECT_EQ(theta2, geosimd::turn_angle{geosimd::turns{0.25}});
+
+	std::array<unit_vector_3d, 8> vals{
+		unit_vector_3d{vector_type{1.0f, 0.0f, 0.0f}},
+		unit_vector_3d{vector_type{1.0f, 1.0f, 0.0f}},
+		unit_vector_3d{vector_type{0.0f, 1.0f, 0.0f}},
+		unit_vector_3d{vector_type{-1.0f, 1.0f, 0.0f}},
+		unit_vector_3d{vector_type{-1.0f, 0.0f, 0.0f}},
+		unit_vector_3d{vector_type{-1.0f, -1.0f, 0.0f}},
+		unit_vector_3d{vector_type{0.0f, -1.0f, 0.0f}},
+		unit_vector_3d{vector_type{1.0f, -1.0f, 0.0f}}
+	};
+
+	for(size_t k = 0; k != std::size(vals); ++k)
+	{
+		for(size_t l = 0; l != k; ++l)
+		{
+			// Anti-commutative test
+			if(l != (k + 4)%8)
+			{ EXPECT_EQ(angular_difference(vals[k], vals[l]), angular_difference(vals[k], vals[l]));}
+			else
+			{
+				// For opposite vertices, expect half-a-turn (sign is ambiguous in this case)
+				EXPECT_EQ(angular_difference(vals[k], vals[l]), geosimd::turn_angle{geosimd::turns{0.5}});
+			}
+
+			printf("%zu %zu %.3g\n", k, l, to_turns(angular_difference(vals[k], vals[l])).value);
+		}
+
+		putchar('\n');
+	}
 }
