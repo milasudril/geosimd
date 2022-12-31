@@ -4,6 +4,7 @@
 #include "./abstract_spaces.hpp"
 #include "./vectorops_mixin.hpp"
 #include "./basic_vector.hpp"
+#include "./angle.hpp"
 
 namespace geosimd
 {
@@ -12,11 +13,34 @@ namespace geosimd
 	{
 		using vectorops_magic = typename vectorops_mixin<unit_vector<V>>::magic;
 	public:
-		//TODO: Add unit vectors for coordinate axis
-
 		using vector_type = basic_vector<V>;
 		using scalar_type = vector_type::scalar_type;
 		using value_type = vector_type::value_type;
+
+		GEOSIMD_INLINE_OPT constexpr unit_vector(dimension_tag<0>):
+			m_value{one<scalar_type>(), zero<scalar_type>(), zero<scalar_type>()}
+		{}
+
+		GEOSIMD_INLINE_OPT constexpr unit_vector(dimension_tag<1>):
+			m_value{zero<scalar_type>(), one<scalar_type>(), zero<scalar_type>()}
+		{}
+
+		GEOSIMD_INLINE_OPT constexpr unit_vector(dimension_tag<2>):
+			m_value{zero<scalar_type>(), zero<scalar_type>(), one<scalar_type>()}
+		{}
+
+		GEOSIMD_INLINE_OPT constexpr explicit unit_vector(cos_sin<scalar_type> cs, dimension_tag<0>):
+			m_value{zero<scalar_type>(), cs.cos, cs.sin}
+		{}
+
+		GEOSIMD_INLINE_OPT constexpr explicit unit_vector(cos_sin<scalar_type> cs, dimension_tag<1>):
+			m_value{-cs.sin, zero<scalar_type>(), cs.cos}
+		{}
+
+		GEOSIMD_INLINE_OPT constexpr explicit unit_vector(cos_sin<scalar_type> cs, dimension_tag<2>):
+			m_value{cs.cos, cs.sin, zero<scalar_type>()}
+		{}
+
 
 		GEOSIMD_INLINE_OPT constexpr explicit unit_vector(vector_type val):
 			m_value{val/norm(val)}
