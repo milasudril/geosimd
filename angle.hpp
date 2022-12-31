@@ -87,6 +87,16 @@ namespace geosimd
 		return turn_angle{x.get() >= 0 ? x.get() : -x.get()};
 	}
 
+	GEOSIMD_INLINE_OPT constexpr auto min(turn_angle x, turn_angle y)
+	{
+		return turn_angle{std::min(x.get(), y.get())};
+	}
+
+	GEOSIMD_INLINE_OPT constexpr auto max(turn_angle x, turn_angle y)
+	{
+		return turn_angle{std::max(x.get(), y.get())};
+	}
+
 	inline auto to_string(turn_angle x)
 	{ return std::to_string(x.get()); }
 
