@@ -149,10 +149,13 @@ namespace geosimd
 		unit_vector<V> b,
 		basic_vector<V> reference_normal = basic_vector<V>{0.0f, 0.0f, 1.0f})
 	{
-		auto const proj = inner_product(a, b);
+		// Clamp in case we have numerical inaccuracies
+		auto const proj = std::clamp(inner_product(a, b), -1.0f, 1.0f);
 
 		if(std::abs(proj - (-1.0f)) < 1.0f*std::numeric_limits<float>::epsilon()) [[unlikely]]
-		{ return turn_angle{turns{0.5}}; }
+		{
+			return turn_angle{turns{0.5}};
+		}
 
 		if(std::abs(proj - 1.0f) < 1.0f*std::numeric_limits<float>::epsilon()) [[unlikely]]
 		{ return turn_angle{turns{0.0}};}

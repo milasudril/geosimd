@@ -214,6 +214,19 @@ namespace geosimd
 		return ret;
 	}
 
+
+	template<hilbert_space V>
+	auto angular_difference_broadcast(vec_array<V> const& a, unit_vector<V> b)
+	{
+		std::valarray<turn_angle> ret(std::size(a));
+		for(size_t k = 0; k != std::size(a); ++k)
+		{
+			ret[k] = angular_difference(unit_vector{a[k]}, b);
+		}
+
+		return ret;
+	}
+
 	template<vector_space V>
 	std::string to_string(vec_array<V> const& obj)
 	{
