@@ -118,16 +118,6 @@ namespace geosimd
 		return rad{to_turns(x)};
 	}
 
-	constexpr auto sin(turn_angle x)
-	{
-		return static_cast<float>(std::sin(to_rad(x).value));
-	}
-
-	constexpr auto cos(turn_angle x)
-	{
-		return static_cast<float>(std::cos(to_rad(x).value));
-	}
-
 	class rotation_angle
 	{
 	public:
@@ -231,6 +221,16 @@ namespace geosimd
 			default:
 				return static_cast<float>(std::cos(to_rad(x).value));
 		}
+	}
+
+	constexpr auto sin(turn_angle x)
+	{
+		return sin(rotation_angle{turns{0.0}} + x);
+	}
+
+	constexpr auto cos(turn_angle x)
+	{
+		return cos(rotation_angle{turns{0.0}} + x);
 	}
 
 	template<std::floating_point T>
