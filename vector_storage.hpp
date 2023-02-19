@@ -85,13 +85,25 @@ namespace geosimd
 	}
 
 	template<class T, size_t N, class ... Indices>
-	requires (std::conjunction_v<std::is_same<int, Indices>...>
+	requires (sizeof(T) == 4
+		&& std::conjunction_v<std::is_same<int, Indices>...>
 		&& sizeof...(Indices) == N
 		&& vector_limits::can_vectorize<T>(N))
 	GEOSIMD_INLINE_OPT constexpr auto shuffle(vector_storage<T, N> a,
 		Indices ... vals)
 	{
 		return __builtin_shuffle(a, vector_storage<int, N>{vals...});
+	}
+
+	template<class T, size_t N, class ... Indices>
+	requires (sizeof(T) == 8
+		&& std::conjunction_v<std::is_same<int, Indices>...>
+		&& sizeof...(Indices) == N
+		&& vector_limits::can_vectorize<T>(N))
+	GEOSIMD_INLINE_OPT constexpr auto shuffle(vector_storage<T, N> a,
+		Indices ... vals)
+	{
+		return __builtin_shuffle(a, vector_storage<int64_t, N>{vals...});
 	}
 }
 
