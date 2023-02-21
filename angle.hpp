@@ -189,37 +189,39 @@ namespace geosimd
 		return turn_angle{static_cast<int64_t>(a.get()) - static_cast<int64_t>(b.get())};
 	}
 
+	template<std::floating_point RetType = float>
 	constexpr auto sin(rotation_angle x)
 	{
 		switch(x.get())
 		{
 			case 0:
-				return 0.0f;
+				return zero<RetType>();
 			case 0x4000'0000:
-				return 1.0f;
+				return one<RetType>();
 			case 0x8000'0000:
-				return 0.0f;
+				return zero<RetType>();
 			case 0xc000'0000:
-				return -1.0f;
+				return -one<RetType>();
 			default:
-				return static_cast<float>(std::sin(to_rad(x).value));
+				return static_cast<RetType>(std::sin(to_rad(x).value));
 		}
 	}
 
+	template<std::floating_point RetType = float>
 	constexpr auto cos(rotation_angle x)
 	{
 		switch(x.get())
 		{
 			case 0:
-				return 1.0f;
+				return one<RetType>();
 			case 0x4000'0000:
-				return 0.0f;
+				return zero<RetType>();
 			case 0x8000'0000:
-				return -1.0f;
+				return -one<RetType>();
 			case 0xc000'0000:
-				return 0.0f;
+				return zero<RetType>();
 			default:
-				return static_cast<float>(std::cos(to_rad(x).value));
+				return static_cast<RetType>(std::cos(to_rad(x).value));
 		}
 	}
 
