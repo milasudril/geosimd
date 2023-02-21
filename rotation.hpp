@@ -9,61 +9,64 @@ namespace geosimd
 {
 	namespace rotation_detail
 	{
+		template<std::floating_point T>
 		constexpr auto create_matrix(rotation_angle theta, dimension_tag<0>)
 		{
-			auto const param = cossin(theta);
-			using col = mat_4x4<float>::column_type;
+			auto const param = cossin<T>(theta);
+			using col = mat_4x4<T>::column_type;
 
 			return mat_4x4{
-				col{1.0f, 0.0f, 0.0f, 0.0f},
-				col{0.0f,  param.cos(), param.sin(), 0.0f},
-				col{0.0f, -param.sin(), param.cos(), 0.0f},
-				col{0.0f, 0.0f, 0.0f, 1.0f},
+				col{one<T>(), zero<T>(), zero<T>(), zero<T>()},
+				col{zero<T>(),  param.cos(), param.sin(), zero<T>()},
+				col{zero<T>(), -param.sin(), param.cos(), zero<T>()},
+				col{zero<T>(), zero<T>(), zero<T>(), one<T>()},
 			};
 		}
 
+		template<std::floating_point T>
 		constexpr auto create_matrix(rotation_angle theta, dimension_tag<1>)
 		{
-			auto const param = cossin(theta);
-			using col = mat_4x4<float>::column_type;
+			auto const param = cossin<T>(theta);
+			using col = mat_4x4<T>::column_type;
 
 			return mat_4x4{
-				col{param.cos(), 0.0f, -param.sin(), 0.0f},
-				col{0.0f, 1.0f, 0.0f, 0.0f},
-				col{param.sin(), 0.0f, param.cos(), 0.0f},
-				col{0.0f, 0.0f, 0.0f, 1.0f},
+				col{param.cos(), zero<T>(), -param.sin(), zero<T>()},
+				col{zero<T>(), one<T>(), zero<T>(), zero<T>()},
+				col{param.sin(), zero<T>(), param.cos(), zero<T>()},
+				col{zero<T>(), zero<T>(), zero<T>(), one<T>()},
 			};
 		}
 
+		template<std::floating_point T>
 		constexpr auto create_matrix(rotation_angle theta, dimension_tag<2>)
 		{
-			auto const param = cossin(theta);
-			using col = mat_4x4<float>::column_type;
+			auto const param = cossin<T>(theta);
+			using col = mat_4x4<T>::column_type;
 
 			return mat_4x4{
-				col{param.cos(), param.sin(), 0.0f, 0.0f},
-				col{-param.sin(), param.cos(), 0.0f, 0.0f},
-				col{0.0f, 0.0f, 1.0f, 0.0f},
-				col{0.0f, 0.0f, 0.0f, 1.0f}
+				col{param.cos(), param.sin(), zero<T>(), zero<T>()},
+				col{-param.sin(), param.cos(), zero<T>(), zero<T>()},
+				col{zero<T>(), zero<T>(), one<T>(), zero<T>()},
+				col{zero<T>(), zero<T>(), zero<T>(), one<T>()}
 			};
 		}
 	}
 
 	template<vector_space V>
-	requires std::is_same_v<typename V::scalar_type, float>
+	requires (std::is_floating_point_v<typename V::scalar_type>)
 		&& (has_homogenous_coordinates<V> && V::vector_type::size() == 4 && has_rotations<V>)
 	class rotation
 	{
 	public:
 		using scalar_type = typename V::scalar_type;
-		using storage_type = mat_4x4<float>;
+		using storage_type = mat_4x4<scalar_type>;
 		using column_type = storage_type::column_type;
 
 		GEOSIMD_INLINE_OPT constexpr rotation():m_value{one(empty<storage_type>{})}{}
 
 		template<size_t N>
 		GEOSIMD_INLINE_OPT constexpr rotation(rotation_angle theta, dimension_tag<N>):
-			m_value{rotation_detail::create_matrix(theta, dimension_tag<N>{})}
+			m_value{rotation_detail::create_matrix<scalar_type>(theta, dimension_tag<N>{})}
 		{}
 
 		GEOSIMD_INLINE_OPT constexpr auto column_major_elements() const
@@ -79,7 +82,9 @@ namespace geosimd
 		template<size_t N>
 		GEOSIMD_INLINE_OPT constexpr rotation& push(turn_angle angle, dimension_tag<N>)
 		{
-			m_value.rightmul(rotation_detail::create_matrix(rotation_angle{0} + angle, dimension_tag<N>{}));
+			m_value.rightmul(
+				rotation_detail::create_matrix<scalar_type>(rotation_angle{0} + angle,
+					dimension_tag<N>{}));
 			return *this;
 		}
 
