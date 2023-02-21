@@ -16,8 +16,8 @@ namespace geosimd
 
 			return mat_4x4{
 				col{1.0f, 0.0f, 0.0f, 0.0f},
-				col{0.0f,  param.cos, param.sin, 0.0f},
-				col{0.0f, -param.sin, param.cos, 0.0f},
+				col{0.0f,  param.cos(), param.sin(), 0.0f},
+				col{0.0f, -param.sin(), param.cos(), 0.0f},
 				col{0.0f, 0.0f, 0.0f, 1.0f},
 			};
 		}
@@ -28,9 +28,9 @@ namespace geosimd
 			using col = mat_4x4<float>::column_type;
 
 			return mat_4x4{
-				col{param.cos, 0.0f, -param.sin, 0.0f},
+				col{param.cos(), 0.0f, -param.sin(), 0.0f},
 				col{0.0f, 1.0f, 0.0f, 0.0f},
-				col{param.sin, 0.0f, param.cos, 0.0f},
+				col{param.sin(), 0.0f, param.cos(), 0.0f},
 				col{0.0f, 0.0f, 0.0f, 1.0f},
 			};
 		}
@@ -41,8 +41,8 @@ namespace geosimd
 			using col = mat_4x4<float>::column_type;
 
 			return mat_4x4{
-				col{param.cos, param.sin, 0.0f, 0.0f},
-				col{-param.sin, param.cos, 0.0f, 0.0f},
+				col{param.cos(), param.sin(), 0.0f, 0.0f},
+				col{-param.sin(), param.cos(), 0.0f, 0.0f},
 				col{0.0f, 0.0f, 1.0f, 0.0f},
 				col{0.0f, 0.0f, 0.0f, 1.0f}
 			};

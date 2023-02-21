@@ -29,15 +29,15 @@ namespace geosimd
 			m_value{zero<scalar_type>(), zero<scalar_type>(), one<scalar_type>()}
 		{}
 
-		GEOSIMD_INLINE_OPT constexpr explicit unit_vector(cos_sin<scalar_type> cs, dimension_tag<0>):
+		GEOSIMD_INLINE_OPT constexpr explicit unit_vector(cossin<scalar_type> cs, dimension_tag<0>):
 			m_value{zero<scalar_type>(), cs.cos, cs.sin}
 		{}
 
-		GEOSIMD_INLINE_OPT constexpr explicit unit_vector(cos_sin<scalar_type> cs, dimension_tag<1>):
+		GEOSIMD_INLINE_OPT constexpr explicit unit_vector(cossin<scalar_type> cs, dimension_tag<1>):
 			m_value{-cs.sin, zero<scalar_type>(), cs.cos}
 		{}
 
-		GEOSIMD_INLINE_OPT constexpr explicit unit_vector(cos_sin<scalar_type> cs, dimension_tag<2>):
+		GEOSIMD_INLINE_OPT constexpr explicit unit_vector(cossin<scalar_type> cs, dimension_tag<2>):
 			m_value{cs.cos, cs.sin, zero<scalar_type>()}
 		{}
 

@@ -235,20 +235,43 @@ namespace geosimd
 		return cos(rotation_angle{turns{0.0}} + x);
 	}
 
-	template<std::floating_point T>
-	struct cos_sin
+	template<class T>
+	struct precision_tag
 	{
-		T cos;
-		T sin;
+		using type = T;
 	};
 
-	template<class T>
-	constexpr auto cossin(T x)
+	template<std::floating_point T>
+	class cossin
 	{
-		using std::sin;
-		using std::cos;
-		return cos_sin{cos(x), sin(x)};
-	}
+	public:
+		constexpr explicit cossin(T x):m_cos{std::cos(x)}, m_sin{std::sin(x)}
+		{}
+
+		template<class U>
+		constexpr explicit cossin(U x, precision_tag<double>):
+			m_cos{geosimd::cos<double>(x)}, m_sin{geosimd::sin<double>(x)}
+		{}
+
+		template<class U>
+		constexpr explicit cossin(U x):
+			m_cos{geosimd::cos(x)}, m_sin{geosimd::sin(x)}
+		{}
+
+		constexpr auto cos() const { return m_cos; }
+
+		constexpr auto sin() const { return m_sin; }
+
+	private:
+		T m_cos;
+		T m_sin;
+	};
+
+	template<class U>
+	cossin(U, precision_tag<double>) -> cossin<double>;
+
+	template<class U>
+	cossin(U) -> cossin<float>;
 }
 
 #endif
