@@ -181,3 +181,45 @@ TESTCASE(geosimd_turn_angle_scale)
 	auto const y = 4.0*x;
 	EXPECT_EQ(y.get(), 0x1'0000'0000ll);
 }
+
+TESTCASE(gerosimd_cossin_float)
+{
+	auto const cs1 = cossin(geosimd::rotation_angle{geosimd::turns{0.0}});
+	auto const cs2 = cossin(geosimd::rotation_angle{geosimd::turns{0.25}});
+	auto const cs3 = cossin(geosimd::rotation_angle{geosimd::turns{0.5}});
+	auto const cs4 = cossin(geosimd::rotation_angle{geosimd::turns{0.75}});
+
+	static_assert(std::is_same_v<decltype(cossin(geosimd::rotation_angle{geosimd::turns{0.0}})),
+		geosimd::cossin_pair<float>>);
+
+	EXPECT_EQ(cs1.cos(), 1.0f);
+	EXPECT_EQ(cs2.cos(), 0.0f);
+	EXPECT_EQ(cs3.cos(), -1.0f);
+	EXPECT_EQ(cs4.cos(), 0.0f);
+
+	EXPECT_EQ(cs1.sin(), 0.0f);
+	EXPECT_EQ(cs2.sin(), 1.0f);
+	EXPECT_EQ(cs3.sin(), 0.0f);
+	EXPECT_EQ(cs4.sin(), -1.0f);
+}
+
+TESTCASE(gerosimd_cossin_double)
+{
+	auto const cs1 = cossin<double>(geosimd::rotation_angle{geosimd::turns{0.0}});
+	auto const cs2 = cossin<double>(geosimd::rotation_angle{geosimd::turns{0.25}});
+	auto const cs3 = cossin<double>(geosimd::rotation_angle{geosimd::turns{0.5}});
+	auto const cs4 = cossin<double>(geosimd::rotation_angle{geosimd::turns{0.75}});
+
+	static_assert(std::is_same_v<decltype(cossin<double>(geosimd::rotation_angle{geosimd::turns{0.0}})),
+		geosimd::cossin_pair<double>>);
+
+	EXPECT_EQ(cs1.cos(), 1.0);
+	EXPECT_EQ(cs2.cos(), 0.0);
+	EXPECT_EQ(cs3.cos(), -1.0);
+	EXPECT_EQ(cs4.cos(), 0.0);
+
+	EXPECT_EQ(cs1.sin(), 0.0);
+	EXPECT_EQ(cs2.sin(), 1.0);
+	EXPECT_EQ(cs3.sin(), 0.0);
+	EXPECT_EQ(cs4.sin(), -1.0);
+}

@@ -235,12 +235,6 @@ namespace geosimd
 		return cos(rotation_angle{turns{0.0}} + x);
 	}
 
-	template<class T>
-	struct precision_tag
-	{
-		using type = T;
-	};
-
 	template<std::floating_point T>
 	class cossin_pair
 	{
@@ -249,13 +243,8 @@ namespace geosimd
 		{}
 
 		template<class U>
-		constexpr explicit cossin_pair(U x, precision_tag<double>):
-			m_cos{geosimd::cos<double>(x)}, m_sin{geosimd::sin<double>(x)}
-		{}
-
-		template<class U>
 		constexpr explicit cossin_pair(U x):
-			m_cos{geosimd::cos(x)}, m_sin{geosimd::sin(x)}
+			m_cos{geosimd::cos<T>(x)}, m_sin{geosimd::sin<T>(x)}
 		{}
 
 		constexpr auto cos() const { return m_cos; }
@@ -267,11 +256,12 @@ namespace geosimd
 		T m_sin;
 	};
 
-	template<class U>
-	cossin_pair(U, precision_tag<double>) -> cossin_pair<double>;
+	template<std::floating_point T = float, class U>
+	constexpr auto cossin(U val)
+	{
+		return cossin_pair<T>{val};
+	}
 
-	template<class U>
-	cossin_pair(U) -> cossin_pair<float>;
 }
 
 #endif
