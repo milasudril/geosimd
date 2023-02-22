@@ -225,14 +225,16 @@ namespace geosimd
 		}
 	}
 
+	template<std::floating_point RetType = float>
 	constexpr auto sin(turn_angle x)
 	{
-		return sin(rotation_angle{turns{0.0}} + x);
+		return sin<RetType>(rotation_angle{turns{0.0}} + x);
 	}
 
+	template<std::floating_point RetType = float>
 	constexpr auto cos(turn_angle x)
 	{
-		return cos(rotation_angle{turns{0.0}} + x);
+		return cos<RetType>(rotation_angle{turns{0.0}} + x);
 	}
 
 	template<std::floating_point T>
