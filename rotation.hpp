@@ -12,7 +12,7 @@ namespace geosimd
 		template<std::floating_point T>
 		constexpr auto create_matrix(rotation_angle theta, dimension_tag<0>)
 		{
-			auto const param = cossin<T>(theta);
+			auto const param = cossin_pair<T>(theta);
 			using col = mat_4x4<T>::column_type;
 
 			return mat_4x4{
@@ -26,7 +26,7 @@ namespace geosimd
 		template<std::floating_point T>
 		constexpr auto create_matrix(rotation_angle theta, dimension_tag<1>)
 		{
-			auto const param = cossin<T>(theta);
+			auto const param = cossin_pair<T>(theta);
 			using col = mat_4x4<T>::column_type;
 
 			return mat_4x4{
@@ -40,7 +40,7 @@ namespace geosimd
 		template<std::floating_point T>
 		constexpr auto create_matrix(rotation_angle theta, dimension_tag<2>)
 		{
-			auto const param = cossin<T>(theta);
+			auto const param = cossin_pair<T>(theta);
 			using col = mat_4x4<T>::column_type;
 
 			return mat_4x4{

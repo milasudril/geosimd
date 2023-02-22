@@ -242,19 +242,19 @@ namespace geosimd
 	};
 
 	template<std::floating_point T>
-	class cossin
+	class cossin_pair
 	{
 	public:
-		constexpr explicit cossin(T x):m_cos{std::cos(x)}, m_sin{std::sin(x)}
+		constexpr explicit cossin_pair(T x):m_cos{std::cos(x)}, m_sin{std::sin(x)}
 		{}
 
 		template<class U>
-		constexpr explicit cossin(U x, precision_tag<double>):
+		constexpr explicit cossin_pair(U x, precision_tag<double>):
 			m_cos{geosimd::cos<double>(x)}, m_sin{geosimd::sin<double>(x)}
 		{}
 
 		template<class U>
-		constexpr explicit cossin(U x):
+		constexpr explicit cossin_pair(U x):
 			m_cos{geosimd::cos(x)}, m_sin{geosimd::sin(x)}
 		{}
 
@@ -268,10 +268,10 @@ namespace geosimd
 	};
 
 	template<class U>
-	cossin(U, precision_tag<double>) -> cossin<double>;
+	cossin_pair(U, precision_tag<double>) -> cossin_pair<double>;
 
 	template<class U>
-	cossin(U) -> cossin<float>;
+	cossin_pair(U) -> cossin_pair<float>;
 }
 
 #endif
