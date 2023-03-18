@@ -16,6 +16,12 @@ namespace geosimd
 		basic_point<V> p3;
 	};
 
+	template<affine_space V>
+	auto normal(triangle<V> const& T)
+	{
+		return cross(T.p2 - T.p1, T.p3 - T.p1);
+	}
+
 	template<class Func, class V, class ... Params>
 	concept point_visitation_function =
 	affine_space<V> && requires(Func f, basic_point<V> p, Params ... params)
@@ -40,6 +46,12 @@ namespace geosimd
 		auto const mid_corner = points[1];
 		auto const top_corner = points[2];
 
+		auto const n = normal(T);
+		auto const d = -inner_product(n, T.p1 - origin<V>());
+		auto z = [n, d](scalar_type x, scalar_type y){
+			return -(d + n[0]*x + n[1]*y)/n[2];
+		};
+
 		auto const line_count = static_cast<size_t>(top_corner[1] - bottom_corner[1]);
 		for(size_t k = 0; k != line_count + 1; ++k)
 		{
@@ -62,7 +74,7 @@ namespace geosimd
 			for(size_t l = 0; l != col_count + 1; ++l)
 			{
 				auto const x = x0 + static_cast<scalar_type>(l);
-				f(basic_point<V>{x, y, 1.0f}, params...);
+				f(basic_point<V>{x, y, z(x, y)}, params...);
 			}
 		}
 	}
