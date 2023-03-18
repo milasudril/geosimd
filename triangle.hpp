@@ -78,6 +78,84 @@ namespace geosimd
 			}
 		}
 	}
+
+	template<class VertexIndex>
+	struct indirect_triangle
+	{
+		VertexIndex v1;
+		VertexIndex v2;
+		VertexIndex v3;
+	};
+
+	namespace detail
+	{
+		template<class T>
+		concept associative_container = requires()
+		{
+			typename T::mapped_type;
+		};
+
+		template<class T>
+		concept regular_container = !associative_container<T> && requires()
+		{
+			typename T::value_type;
+		};
+
+		template<class T>
+		struct get_mapped_type;
+
+		template<associative_container T>
+		struct get_mapped_type<T>
+		{
+			using type = typename T::mapped_type;
+		};
+
+		template<regular_container T>
+		struct get_mapped_type<T>
+		{
+			using type = typename T::value_type;
+		};
+
+		template<class T>
+		using mapped_type = typename get_mapped_type<T>::type;
+
+		template<class T, class IndexType>
+		concept index_operator_is_const = requires(T const& c, IndexType i)
+		{
+			{c[i]};
+		};
+	};
+
+	template<class Resolver, class Container, class VertexIndex>
+	concept vertex_resolver = requires(Resolver const& r,
+		Container const& c,
+		VertexIndex vi)
+	{
+		{r(c, vi)} -> std::same_as<detail::mapped_type<Container>>;
+	};
+
+	template<class Container, class IndexType>
+	struct default_vertex_resolver
+	{
+		auto operator()(Container const& c, IndexType i) const
+		{
+			if constexpr (detail::index_operator_is_const<Container, IndexType>)
+			{ return c[i]; }
+			else
+			{ return c.at(i); }
+		}
+	};
+
+	template<class VertexIndex,
+		class Container,
+		vertex_resolver<Container, VertexIndex> resolver = default_vertex_resolver<Container, VertexIndex>>
+	auto resolve(indirect_triangle<VertexIndex> const& T,
+		Container const& c,
+		resolver&& res = resolver{})
+	{
+		return triangle{res(c, T.v1), res(c, T.v2), res(c, T.v3)};
+	}
+
 }
 
 #endif

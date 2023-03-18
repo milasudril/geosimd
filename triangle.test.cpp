@@ -6,6 +6,8 @@
 
 #include "testfwk/testfwk.hpp"
 
+#include <array>
+#include <map>
 
 TESTCASE(geosimd_triangle_project_from_above)
 {
@@ -280,4 +282,48 @@ TESTCASE(geosimd_triangle_project_from_above)
 		EXPECT_EQ(p, expected_points[index]);
 		++index;
 	});
+}
+
+TESTCASE(geosimd_triangle_resolve_from_array)
+{
+	geosimd::indirect_triangle T_ref{0, 1, 2};
+
+	using loc = geosimd::euclidian_space<float, 3>::location;
+	using vec = geosimd::euclidian_space<float, 3>::displacement;
+
+	auto const origin = loc{1.0f, 2.0f, 4.0f};
+
+	std::array<loc, 3> verts{
+		origin + 16.0f*vec{0.0f, 0.25f, 0.0f},
+		origin + 16.0f*vec{2.0f, 0.0f, 0.0f},
+		origin + 16.0f*vec{1.5f, 1.0f, 1.0f}
+	};
+
+	auto res = resolve(T_ref, verts);
+	EXPECT_EQ(res.p1, verts[0]);
+	EXPECT_EQ(res.p2, verts[1]);
+	EXPECT_EQ(res.p3, verts[2]);
+}
+
+TESTCASE(geosimd_triangle_resolve_from_map)
+{
+	geosimd::indirect_triangle T_ref{std::string{"A"},
+		std::string{"B"},
+		std::string{"C"}};
+
+	using loc = geosimd::euclidian_space<float, 3>::location;
+	using vec = geosimd::euclidian_space<float, 3>::displacement;
+
+	auto const origin = loc{1.0f, 2.0f, 4.0f};
+
+	std::map<std::string, loc> verts{
+		{"A", origin + 16.0f*vec{0.0f, 0.25f, 0.0f}},
+		{"B", origin + 16.0f*vec{2.0f, 0.0f, 0.0f}},
+		{"C", origin + 16.0f*vec{1.5f, 1.0f, 1.0f}}
+	};
+
+	auto res = resolve(T_ref, verts);
+	EXPECT_EQ(res.p1, verts["A"]);
+	EXPECT_EQ(res.p2, verts["B"]);
+	EXPECT_EQ(res.p3, verts["C"]);
 }
