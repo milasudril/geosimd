@@ -15,9 +15,9 @@ TESTCASE(geosimd_triangle_project_from_above)
 	auto const origin = loc{1.0f, 2.0f, 4.0f};
 
 	geosimd::triangle T{
-		origin,
+		origin + 16.0f*vec{0.0f, 0.25f, 0.0f},
 		origin + 16.0f*vec{2.0f, 0.0f, 0.0f},
-		origin + 16.0f*vec{2.0f, 1.0f, 1.0f}
+		origin + 16.0f*vec{1.5f, 1.0f, 1.0f}
 	};
 
 	using scanline = std::array<float, 33>;

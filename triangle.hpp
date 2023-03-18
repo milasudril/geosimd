@@ -41,10 +41,9 @@ namespace geosimd
 		auto const top_corner = points[2];
 
 		auto const line_count = static_cast<size_t>(top_corner[1] - bottom_corner[1]);
-		for(size_t k = 0; k != line_count; ++k)
+		for(size_t k = 0; k != line_count + 1; ++k)
 		{
-			auto const y = bottom_corner[1]
-				+ (static_cast<scalar_type>(k) + static_cast<scalar_type>(0.5));
+			auto const y = bottom_corner[1] + static_cast<scalar_type>(k);
 
 			auto const x2 = std::lerp(bottom_corner[0],
 				top_corner[0],
@@ -60,9 +59,9 @@ namespace geosimd
 			auto const col_count = static_cast<size_t>(std::abs(x1 - x2));
 			auto const x0 = std::min(x1, x2);
 
-			for(size_t l = 0; l != col_count; ++l)
+			for(size_t l = 0; l != col_count + 1; ++l)
 			{
-				auto const x = x0 + (static_cast<scalar_type>(l) + static_cast<scalar_type>(0.5));
+				auto const x = x0 + static_cast<scalar_type>(l);
 				f(basic_point<V>{x, y, 1.0f}, params...);
 			}
 		}
