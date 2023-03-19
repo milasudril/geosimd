@@ -14,6 +14,9 @@ namespace geosimd
 		basic_point<V> p1;
 		basic_point<V> p2;
 		basic_point<V> p3;
+
+		auto points() const
+		{ return std::array<basic_point<V>, 3>{p1, p2, p3}; }
 	};
 
 	template<affine_space V>
@@ -39,7 +42,7 @@ namespace geosimd
 			return a[1] < b[1];
 		};
 
-		std::array<basic_point<V>, 3> points{T.p1, T.p2, T.p3};
+		auto points = T.points();
 		std::ranges::sort(points, by_y);
 
 		auto const bottom_corner = points[0];
@@ -85,6 +88,9 @@ namespace geosimd
 		VertexIndex v1;
 		VertexIndex v2;
 		VertexIndex v3;
+
+		auto vertex_indices() const
+		{ return std::array<VertexIndex, 3>{v1, v2, v3}; }
 	};
 
 	namespace detail
