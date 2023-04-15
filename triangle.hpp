@@ -43,7 +43,7 @@ namespace geosimd
 	{
 		using scalar_type = typename V::scalar_type;
 
-		auto const col_count = static_cast<size_t>(std::abs(x_a - x_b));
+		auto const col_count = static_cast<size_t>(std::abs(x_a - x_b) + static_cast<scalar_type>(0.5));
 		auto const x_0 = std::min(x_a, x_b);
 		for(size_t l = 0; l != col_count + 1; ++l)
 		{
