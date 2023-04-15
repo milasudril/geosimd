@@ -63,14 +63,14 @@ namespace geosimd
 
 		if(mid_corner[1] == bottom_corner[1])
 		{
-			auto const line_count = static_cast<size_t>(top_corner[1] - mid_corner[1]);
+			auto const line_count = static_cast<size_t>(top_corner[1] - bottom_corner[1]);
 			for(size_t k = 0; k != line_count + 1; ++k)
 			{
-				auto const y = mid_corner[1] + static_cast<scalar_type>(k);
-				auto const x_a = std::lerp(mid_corner[0], top_corner[0], (y - mid_corner[1])
-					/(top_corner[1] - mid_corner[1]));
-				auto const x_b = std::lerp(bottom_corner[0], top_corner[0], (y - mid_corner[1])
-					/(top_corner[1] - mid_corner[1]));
+				auto const y = bottom_corner[1] + static_cast<scalar_type>(k);
+				auto const x_a = std::lerp(mid_corner[0], top_corner[0], (y - bottom_corner[1])
+					/(top_corner[1] - bottom_corner[1]));
+				auto const x_b = std::lerp(bottom_corner[0], top_corner[0], (y - bottom_corner[1])
+					/(top_corner[1] - bottom_corner[1]));
 				auto const col_count = static_cast<size_t>(std::abs(x_a - x_b));
 				auto const x_0 = std::min(x_a, x_b);
 				for(size_t l = 0; l != col_count + 1; ++l)
@@ -85,13 +85,13 @@ namespace geosimd
 
 		if(mid_corner[1] == top_corner[1])
 		{
-			auto const line_count = static_cast<size_t>(mid_corner[1] - bottom_corner[1]);
+			auto const line_count = static_cast<size_t>(top_corner[1] - bottom_corner[1]);
 			for(size_t k = 0; k != line_count + 1; ++k)
 			{
 				auto const y = bottom_corner[1] + static_cast<scalar_type>(k);
-				auto const x_a = std::lerp(bottom_corner[0], mid_corner[0], (y - bottom_corner[1])
+				auto const x_a = std::lerp(bottom_corner[0], top_corner[0], (y - bottom_corner[1])
 					/(top_corner[1] - bottom_corner[1]));
-				auto const x_b = std::lerp(bottom_corner[0], top_corner[0], (y - bottom_corner[1])
+				auto const x_b = std::lerp(bottom_corner[0], mid_corner[0], (y - bottom_corner[1])
 					/(top_corner[1] - bottom_corner[1]));
 				auto const col_count = static_cast<size_t>(std::abs(x_a - x_b));
 				auto const x_0 = std::min(x_a, x_b);
