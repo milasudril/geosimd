@@ -116,6 +116,35 @@ namespace geosimd
 
 			return;
 		}
+
+		{
+			auto const line_count_1 = static_cast<size_t>(mid_corner[1] - bottom_corner[1]);
+			auto const line_count_2 = static_cast<size_t>(top_corner[1] - mid_corner[1]);
+
+			for(size_t k = 0; k != line_count_1; ++k)
+			{
+				auto const y = bottom_corner[1] + static_cast<scalar_type>(k);
+
+				auto const x_a = std::lerp(bottom_corner[0], top_corner[0], (y - bottom_corner[1])
+					/(top_corner[1] - bottom_corner[1]));
+				auto const x_b = std::lerp(bottom_corner[0], mid_corner[0], (y - bottom_corner[1])
+					/(mid_corner[1] - bottom_corner[1]));
+
+				project_from_above<V>(x_a, x_b, y, z, f, params...);
+			}
+
+			for(size_t k = 0; k != line_count_2 + 1; ++k)
+			{
+				auto const y = mid_corner[1] + static_cast<scalar_type>(k);
+
+				auto const x_a = std::lerp(mid_corner[0], top_corner[0], (y - mid_corner[1])
+					/(top_corner[1] - mid_corner[1]));
+				auto const x_b = std::lerp(bottom_corner[0], top_corner[0], (y - bottom_corner[1])
+					/(top_corner[1] - bottom_corner[1]));
+
+				project_from_above<V>(x_a, x_b, y, z, f, params...);
+			}
+		}
 	}
 
 	template<class VertexIndex>
