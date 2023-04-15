@@ -32,11 +32,31 @@ namespace geosimd
 		{f(p, params...)} -> std::same_as<void>;
 	};
 
+	template<affine_space V, class Z, class Func, class ... FuncParams>
+	requires point_visitation_function<Func, V, FuncParams...>
+	void project_from_above(typename V::scalar_type x_a,
+		typename V::scalar_type x_b,
+		typename V::scalar_type y,
+		Z&& z,
+		Func&& f,
+		FuncParams&& ... params)
+	{
+		using scalar_type = typename V::scalar_type;
+
+		auto const col_count = static_cast<size_t>(std::abs(x_a - x_b));
+		auto const x_0 = std::min(x_a, x_b);
+		for(size_t l = 0; l != col_count + 1; ++l)
+		{
+			auto const x = x_0 + static_cast<scalar_type>(l);
+			f(basic_point<V>{x, y, z(x, y)}, params...);
+		}
+	}
+
 	template<affine_space V, class Func, class ... FuncParams>
 	requires point_visitation_function<Func, V, FuncParams...>
 	void project_from_above(triangle<V> const& T, Func&& f, FuncParams&& ... params)
 	{
-		using scalar_type = V::scalar_type;
+		using scalar_type = typename V::scalar_type;
 
 		auto by_y = [](basic_point<V> a, basic_point<V> b) {
 			return a[1] < b[1];
@@ -67,17 +87,13 @@ namespace geosimd
 			for(size_t k = 0; k != line_count + 1; ++k)
 			{
 				auto const y = bottom_corner[1] + static_cast<scalar_type>(k);
+
 				auto const x_a = std::lerp(mid_corner[0], top_corner[0], (y - bottom_corner[1])
 					/(top_corner[1] - bottom_corner[1]));
 				auto const x_b = std::lerp(bottom_corner[0], top_corner[0], (y - bottom_corner[1])
 					/(top_corner[1] - bottom_corner[1]));
-				auto const col_count = static_cast<size_t>(std::abs(x_a - x_b));
-				auto const x_0 = std::min(x_a, x_b);
-				for(size_t l = 0; l != col_count + 1; ++l)
-				{
-					auto const x = x_0 + static_cast<scalar_type>(l);
-					f(basic_point<V>{x, y, z(x, y)}, params...);
-				}
+
+				project_from_above<V>(x_a, x_b, y, z, f, params...);
 			}
 
 			return;
@@ -89,17 +105,13 @@ namespace geosimd
 			for(size_t k = 0; k != line_count + 1; ++k)
 			{
 				auto const y = bottom_corner[1] + static_cast<scalar_type>(k);
+
 				auto const x_a = std::lerp(bottom_corner[0], top_corner[0], (y - bottom_corner[1])
 					/(top_corner[1] - bottom_corner[1]));
 				auto const x_b = std::lerp(bottom_corner[0], mid_corner[0], (y - bottom_corner[1])
 					/(top_corner[1] - bottom_corner[1]));
-				auto const col_count = static_cast<size_t>(std::abs(x_a - x_b));
-				auto const x_0 = std::min(x_a, x_b);
-				for(size_t l = 0; l != col_count + 1; ++l)
-				{
-					auto const x = x_0 + static_cast<scalar_type>(l);
-					f(basic_point<V>{x, y, z(x, y)}, params...);
-				}
+
+				project_from_above<V>(x_a, x_b, y, z, f, params...);
 			}
 
 			return;
