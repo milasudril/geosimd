@@ -7,6 +7,7 @@
 
 #include <array>
 #include <algorithm>
+#include <optional>
 
 namespace geosimd
 {
@@ -92,7 +93,24 @@ namespace geosimd
 		auto const s = line_parameter{ (a22*rhs_a - a12*rhs_b)/denom};
 		auto const t = line_parameter{-(a21*rhs_a - a11*rhs_b)/denom};
 		return line_intersection{s, t};
+	}
 
+	template<hilbert_space V>
+	constexpr std::optional<line_intersection<typename V::scalar_type>>
+	intersect_2d(line<V> const& a, line<V> const& b)
+	{
+		auto const dir_a = a.p2 - a.p1;
+		auto const dir_b = b.p2 - b.p1;
+
+		auto const det = dir_a[0] * dir_b[1] - dir_a[1] * dir_b[0];
+
+		if(det == 0.0) [[unlikely]]
+		{ return std::nullopt; }
+
+		auto const t_a = ((b.p1[0] - a.p1[0]) * dir_b[1] + (a.p1[1] - b.p1[1]) * dir_b[0]) / det;
+		auto const t_b = ((b.p1[0] - a.p1[0]) * dir_a[1] + (a.p1[1] - b.p1[1]) * dir_a[0]) / det;
+
+		return line_intersection{line_parameter{t_a}, line_parameter{t_b}};
 	}
 
 	template<hilbert_space V>
@@ -103,7 +121,6 @@ namespace geosimd
 		auto const loc_b = point_at(b, intersect.b);
 		return point_pair{loc_a, loc_b};
 	}
-
 
 	template<affine_space V>
 	struct ray
@@ -306,26 +323,6 @@ namespace geosimd
 				}
 			}
 		}
-	}
-	
-	
-	template<hilbert_space V>
-	constexpr auto intersect_2d(line_segment<V> const& a, line_segment<V> const& b)
-	{
-		auto const dir_a = a.p2 - a.p1;
-		auto const dir_b = b.p2 - b.p1;
-
-		auto const det = dir_a[0] * dir_b[1] - dir_a[1] * dir_b[0];
-
-		if(det == 0.0) [[unlikely]]
-		{
-			return false;
-		}
-
-		auto const t_a = ((b.p1[0] - a.p1[0]) * dir_b[1] + (a.p1[1] - b.p1[1]) * dir_b[0]) / det;
-		auto const t_b = ((b.p1[0] - a.p1[0]) * dir_a[1] + (a.p1[1] - b.p1[1]) * dir_a[0]) / det;
-
-		return (t_a >= 0 && t_a <= 1.0) && (t_b >= 0.0 && t_b <= 1.0);
 	}
 }
 
