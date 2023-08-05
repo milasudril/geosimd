@@ -6,6 +6,7 @@
 #include "./hilbert_space.hpp"
 #include "./container_props.hpp"
 #include "./rotation.hpp"
+#include "./scaling.hpp"
 
 #include <utility>
 #include <numeric>
@@ -76,6 +77,14 @@ namespace geosimd
 			return *this;
 		}
 
+		template<class T = V>
+		requires(std::is_floating_point_v<T::scalar_type>)
+		GEOSIMD_INLINE_OPT constexpr auto& apply(scaling<T> scale)
+		{
+			m_value = scale.get() * m_value;
+			return *this;
+		}
+
 	private:
 		storage_type m_value;
 
@@ -139,11 +148,11 @@ namespace geosimd
 
 		auto const b201 = shuffle(vals_b, 2, 0, 1, 3);
 		auto const b120 = shuffle(vals_b, 1, 2, 0, 3);
-		
+
 		auto const result = a120 * b201 - a201 * b120;
 
 		return basic_vector<V>{result[0], result[1], result[2]};
-	}	
+	}
 
 	template<vector_space V>
 	GEOSIMD_INLINE_OPT constexpr auto mean(basic_vector<V> a, basic_vector<V> b)
@@ -163,7 +172,7 @@ namespace geosimd
 	GEOSIMD_INLINE_OPT constexpr auto lerp(basic_vector<V> a, basic_vector<V> b, typename V::scalar_type t)
 	{
 		return t*b + (one(empty<typename V::scalar_type>{}) - t)*a;
-	}	
+	}
 
 	template<vector_space V>
 	auto to_string(basic_vector<V> a)
