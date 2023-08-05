@@ -78,7 +78,7 @@ namespace geosimd
 		}
 
 		template<class T = V>
-		requires(std::is_floating_point_v<T::scalar_type>)
+		requires(std::is_floating_point_v<typename T::scalar_type>)
 		GEOSIMD_INLINE_OPT constexpr auto& apply(scaling<T> scale)
 		{
 			m_value = scale.get() * m_value;
