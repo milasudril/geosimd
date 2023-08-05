@@ -48,6 +48,9 @@ namespace geosimd
 		using displacement = basic_vector<euclidian_space<T, N>>;
 		using direction = unit_vector<euclidian_space<T, N>>;
 	};
+
+	// Apparently, before euclidian_space can work, it must be checked with some independent concept
+	static_assert(hilbert_space<euclidian_space<float, 3>>);
 }
 
 #endif

@@ -3,6 +3,7 @@
 
 #include "./vector_storage.hpp"
 #include "./vectorops_mixin.hpp"
+#include "./factories.hpp"
 
 namespace geosimd
 {
@@ -54,6 +55,14 @@ namespace geosimd
 	private:
 		element_type m_value;
 	};
+
+	template<class T, size_t N>
+	GEOSIMD_INLINE_OPT constexpr vec_t<T, N> ones(empty<vec_t<T, N>>)
+	{
+    return []<size_t... Is>(std::index_sequence<Is...>) {
+        return vec_t<T, N>{(static_cast<void>(Is), one(empty<T>{}))...};
+    }(std::make_index_sequence<N>{});
+	}
 
 	template<class T, class ... Args>
 	requires (std::conjunction_v<std::is_same<T, Args>...>)

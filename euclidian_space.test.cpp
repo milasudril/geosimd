@@ -11,6 +11,7 @@ TESTCASE(geosimd_euclidian_space_subset)
 	static_assert(geosimd::metric_normed_space<my_vector_space>);
 	static_assert(!geosimd::vector<geosimd::euclidian_space<float, 3>::direction>);
 	static_assert(geosimd::inner_product_space<my_vector_space>);
+	static_assert(geosimd::vector_space<my_vector_space>);
 }
 
 TESTCASE(geosimd_euclidian_space_point_props)

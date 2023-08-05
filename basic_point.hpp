@@ -32,18 +32,18 @@ namespace geosimd
 			m_value{x, xn...}
 		{ codecov::function_called(__FILE__, __LINE__); }
 
-		template<class T = void>
-		requires(!has_homogenous_coordinates<V>)
-		GEOSIMD_INLINE_OPT constexpr explicit basic_point(storage_type val):
-			m_value{val}
-		{ codecov::function_called(__FILE__, __LINE__); }
-
 		template<class ... Args>
 		requires std::conjunction_v<std::is_same<scalar_type, Args>...>
 			&& (has_homogenous_coordinates<V>)
 		GEOSIMD_INLINE_OPT constexpr explicit basic_point(scalar_type x, Args ... xn):
 			m_value{x, xn..., one<scalar_type>()}
 		{ }
+
+		template<class T = void>
+		requires(!has_homogenous_coordinates<V>)
+		GEOSIMD_INLINE_OPT constexpr explicit basic_point(storage_type val):
+			m_value{val}
+		{ codecov::function_called(__FILE__, __LINE__); }
 
 		template<class = void>
 		requires(subscriptable<storage_type>)
