@@ -84,6 +84,15 @@ namespace geosimd
 			m_value = scale.get() * m_value;
 			return *this;
 		}
+		template<class T = V>
+		requires(std::is_same_v<T, V> && has_rotations<T>)
+		GEOSIMD_INLINE_OPT constexpr auto apply(rotation<T> const& mat) const
+		{ return basic_vector{*this}.apply(mat); }
+
+		template<class T = V>
+		requires(std::is_floating_point_v<typename T::scalar_type>)
+		GEOSIMD_INLINE_OPT constexpr auto apply(scaling<T> scale) const
+		{ return basic_vector{*this}.apply(scale); }
 
 	private:
 		storage_type m_value;
