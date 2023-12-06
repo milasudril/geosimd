@@ -312,6 +312,33 @@ TESTCASE(geosimd_basic_point_3d_structured_binding)
 	EXPECT_EQ(z, 4.0f);
 }
 
+TESTCASE(geosimd_basic_point_3d_lerp)
+{
+	point_3d_float const a{1.0f, 2.0f, 3.0f};
+	point_3d_float const b{2.0f, 3.0f, 4.0f};
+
+	{
+		auto const p = lerp(a, b, 0.5f);
+		EXPECT_EQ(p[0], 1.5f);
+		EXPECT_EQ(p[1], 2.5f);
+		EXPECT_EQ(p[2], 3.5f);
+	}
+
+	{
+		auto const p = lerp(a, b, 0.0f);
+		EXPECT_EQ(p[0], 1.0f);
+		EXPECT_EQ(p[1], 2.0f);
+		EXPECT_EQ(p[2], 3.0f);
+	}
+
+	{
+		auto const p = lerp(a, b, 1.0f);
+		EXPECT_EQ(p[0], 2.0f);
+		EXPECT_EQ(p[1], 3.0f);
+		EXPECT_EQ(p[2], 4.0f);
+	}
+}
+
 namespace
 {
 	struct my_3d_vector_space_disabled_rotations
