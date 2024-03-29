@@ -51,6 +51,11 @@ namespace geosimd
 		{ return m_value[n]; }
 
 		template<class = void>
+		requires(subscriptable<storage_type>)
+		GEOSIMD_INLINE_OPT constexpr scalar_type& operator[](size_t n)
+		{ return m_value[n]; }
+
+		template<class = void>
 		requires(!supports_static_constexpr_size<storage_type> && supports_size<storage_type>)
 		GEOSIMD_INLINE_OPT constexpr size_t size() const
 		{ return std::size(m_value) - static_cast<size_t>(has_homogenous_coordinates<V>); }
