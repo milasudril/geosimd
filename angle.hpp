@@ -10,6 +10,7 @@
 #include <limits>
 #include <cstdint>
 #include <string>
+#include <algorithm>
 
 namespace geosimd
 {

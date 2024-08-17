@@ -35,7 +35,7 @@ namespace
 
 TESTCASE(geosimd_metric_normed_space_distance)
 {
-	if(!std::is_constant_evaluated())
+//	if(!std::is_constant_evaluated())
 	{
 		norm_called = 0;
 		norm_squared_called = 0;
@@ -48,7 +48,7 @@ TESTCASE(geosimd_metric_normed_space_distance)
 	EXPECT_EQ(d1, 4);
 	EXPECT_EQ(d2, 4);
 
-	if(!std::is_constant_evaluated())
+//	if(!std::is_constant_evaluated())
 	{
 		EXPECT_EQ(norm_called, 2);
 		EXPECT_EQ(norm_squared_called, 0);
@@ -58,7 +58,7 @@ TESTCASE(geosimd_metric_normed_space_distance)
 
 TESTCASE(geosimd_metric_normed_space_distance_squared)
 {
-	if(!std::is_constant_evaluated())
+//	if(!std::is_constant_evaluated())
 	{
 		norm_called = 0;
 	}
@@ -70,7 +70,7 @@ TESTCASE(geosimd_metric_normed_space_distance_squared)
 	EXPECT_EQ(d1, 16);
 	EXPECT_EQ(d2, 16);
 
-	if(!std::is_constant_evaluated())
+//	if(!std::is_constant_evaluated())
 	{
 		EXPECT_EQ(norm_called, 0);
 		EXPECT_EQ(norm_squared_called, 2);

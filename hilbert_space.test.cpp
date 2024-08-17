@@ -57,7 +57,7 @@ namespace
 
 TESTCASE(geosimd_hilbert_space_norm)
 {
-	if(!std::is_constant_evaluated())
+//	if(!std::is_constant_evaluated())
 	{
 		inner_product_called = 0;
 		inner_product_2_called = 0;
@@ -67,7 +67,7 @@ TESTCASE(geosimd_hilbert_space_norm)
 	static_assert(std::is_same_v<decltype(val), float>);
 	EXPECT_EQ(val, 2.0f);
 
-	if(!std::is_constant_evaluated())
+//	if(!std::is_constant_evaluated())
 	{
 		EXPECT_EQ(inner_product_called, 1);
 		EXPECT_EQ(inner_product_2_called, 0);
@@ -77,7 +77,7 @@ TESTCASE(geosimd_hilbert_space_norm)
 
 TESTCASE(geosimd_hilbert_space_norm_squared)
 {
-	if(!std::is_constant_evaluated())
+//	if(!std::is_constant_evaluated())
 	{
 		inner_product_called = 0;
 		inner_product_2_called = 0;
@@ -87,7 +87,7 @@ TESTCASE(geosimd_hilbert_space_norm_squared)
 	static_assert(std::is_same_v<decltype(val), float>);
 	EXPECT_EQ(val, 4.0f);
 
-	if(!std::is_constant_evaluated())
+//	if(!std::is_constant_evaluated())
 	{
 		EXPECT_EQ(inner_product_called, 1);
 		EXPECT_EQ(inner_product_2_called, 0);

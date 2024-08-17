@@ -4,6 +4,8 @@
 
 #include "testfwk/testfwk.hpp"
 
+#include <array>
+
 TESTCASE(geosimd_distance_int)
 {
 	auto d1 = geosimd::distance(-2, 5);
