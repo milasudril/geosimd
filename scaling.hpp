@@ -96,6 +96,13 @@ namespace geosimd
 			return *this;
 		}
 
+		GEOSIMD_INLINE_OPT constexpr scaling operator+=(scaling other)
+		{
+			m_value += other.get();
+			return *this;
+		}
+
+
 	private:
 		storage_type m_value;
 	};
@@ -126,6 +133,13 @@ namespace geosimd
 	GEOSIMD_INLINE_OPT constexpr scaling<V> operator*(scaling<V> a, scaling<V> b)
 	{
 		a*=b;
+		return a;
+	}
+
+	template<vector_space V>
+	GEOSIMD_INLINE_OPT constexpr scaling<V> operator+(scaling<V> a, scaling<V> b)
+	{
+		a+=b;
 		return a;
 	}
 
