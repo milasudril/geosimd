@@ -83,7 +83,6 @@ namespace geosimd
 			return *this;
 		}
 
-
 		GEOSIMD_INLINE_OPT constexpr scaling& operator/=(scalar_type other)
 		{
 			*this/=scaling{other, other, other};
@@ -96,7 +95,7 @@ namespace geosimd
 			return *this;
 		}
 
-		GEOSIMD_INLINE_OPT constexpr scaling operator+=(scaling other)
+		[[deprecated]] GEOSIMD_INLINE_OPT constexpr scaling operator+=(scaling other)
 		{
 			m_value += other.get();
 			return *this;
