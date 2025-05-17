@@ -27,6 +27,12 @@ namespace geosimd
 			m_value{x, xn...}
 		{ codecov::function_called(__FILE__, __LINE__); }
 
+		GEOSIMD_INLINE_OPT constexpr explicit scaling(storage_type val):m_value{val}
+		{
+			if constexpr (has_homogenous_coordinates<V>)
+			{ m_value[size() - 1] = 1.0f; }
+		}
+
 		template<class ... Args>
 		requires std::conjunction_v<std::is_same<scalar_type, Args>...>
 			&& (has_homogenous_coordinates<V>)

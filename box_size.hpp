@@ -17,7 +17,7 @@ namespace geosimd
 		using storage_type = typename V::vector_type;
 
 		GEOSIMD_INLINE_OPT constexpr box_size():
-			m_value{zeros(empty<storage_type>{})}{}
+			m_value{zero(empty<storage_type>{})}{}
 
 		template<class ... Args>
 		requires std::conjunction_v<std::is_same<scalar_type, Args>...>
@@ -96,6 +96,12 @@ namespace geosimd
 			return box_size{storage_type{this_value < other_value? this_value : other_value}};
 		}
 
+		GEOSIMD_INLINE_OPT constexpr box_size operator+=(basic_vector<V> v)
+		{
+			m_value += v.get();
+			return *this;
+		}
+
 	private:
 		GEOSIMD_INLINE_OPT constexpr explicit box_size(storage_type value): m_value{value}
 		{}
@@ -109,7 +115,6 @@ namespace geosimd
 	template<vector_space V>
 	GEOSIMD_INLINE_OPT constexpr auto zero(empty<box_size<V>>)
 	{ return box_size<V>{}; }
-
 
 	template<vector_space V>
 	GEOSIMD_INLINE_OPT constexpr box_size<V> operator*(box_size<V> a, typename V::scalar_type b)
@@ -160,6 +165,14 @@ namespace geosimd
 	template<vector_space V>
 	GEOSIMD_INLINE_OPT constexpr box_size<V> min(box_size<V> a, box_size<V> b)
 	{ return a.min(b); }
+
+	template<vector_space V>
+	GEOSIMD_INLINE_OPT constexpr scaling<V> to_scaling(box_size<V> a)
+	{ return scaling<V>{a.get()}; }
+
+	template<vector_space V>
+	GEOSIMD_INLINE_OPT constexpr box_size<V> operator+(box_size<V> b, basic_vector<V> v)
+	{ return b += v; }
 
 	template<vector_space V>
 	GEOSIMD_INLINE_OPT constexpr auto norm(box_size<V> s)
