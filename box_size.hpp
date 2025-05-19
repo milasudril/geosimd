@@ -54,6 +54,9 @@ namespace geosimd
 		GEOSIMD_INLINE_OPT scalar_type operator[](size_t index) const
 		{ return m_value[index]; }
 
+		GEOSIMD_INLINE_OPT scalar_type& operator[](size_t index)
+		{ return m_value[index]; }
+
 		constexpr bool operator==(box_size const&) const = default;
 
 		constexpr bool operator!=(box_size const&) const = default;
