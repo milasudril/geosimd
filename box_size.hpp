@@ -2,6 +2,7 @@
 #define GEOSIMD_BOX_SIZE_HPP
 
 #include "./scaling.hpp"
+#include "./basic_vector.hpp"
 
 #include <cmath>
 #include <type_traits>
@@ -18,6 +19,9 @@ namespace geosimd
 
 		GEOSIMD_INLINE_OPT constexpr box_size():
 			m_value{zero(empty<storage_type>{})}{}
+
+		GEOSIMD_INLINE_OPT constexpr explicit box_size(storage_type value): m_value{value}
+		{}
 
 		template<class ... Args>
 		requires std::conjunction_v<std::is_same<scalar_type, Args>...>
@@ -105,12 +109,28 @@ namespace geosimd
 			return *this;
 		}
 
-	private:
-		GEOSIMD_INLINE_OPT constexpr explicit box_size(storage_type value): m_value{value}
-		{}
+		GEOSIMD_INLINE_OPT constexpr box_size fit_to_2d(box_size target_box) const
+		{
+			auto const src_val = m_value;
+			auto const source_aspect_ratio = src_val[0]/src_val[1];
+			auto const source_aspect_ratio_inv = src_val[1]/src_val[0];
+			auto const target_val = target_box.get();
+			auto const target_val_shuf = shuffle(target_val, 1, 0, 2, 3);
+			vec_t<scalar_type, 4> const ratios{
+				source_aspect_ratio,
+				source_aspect_ratio_inv,
+				1.0f,
+				1.0f
+			};
 
+			auto const factors = ratios*target_val_shuf;
+			return target_box.min(box_size{src_val*factors});
+		}
+
+	private:
 		storage_type m_value;
 	};
+
 	template<vector_space V>
 	inline auto to_string(box_size<V> s)
 	{ return to_string(s.get()); }
@@ -170,6 +190,10 @@ namespace geosimd
 	{ return a.min(b); }
 
 	template<vector_space V>
+	GEOSIMD_INLINE_OPT constexpr scaling<V> operator/(box_size<V> a, box_size<V> b)
+	{ return scaling<V>{a.get()/b.get()}; }
+
+	template<vector_space V>
 	GEOSIMD_INLINE_OPT constexpr scaling<V> to_scaling(box_size<V> a)
 	{ return scaling<V>{a.get()}; }
 
@@ -178,15 +202,30 @@ namespace geosimd
 	{ return b += v; }
 
 	template<vector_space V>
-	GEOSIMD_INLINE_OPT constexpr auto norm(box_size<V> s)
+	GEOSIMD_INLINE_OPT constexpr auto norm(box_size<V> box)
 	{
 		using scalar_type = typename V::scalar_type;
 		auto ret = one(empty<scalar_type>{});
-		auto const val = s.get();
-		for(size_t k = 0; k != std::size(s); ++k)
+		auto const val = box.get();
+		for(size_t k = 0; k != std::size(box); ++k)
 		{ ret*=val[k]; }
 
-		return std::pow(ret, one(empty<scalar_type>{})/std::size(s));
+		return std::pow(ret, one(empty<scalar_type>{})/std::size(box));
+	}
+
+	template<vector_space V>
+	GEOSIMD_INLINE_OPT constexpr auto fit_to_box_2d(box_size<V> source_box, box_size<V> target_box)
+	{
+		auto const source_aspect_ratio = source_box[0]/source_box[1];
+		auto const source_aspect_ratio_inv = source_box[1]/source_box[0];
+
+		scaling<V> const factors{
+			target_box[1]*source_aspect_ratio,
+			target_box[0]*source_aspect_ratio_inv,
+			target_box[2]
+		};
+
+		return min(target_box, factors*source_box);
 	}
 }
 
