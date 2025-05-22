@@ -112,19 +112,10 @@ namespace geosimd
 		GEOSIMD_INLINE_OPT constexpr box_size fit_to_2d(box_size target_box) const
 		{
 			auto const src_val = m_value;
-			auto const source_aspect_ratio = src_val[0]/src_val[1];
-			auto const source_aspect_ratio_inv = src_val[1]/src_val[0];
-			auto const target_val = target_box.get();
-			auto const target_val_shuf = shuffle(target_val, 1, 0, 2, 3);
-			vec_t<scalar_type, 4> const ratios{
-				source_aspect_ratio,
-				source_aspect_ratio_inv,
-				1.0f,
-				1.0f
-			};
-
-			auto const factors = ratios*target_val_shuf;
-			return target_box.min(box_size{src_val*factors});
+			auto const factors = target_box.m_value/src_val;
+			auto const alt_a = factors[0]*(*this);
+			auto const alt_b = factors[1]*(*this);
+			return alt_a[0]*alt_a[1] < alt_b[0]*alt_b[1]? alt_a : alt_b;
 		}
 
 	private:
@@ -211,21 +202,6 @@ namespace geosimd
 		{ ret*=val[k]; }
 
 		return std::pow(ret, one(empty<scalar_type>{})/std::size(box));
-	}
-
-	template<vector_space V>
-	GEOSIMD_INLINE_OPT constexpr auto fit_to_box_2d(box_size<V> source_box, box_size<V> target_box)
-	{
-		auto const source_aspect_ratio = source_box[0]/source_box[1];
-		auto const source_aspect_ratio_inv = source_box[1]/source_box[0];
-
-		scaling<V> const factors{
-			target_box[1]*source_aspect_ratio,
-			target_box[0]*source_aspect_ratio_inv,
-			target_box[2]
-		};
-
-		return min(target_box, factors*source_box);
 	}
 }
 
