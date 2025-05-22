@@ -119,7 +119,9 @@ namespace geosimd
 			auto const alt_a = shuffle(options, src_val, 0, 1, 6, 7);
 			auto const alt_b = shuffle(options, src_val, 2, 3, 6, 7);
 			auto const areas = shuffle(alt_a, alt_b, 0, 4, 1, 5)*shuffle(alt_a, alt_b, 1, 5, 0, 4);
-			return box_size{areas[0] < areas[1]? alt_a : alt_b};
+			auto const area_a_broadcasted = shuffle(areas, 0, 0, 0, 0);
+			auto const area_b_broadcasted = shuffle(areas, 1, 1, 1, 1);
+			return box_size{area_a_broadcasted.get() < area_b_broadcasted.get()? alt_a.get() : alt_b.get()};
 		}
 
 	private:
