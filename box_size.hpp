@@ -113,9 +113,13 @@ namespace geosimd
 		{
 			auto const src_val = m_value;
 			auto const factors = target_box.m_value/src_val;
-			auto const alt_a = factors[0]*(*this);
-			auto const alt_b = factors[1]*(*this);
-			return alt_a[0]*alt_a[1] < alt_b[0]*alt_b[1]? alt_a : alt_b;
+			auto const src_rep = shuffle(src_val, 0, 1, 0, 1);
+			auto const factors_rep = shuffle(factors, 0, 0, 1, 1);
+			auto const options = src_rep*factors_rep;
+			auto const alt_a = shuffle(options, src_val, 0, 1, 6, 7);
+			auto const alt_b = shuffle(options, src_val, 2, 3, 6, 7);
+			auto const areas = shuffle(alt_a, alt_b, 0, 4, 1, 5)*shuffle(alt_a, alt_b, 1, 5, 0, 4);
+			return box_size{areas[0] < areas[1]? alt_a : alt_b};
 		}
 
 	private:
