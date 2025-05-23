@@ -109,7 +109,7 @@ namespace geosimd
 			return *this;
 		}
 
-		GEOSIMD_INLINE_OPT constexpr box_size fit_to_2d(box_size target_box) const
+		GEOSIMD_INLINE_OPT constexpr box_size fit_xy_keep_z(box_size target_box) const
 		{
 			auto const src_val = m_value;
 			auto const factors = target_box.m_value/src_val;
