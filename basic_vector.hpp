@@ -85,6 +85,13 @@ namespace geosimd
 			return *this;
 		}
 		template<class T = V>
+		requires(std::is_floating_point_v<typename T::scalar_type>)
+		GEOSIMD_INLINE_OPT constexpr auto& apply_inv(scaling<T> scale)
+		{
+			m_value /= scale.get();
+			return *this;
+		}
+		template<class T = V>
 		requires(std::is_same_v<T, V> && has_rotations<T>)
 		GEOSIMD_INLINE_OPT constexpr auto apply(rotation<T> const& mat) const
 		{ return basic_vector{*this}.apply(mat); }

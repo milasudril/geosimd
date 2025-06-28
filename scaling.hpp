@@ -178,6 +178,10 @@ namespace geosimd
 
 		return std::pow(ret, one(empty<scalar_type>{})/std::size(s));
 	}
+
+	template<vector_space V>
+	GEOSIMD_INLINE_OPT constexpr auto abs(scaling<V> s)
+	{ return scaling<V>{abs(s.get())}; }
 }
 
 #endif

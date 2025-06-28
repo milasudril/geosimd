@@ -235,5 +235,11 @@ namespace geosimd
 	using vec4i32_t = vec_t<int32_t, 4>;
 	using vec2i64_t = vec_t<int64_t, 2>;
 	using vec2f64_t = vec_t<double, 2>;
+
+	template<class T, size_t N>
+	GEOSIMD_FLATTEN constexpr auto abs(vec_t<T, N> val)
+	{
+		return vec_t<T, N>{val.get() < 0.0f? -val.get() : val.get()};
+	}
 }
 #endif
