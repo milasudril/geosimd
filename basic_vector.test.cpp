@@ -251,6 +251,24 @@ TESTCASE(geosimd_basic_vector_3d_cross)
 	EXPECT_EQ(z, (vector_3d_float{0.0f, 0.0f, 10.f}));
 }
 
+TESTCASE(geosimd_basic_vector_rot_right_angle_z_left)
+{
+	vector_3d_float const x{3.0f, 1.0f, 0.0f};
+	auto const y = x.rot_right_angle_z_left();
+	EXPECT_EQ(y, (vector_3d_float{-1.0f, 3.0f, 0.0f}));
+	auto const z = y.rot_right_angle_z_right();
+	EXPECT_EQ(x, z);
+}
+
+TESTCASE(geosimd_basic_vector_rot_right_angle_z_right)
+{
+	vector_3d_float const x{3.0f, 1.0f, 0.0f};
+	auto const y = x.rot_right_angle_z_right();
+	EXPECT_EQ(y, (vector_3d_float{1.0f, -3.0f, 0.0f}));
+	auto const z = y.rot_right_angle_z_left();
+	EXPECT_EQ(x, z);
+}
+
 namespace
 {
 	struct my_3d_vector_space_disabled_rotations

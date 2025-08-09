@@ -82,6 +82,36 @@ namespace geosimd
 		GEOSIMD_INLINE_OPT constexpr auto apply(rotation<T> const& mat) const
 		{ return basic_vector{*this}.apply(mat); }
 
+
+
+		template<class T = V>
+		requires(std::is_same_v<T, V> && has_rotations<T>)
+		GEOSIMD_INLINE_OPT constexpr auto& rot_right_angle_z_left()
+		{
+			m_value = storage_type{-1.0f, 1.0f, 1.0f, 1.0f}*shuffle(m_value, 1, 0, 2, 3);
+			return *this;
+		}
+
+		template<class T = V>
+		requires(std::is_same_v<T, V> && has_rotations<T>)
+		GEOSIMD_INLINE_OPT constexpr auto rot_right_angle_z_left() const
+		{ return basic_vector{*this}.rot_right_angle_z_left(); }
+
+		template<class T = V>
+		requires(std::is_same_v<T, V> && has_rotations<T>)
+		GEOSIMD_INLINE_OPT constexpr auto& rot_right_angle_z_right()
+		{
+			m_value = shuffle(storage_type{-1.0f, 1.0f, 1.0f, 1.0f}*m_value, 1, 0, 2, 3);
+			return *this;
+		}
+
+		template<class T = V>
+		requires(std::is_same_v<T, V> && has_rotations<T>)
+		GEOSIMD_INLINE_OPT constexpr auto rot_right_angle_z_right() const
+		{ return basic_vector{*this}.rot_right_angle_z_right(); }
+
+
+
 		GEOSIMD_INLINE_OPT constexpr auto& apply(mat_4x4<scalar_type> const& mat)
 		{
 			m_value = mat * m_value;
