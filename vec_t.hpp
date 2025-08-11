@@ -241,5 +241,17 @@ namespace geosimd
 	{
 		return vec_t<T, N>{val.get() < 0.0f? -val.get() : val.get()};
 	}
+
+	template<class T, size_t N>
+	GEOSIMD_FLATTEN constexpr auto max(vec_t<T, N> a, vec_t<T, N> b)
+	{
+		return vec_t<T, N>{a.get() > b.get()? a.get() : b.get()};
+	}
+
+	template<class T, size_t N>
+	GEOSIMD_FLATTEN constexpr auto min(vec_t<T, N> a, vec_t<T, N> b)
+	{
+		return vec_t<T, N>{a.get() < b.get()? a.get() : b.get()};
+	}
 }
 #endif
