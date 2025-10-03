@@ -41,10 +41,20 @@ namespace geosimd
 			m_value{cs.cos(), cs.sin(), zero<scalar_type>()}
 		{}
 
+		struct prenormalized_tag{};
+
+		GEOSIMD_INLINE_OPT constexpr explicit unit_vector(vector_type val, prenormalized_tag):
+			m_value{val}
+		{ }
 
 		GEOSIMD_INLINE_OPT constexpr explicit unit_vector(vector_type val):
 			m_value{val/norm(val)}
-		{}
+		{
+			auto const l = norm(val);
+			if(l == scalar_type{})
+			{ throw std::runtime_error{"Cannot form unit vector from zero vector"}; }
+			m_value = val/l;
+		}
 
 		template<class T = void>
 		requires(subscriptable<vector_type>)
