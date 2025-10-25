@@ -104,6 +104,32 @@ namespace geosimd
 			return *this;
 		}
 
+		template<class T = V>
+		requires(std::is_same_v<T, V> && has_rotations<T>)
+		GEOSIMD_INLINE_OPT constexpr auto& rot_right_angle_z_left()
+		{
+			m_value.rot_right_angle_z_left();
+			return *this;
+		}
+
+		template<class T = V>
+		requires(std::is_same_v<T, V> && has_rotations<T>)
+		GEOSIMD_INLINE_OPT constexpr auto rot_right_angle_z_left() const
+		{ return unit_vector{*this}.rot_right_angle_z_left(); }
+
+		template<class T = V>
+		requires(std::is_same_v<T, V> && has_rotations<T>)
+		GEOSIMD_INLINE_OPT constexpr auto& rot_right_angle_z_right()
+		{
+			m_value.rot_right_angle_z_right();
+			return *this;
+		}
+
+		template<class T = V>
+		requires(std::is_same_v<T, V> && has_rotations<T>)
+		GEOSIMD_INLINE_OPT constexpr auto rot_right_angle_z_right() const
+		{ return unit_vector{*this}.rot_right_angle_z_right(); }
+
 	private:
 		vector_type m_value;
 	};
